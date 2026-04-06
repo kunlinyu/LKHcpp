@@ -1,0 +1,9 @@
+{
+  "problem_filename": "INSTANCES/gr96.tsp",
+  "tour_filename": "TOURS/gr96_22.$.tour",
+  "candidate_set_type": "ALPHA",
+  "tree_type": 2,
+  "move_type": 2,
+  "seed": 42,
+  "optimum": 55209
+}

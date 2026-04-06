@@ -1,0 +1,13 @@
+{
+  "problem_filename": "INSTANCES/pla7397.tsp",
+  "tour_filename": "TOURS/pla7397.$.tour",
+  "candidate_set_type": "POPMUSIC",
+  "popmusic_max_neighbors": 10,
+  "popmusic_solutions": 10,
+  "initial_period": 100,
+  "tree_type": 3,
+  "move_type": 5,
+  "runs": 1,
+  "max_trials": 1,
+  "seed": 42
+}

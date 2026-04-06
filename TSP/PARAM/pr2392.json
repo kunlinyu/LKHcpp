@@ -1,0 +1,13 @@
+{
+  "problem_filename": "INSTANCES/pr2392.tsp",
+  "tour_filename": "TOURS/pr2392.$.tour",
+  "candidate_set_type": "ALPHA",
+  "popmusic_max_neighbors": 10,
+  "initial_period": 100,
+  "tree_type": 3,
+  "move_type": 5,
+  "seed": 42,
+  "runs": 1,
+  "max_trials": 20,
+  "optimum": 378032
+}
