@@ -36,6 +36,14 @@
 *.exe
 *.out
 *.app
+LKH
+build/
 
 # debug information files
 *.dwo
+
+# vim
+*.swp
+
+# idea
+.idea/
