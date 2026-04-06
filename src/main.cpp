@@ -10,10 +10,11 @@
 
 #include <CLI11/CLI11.hpp>
 
-#include "LKHcpp.h"
-#include "data/Param.h"
 #include "FatalExitAppender.h"
 #include "FileLineFormatter.h"
+#include "LKHcpp.h"
+#include "data/Param.h"
+#include "data/ParamReader.h"
 
 int main(int argc, char* argv[]) {
   CLI::App app{"LKHcpp A C++11 implementation of the LKH algorithm"};
@@ -81,6 +82,11 @@ int main(int argc, char* argv[]) {
   plog::init(severity_level, &exit_appender);
 
   PLOGD << "Command line arguments parsed.";
+
+  Param pr = ParamReader::Read(param_filename);
+  if (not problem_filename.empty()) pr.problem_filename = problem_filename;
+
+  pr.Patch(param_cli);
 
   return EXIT_SUCCESS;
 }

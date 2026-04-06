@@ -34,7 +34,7 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(
 
 class ParamReader {
  public:
-  Param Read(const std::string &filename) {
+  static Param Read(const std::string &filename) {
     std::ifstream parameter_file(filename);
     if (!parameter_file.is_open())
       throw std::invalid_argument("Cannot open parameter file");
