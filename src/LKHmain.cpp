@@ -30,7 +30,6 @@ int LKHmain(Param& pr) {
 
   // set to global variables
   param = pr;
-  problem.name = tsplib.name;
   problem.dimension = tsplib.dimension;
   problem.type = tsplib.type;
 

@@ -365,14 +365,4 @@ void TSPLIBReader::Check(TSPLIB& pb) {
   if (pb.type == UNKNOW_PROBLEM) throw std::invalid_argument("TYPE is missing");
   if (pb.dimension < 3)
     throw std::invalid_argument("DIMENSION < 3 or not specified");
-  if (pb.edge_weight_type == EXPLICIT && pb.edge_weight_format == UNSET_FORMAT)
-    throw std::invalid_argument("EDGE_WEIGHT_FORMAT is missing");
-  if (pb.edge_weight_type == EXPLICIT && pb.edge_weight_format == FUNCTION)
-    throw std::invalid_argument(
-        "Conflicting EDGE_WEIGHT_TYPE and EDGE_WEIGHT_FORMAT");
-  if (pb.edge_weight_type != EXPLICIT &&
-      pb.edge_weight_format != UNSET_FORMAT &&
-      pb.edge_weight_format != FUNCTION)
-    throw std::invalid_argument(
-        "Conflicting EDGE_WEIGHT_TYPE and EDGE_WEIGHT_FORMAT");
 }

@@ -61,7 +61,9 @@ void WriteTour(const std::string& FileName, const std::vector<NodeIdType>& tour,
   }
 
   TourFile tour_file;
-  tour_file.name = problem.name + "." + std::to_string(Cost) + ".tour";
+  size_t found = FullFileName.find_last_of("/\\");
+  tour_file.name = found != std::string::npos ? FullFileName.substr(found + 1)
+                                              : FullFileName;
   tour_file.type = "TOUR";
   tour_file.comments.emplace_back("Length = " + std::to_string(Cost));
   tour_file.comments.emplace_back("Found by LKH-3 [Keld Helsgaun]");
