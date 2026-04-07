@@ -30,28 +30,26 @@ class Initializer {
     return nodes;
   }
 
-  static void AdjustParameters(Param& pr, const TSPLIB& tsp) {
+  static void AdjustParameters(Param& pr, int dimension) {
     if (pr.seed == 0) pr.seed = (unsigned)(time(0) * (size_t)(&pr.seed));
-    if (pr.initial_step_size == 0) pr.initial_step_size = 1;
-    if (pr.max_swaps < 0) pr.max_swaps = tsp.dimension;
-    if (pr.runs == 0) pr.runs = 10;
-    if (pr.max_candidates > tsp.dimension - 1)
-      pr.max_candidates = tsp.dimension - 1;
+    if (pr.max_swaps == 0) pr.max_swaps = dimension;
+    if (pr.max_candidates > dimension - 1)
+      pr.max_candidates = dimension - 1;
     else {
-      if (pr.ascent_candidates > tsp.dimension - 1)
-        pr.ascent_candidates = tsp.dimension - 1;
-      if (pr.initial_period < 0) {
-        pr.initial_period = tsp.dimension / 2;
+      if (pr.ascent_candidates > dimension - 1)
+        pr.ascent_candidates = dimension - 1;
+      if (pr.initial_period == 0) {
+        pr.initial_period = dimension / 2;
         if (pr.initial_period < 100) pr.initial_period = 100;
       }
-      if (pr.excess < 0) pr.excess = 1.0 / tsp.dimension * pr.salesmen;
-      if (pr.max_trials == -1) pr.max_trials = tsp.dimension;
+      if (pr.excess == 0) pr.excess = 1.0 / dimension * pr.salesmen;
+      if (pr.max_trials == 0) pr.max_trials = dimension;
     }
-    if (pr.popmusic_max_neighbors > tsp.dimension - 1)
-      pr.popmusic_max_neighbors = tsp.dimension - 1;
-    if (pr.popmusic_sample_size > tsp.dimension)
-      pr.popmusic_sample_size = tsp.dimension;
-    PLOGF_IF(pr.salesmen > 1 and pr.salesmen < tsp.dimension)
+    if (pr.popmusic_max_neighbors > dimension - 1)
+      pr.popmusic_max_neighbors = dimension - 1;
+    if (pr.popmusic_sample_size > dimension)
+      pr.popmusic_sample_size = dimension;
+    PLOGF_IF(pr.salesmen > 1 and pr.salesmen < dimension)
         << "Too many salesmen/vehicles (>= DIMENSION)";
 
     if (pr.subsequent_move_type == 0) {
@@ -77,30 +75,30 @@ class Initializer {
     ctx.BetterTour.resize(tsp.dimension + 1);
     ctx.hash_table.init_rand(tsp.dimension + 1);
 
-    // clang-format off
-  int (*Distance) (const Coordinate * Na, const Coordinate * Nb) = nullptr;
-  switch (tsp.edge_weight_type) {
-    case EXPLICIT: break;
-    case ATT: Distance = Distance_ATT; break;
-    case EUC_2D: Distance = Distance_EUC_2D; break;
-    case EUC_3D: Distance = Distance_EUC_3D; break;
-    case MAX_2D: Distance = Distance_MAX_2D; break;
-    case MAX_3D: Distance = Distance_MAN_3D; break;
-    case MAN_2D: Distance = Distance_MAN_2D; break;
-    case MAN_3D: Distance = Distance_MAN_3D; break;
-    case CEIL_2D: Distance = Distance_CEIL_2D; break;
-    case CEIL_3D: Distance = Distance_CEIL_3D; break;
-    case GEO: Distance = Distance_GEO; break;
-    case GEOM: Distance = Distance_GEOM; break;
-    case GEO_MEEUS: Distance = Distance_GEO_MEEUS; break;
-    case GEOM_MEEUS: Distance = Distance_GEOM_MEEUS; break;
-    case XRAY1: Distance = Distance_XRAY1; break;
-    case XRAY2: Distance = Distance_XRAY2; break;
-    case UNSET_TYPE: break;
-    default:
-      PLOGF << "Unsupported edge weight type: " << tsp.edge_weight_type;
-  }
-    // clang-format on
+    int (*Distance)(const Coordinate* Na, const Coordinate* Nb) = nullptr;
+    switch (tsp.edge_weight_type) {
+        // clang-format off
+      case EXPLICIT: break;
+      case ATT: Distance = Distance_ATT; break;
+      case EUC_2D: Distance = Distance_EUC_2D; break;
+      case EUC_3D: Distance = Distance_EUC_3D; break;
+      case MAX_2D: Distance = Distance_MAX_2D; break;
+      case MAX_3D: Distance = Distance_MAN_3D; break;
+      case MAN_2D: Distance = Distance_MAN_2D; break;
+      case MAN_3D: Distance = Distance_MAN_3D; break;
+      case CEIL_2D: Distance = Distance_CEIL_2D; break;
+      case CEIL_3D: Distance = Distance_CEIL_3D; break;
+      case GEO: Distance = Distance_GEO; break;
+      case GEOM: Distance = Distance_GEOM; break;
+      case GEO_MEEUS: Distance = Distance_GEO_MEEUS; break;
+      case GEOM_MEEUS: Distance = Distance_GEOM_MEEUS; break;
+      case XRAY1: Distance = Distance_XRAY1; break;
+      case XRAY2: Distance = Distance_XRAY2; break;
+      case UNSET_TYPE: break;
+        // clang-format on
+      default:
+        PLOGF << "Unsupported edge weight type: " << tsp.edge_weight_type;
+    }
 
     ctx.CostMatrix.resize(tsp.dimension + 1);
     for (int i = 0; i <= tsp.dimension; i++)

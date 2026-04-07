@@ -25,22 +25,22 @@ int LKHmain(Param& pr) {
     return EXIT_FAILURE;
   }
 
-  const TSPLIB pb = TSPLIBReader::Read(fproblem);
-  Initializer::AdjustParameters(pr, pb);
+  const TSPLIB tsplib = TSPLIBReader::Read(fproblem);
+  Initializer::AdjustParameters(pr, tsplib.dimension);
 
   // set to global variables
   param = pr;
-  problem.name = pb.name;
-  problem.dimension = pb.dimension;
-  problem.type = pb.type;
+  problem.name = tsplib.name;
+  problem.dimension = tsplib.dimension;
+  problem.type = tsplib.type;
 
   double LastTime;
   context.StartTime = LastTime = GetTime();
-  Initializer::Init(pb, param, context);
+  Initializer::Init(tsplib, param, context);
 
   int** Matrix = nullptr;
   if (problem.type == STTSP) {
-    Matrix = STTSP2TSP(pb.required_nodes_section);
+    Matrix = STTSP2TSP(tsplib.required_nodes_section);
     Initializer::AllocateSegments(param.tree_type, problem.dimension, context);
   }
 
