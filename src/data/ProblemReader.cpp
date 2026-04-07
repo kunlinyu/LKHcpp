@@ -70,8 +70,8 @@ DECLARE_ENUM_CONVERSION(EdgeDataFormat, {
                                             {ADJ_LIST, "ADJ_LIST"},
                                         });
 
-Problem ProblemReader::Read(std::istream& is) {
-  Problem pb;
+TSPLIB ProblemReader::Read(std::istream& is) {
+  TSPLIB pb;
   std::string line;
   auto field_funcs = FieldFuncs();
   auto section_funcs = SectionFuncs();
@@ -142,21 +142,21 @@ const std::map<std::string, ProblemReader::FieldFunc>&
 ProblemReader::FieldFuncs() {
   static std::map<std::string, FieldFunc> field_funcs = {
       {"NAME",
-       [](const std::string& v, Problem& pb) {
+       [](const std::string& v, TSPLIB& pb) {
          pb.name = v;
          return true;
        }},
       {"TYPE",  // ^_^
-       [](const std::string& v, Problem& pb) {
+       [](const std::string& v, TSPLIB& pb) {
          return from_string(v, &pb.type);
        }},
       {"COMMENT",
-       [](const std::string& v, Problem& pb) {
+       [](const std::string& v, TSPLIB& pb) {
          pb.comments.emplace_back(v);
          return true;
        }},
       {"DIMENSION",
-       [](const std::string& v, Problem& pb) {
+       [](const std::string& v, TSPLIB& pb) {
          try {
            pb.dimension = std::stoll(v);
            return true;
@@ -165,11 +165,11 @@ ProblemReader::FieldFuncs() {
          }
        }},
       {"EDGE_DATA_FORMAT",
-       [](const std::string& v, Problem& pb) {
+       [](const std::string& v, TSPLIB& pb) {
          return from_string(v, &pb.edge_data_format);
        }},
       {"CAPACITY",
-       [](const std::string& v, Problem& pb) {
+       [](const std::string& v, TSPLIB& pb) {
          try {
            pb.capacity = std::stoll(v);
            return true;
@@ -178,7 +178,7 @@ ProblemReader::FieldFuncs() {
          }
        }},
       {"CAPACITY",
-       [](const std::string& v, Problem& pb) {
+       [](const std::string& v, TSPLIB& pb) {
          try {
            pb.capacity = std::stoll(v);
            return true;
@@ -187,23 +187,23 @@ ProblemReader::FieldFuncs() {
          }
        }},
       {"EDGE_WEIGHT_TYPE",
-       [](const std::string& v, Problem& pb) {
+       [](const std::string& v, TSPLIB& pb) {
          return from_string(v, &pb.edge_weight_type);
        }},
       {"EDGE_WEIGHT_FORMAT",
-       [](const std::string& v, Problem& pb) {
+       [](const std::string& v, TSPLIB& pb) {
          return from_string(v, &pb.edge_weight_format);
        }},
       {"EDGE_WEIGHT_FORMAT",
-       [](const std::string& v, Problem& pb) {
+       [](const std::string& v, TSPLIB& pb) {
          return from_string(v, &pb.edge_weight_format);
        }},
       {"NODE_COORD_TYPE",
-       [](const std::string& v, Problem& pb) {
+       [](const std::string& v, TSPLIB& pb) {
          return from_string(v, &pb.node_coord_type);
        }},
       {"DISPLAY_DATA_TYPE",
-       [](const std::string& v, Problem& pb) {
+       [](const std::string& v, TSPLIB& pb) {
          return from_string(v, &pb.display_data_type);
        }},
   };
@@ -215,7 +215,7 @@ const std::map<std::string, ProblemReader::SectionFunc>&
 ProblemReader::SectionFuncs() {
   static std::map<std::string, SectionFunc> section_funcs = {
       {"NODE_COORD_SECTION",
-       [](const std::string& line, Problem& pb) {
+       [](const std::string& line, TSPLIB& pb) {
          auto components = split(line, " \t\r\n");
          if (components.size() < 3 || components.size() > 4) return false;
 
@@ -235,7 +235,7 @@ ProblemReader::SectionFuncs() {
          return true;
        }},
       {"DEPOT_SECTION",
-       [](const std::string& line, Problem& pb) {
+       [](const std::string& line, TSPLIB& pb) {
          NodeIdType node_id;
          try {
            auto value = std::stoll(line);
@@ -248,7 +248,7 @@ ProblemReader::SectionFuncs() {
          return true;
        }},
       {"DEMAND_SECTION",
-       [](const std::string& line, Problem& pb) {
+       [](const std::string& line, TSPLIB& pb) {
          auto components = split(line, " \t\r\n");
          if (components.size() < 2) return false;
 
@@ -266,7 +266,7 @@ ProblemReader::SectionFuncs() {
          return true;
        }},
       {"EDGE_DATA_SECTION",
-       [](const std::string& line, Problem& pb) {
+       [](const std::string& line, TSPLIB& pb) {
          auto components = split(line, " \t\r\n");
          if (components.size() < 2) return false;
          EdgeData edge_data;
@@ -289,7 +289,7 @@ ProblemReader::SectionFuncs() {
          return true;
        }},
       {"FIXED_EDGES_SECTION",
-       [](const std::string& line, Problem& pb) {
+       [](const std::string& line, TSPLIB& pb) {
          auto components = split(line, " \t\r\n");
          if (components.size() != 2) return false;
          std::pair<NodeIdType, NodeIdType> pair;
@@ -305,7 +305,7 @@ ProblemReader::SectionFuncs() {
          return true;
        }},
       {"DISPLAY_DATA_SECTION",
-       [](const std::string& line, Problem& pb) {
+       [](const std::string& line, TSPLIB& pb) {
          auto components = split(line, " \t\r\n");
          if (components.size() != 3) return false;
 
@@ -322,7 +322,7 @@ ProblemReader::SectionFuncs() {
          return true;
        }},
       {"TOUR_SECTION",
-       [](const std::string& line, Problem& pb) {
+       [](const std::string& line, TSPLIB& pb) {
          NodeIdType node_id;
          try {
            auto value = std::stoll(line);
@@ -335,7 +335,7 @@ ProblemReader::SectionFuncs() {
          return true;
        }},
       {"EDGE_WEIGHT_SECTION",
-       [](const std::string& line, Problem& pb) {
+       [](const std::string& line, TSPLIB& pb) {
          std::vector<WeightType> edge_weight_line;
          try {
            for (const auto& component : split(line, " \t\r\n"))
@@ -347,7 +347,7 @@ ProblemReader::SectionFuncs() {
          return true;
        }},
       {"REQUIRED_NODES_SECTION",
-       [](const std::string& line, Problem& pb) {
+       [](const std::string& line, TSPLIB& pb) {
          NodeIdType node_id;
          try {
            auto value = std::stoll(line);
@@ -363,7 +363,7 @@ ProblemReader::SectionFuncs() {
   return section_funcs;
 }
 
-void ProblemReader::Check(Problem& pb) {
+void ProblemReader::Check(TSPLIB& pb) {
   if (pb.type == UNKNOW_PROBLEM) throw std::invalid_argument("TYPE is missing");
   if (pb.dimension < 3)
     throw std::invalid_argument("DIMENSION < 3 or not specified");

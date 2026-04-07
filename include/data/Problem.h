@@ -66,7 +66,7 @@ enum EdgeDataFormat {
 
 const int DepotIndex = 1;
 
-struct Problem {
+struct TSPLIB {
   std::string name;
   std::vector<std::string> comments;
   ProblemType type = UNKNOW_PROBLEM;
@@ -89,6 +89,14 @@ struct Problem {
   std::vector<std::vector<WeightType>> edge_weight_section;
 
   std::set<NodeIdType> required_nodes_section;
+
+  bool IsAsymmetric() const { return type == ATSP; }
+};
+
+struct Problem {
+  std::string name;
+  ProblemType type = UNKNOW_PROBLEM;
+  int dimension = 0;
 
   bool IsAsymmetric() const { return type == ATSP; }
 };

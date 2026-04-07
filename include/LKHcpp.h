@@ -12,6 +12,6 @@
 class LKHcpp {
  public:
   static Tour Solve(const Param& param, const Problem& problem);
-  static Tour Solve(const std::string& param_json, const std::string& problem_tsplib);
+  static Tour Solve(const std::string& param_json, const Problem& problem);
   static void WriteTour(std::ostream& os, const TourFile& tour);
 };

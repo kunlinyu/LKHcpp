@@ -8,13 +8,13 @@
 #include "Problem.h"
 
 class ProblemReader {
-  typedef std::function<bool(const std::string& value, Problem& problem)>
+  typedef std::function<bool(const std::string& value, TSPLIB& problem)>
       FieldFunc;
-  typedef std::function<bool(const std::string& line, Problem& problem)>
+  typedef std::function<bool(const std::string& line, TSPLIB& problem)>
       SectionFunc;
 
  public:
-  static Problem Read(std::istream& is);
+  static TSPLIB Read(std::istream& is);
 
  private:
   static std::string trim(const std::string& str);
@@ -26,5 +26,5 @@ class ProblemReader {
 
   static const std::map<std::string, SectionFunc>& SectionFuncs();
 
-  static void Check(Problem& pb);
+  static void Check(TSPLIB& pb);
 };

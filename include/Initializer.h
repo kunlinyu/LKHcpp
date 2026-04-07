@@ -30,7 +30,7 @@ class Initializer {
     return nodes;
   }
 
-  static void AdjustParameters(Param& pr, const Problem& pb) {
+  static void AdjustParameters(Param& pr, const TSPLIB& pb) {
     if (pr.seed == 0) pr.seed = (unsigned)(time(0) * (size_t)(&pr.seed));
     if (pr.initial_step_size == 0) pr.initial_step_size = 1;
     if (pr.max_swaps < 0) pr.max_swaps = pb.dimension;
@@ -64,7 +64,7 @@ class Initializer {
     if (pb.type == HCP || pb.type == HPP) pr.max_candidates = 0;
   }
 
-  static void Init(const Problem& pb, const Param& pr, Context& ctx) {
+  static void Init(const TSPLIB& pb, const Param& pr, Context& ctx) {
     ctx.NodeSet = CreateNodes(pb.dimension);
     ctx.FirstNode = &ctx.NodeSet[1];
 
