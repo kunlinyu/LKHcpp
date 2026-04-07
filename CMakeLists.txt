@@ -37,7 +37,6 @@ set(SRC
         src/Between_SL.cpp
         src/Between_SSL.cpp
         src/BridgeGain.cpp
-        src/C.cpp
         src/ChooseInitialTour.cpp
         src/Connect.cpp
         src/Distance.cpp

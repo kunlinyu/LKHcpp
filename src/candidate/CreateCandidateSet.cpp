@@ -74,12 +74,10 @@ double CreateCandidateSet(POpMUSICCandicateSetCreator &popmusic) {
       }
     } while ((Na = Na->SucNode()) != context.FirstNode);
   }
-  if (context.C == C_EXPLICIT) {
-    Na = context.FirstNode;
-    do
-      for (int i = 1; i < Na->Id; i++) Na->C[i] += Na->Pi + context.NodeSet[i].Pi;
-    while ((Na = Na->SucNode()) != context.FirstNode);
-  }
+  Na = context.FirstNode;
+  do
+    for (int i = 1; i < Na->Id; i++) Na->C[i] += Na->Pi + context.NodeSet[i].Pi;
+  while ((Na = Na->SucNode()) != context.FirstNode);
   PLOGI << CandidateReport(context.FirstNode);
   PLOGI << "Preprocessing time = " << std::fixed << std::setprecision(2)
         << fabs(GetTime() - EntryTime) << " sec.";

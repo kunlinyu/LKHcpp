@@ -49,8 +49,12 @@ struct Context {
 
   MoveFunction BestMove, BestSubsequentMove;
 
-  CostFunction D;
-  CostFunction C;
+  int C(const Node* Na, const Node* Nb) {
+    return Na->Id < Nb->Id ? Nb->C[Na->Id] : Na->C[Nb->Id];
+  }
+  int D(const Node* Na, const Node* Nb) {
+    return C(Na, Nb) + Na->Pi + Nb->Pi;
+  }
 
   Node *gain23_s1 = nullptr;
   bool gain23_old_reversed = false;

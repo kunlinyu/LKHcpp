@@ -119,8 +119,6 @@ class Initializer {
 
     SRandom(pr.seed);
     ctx.Optimum = pr.known_optimum;
-    ctx.C = C_EXPLICIT;
-    ctx.D = D_EXPLICIT;
     MoveFunction BestOptMove[] = {
         0, 0, Best2OptMove, Best3OptMove, Best4OptMove, Best5OptMove};
     ctx.BestMove = BestOptMove[pr.move_type];
