@@ -15,9 +15,9 @@
 #include "ProblemType.h"
 
 struct EdgeData {
-  int from;
-  int to;
-  int weight;
+  NodeIdType from;
+  NodeIdType to;
+  WeightType weight;
 };
 
 enum EdgeWeightTypes {

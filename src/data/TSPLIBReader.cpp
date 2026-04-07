@@ -276,7 +276,7 @@ TSPLIBReader::SectionFuncs() {
            if (components.size() > 2)
              edge_data.weight = std::stoll(components[2]);
          } else if (pb.edge_data_format == ADJ_LIST) {
-           PLOGE << "unsported ADJ_LIST";
+           PLOGF << "unsported ADJ_LIST";
            return false;
          } else {
            PLOGE << "unknown EDGE_DATA_FORMAT";
