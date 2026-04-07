@@ -11,11 +11,29 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 set(SRC
+        src/candidate/AddCandidate.cpp
+        src/candidate/AdjustCandidateSet.cpp
+        src/candidate/CandidateReport.cpp
+        src/candidate/CreateCandidateSet.cpp
+        src/candidate/GenerateCandidates.cpp
+        src/candidate/POpMUSICCandidateSetCreator.cpp
+        src/candidate/ResetCandidateSet.cpp
+        src/candidate/TrimCandidateSet.cpp
+        src/Connect.cpp
+        src/Ascent.cpp
+        src/C.cpp
+        src/ChooseInitialTour.cpp
         src/main.cpp
+        src/Minimum1TreeCost.cpp
+        src/MinimumSpanningTree.cpp
+        src/OrderCandidateSet.cpp
+        src/RecordBetterTour.cpp
+        src/SymmetrizeCandidateSet.cpp
         src/data/Context.cpp
         src/data/Param.cpp
         src/data/Problem.cpp
         src/data/ProblemReader.cpp
+        src/utils/Random.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SRC})
