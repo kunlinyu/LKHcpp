@@ -510,20 +510,6 @@ Node *Best5OptMove(Node * t1, Node * t2, GainType * G0, GainType * Gain)
                                           && Near(T9, T10)))
                                         && context.swap_stack.size() < param.max_swaps
                                         && Excludable(t9, t10)) {
-                                        /* Ignore the move if the gain does not vary */
-                                        if (param.restricted_search &&
-                                            G2 - t4->Pi == G4 - t6->Pi
-                                            && G4 - t6->Pi ==
-                                            G6 - t8->Pi
-                                            && G6 - t8->Pi ==
-                                            G8 - t10->Pi
-                                            && G3 + t5->Pi ==
-                                            G1 + t3->Pi
-                                            && G5 + t7->Pi ==
-                                            G3 + t5->Pi
-                                            && G7 + t9->Pi ==
-                                            G5 + t7->Pi)
-                                            continue;
                                         T3 = t3;
                                         T4 = t4;
                                         T5 = t5;

@@ -122,11 +122,6 @@ Node *Best3OptMove(Node * t1, Node * t2, GainType * G0, GainType * Gain)
                           Near(T5, T6))) &&
                         context.swap_stack.size() < param.max_swaps &&
                         Excludable(t5, t6)) {
-                        /* Ignore the move if the gain does not vary */
-                        if (param.restricted_search &&
-                            G2 - t4->Pi == G4 - t6->Pi &&
-                            G3 + t5->Pi == G1 + t3->Pi)
-                            continue;
                         T3 = t3;
                         T4 = t4;
                         T5 = t5;
