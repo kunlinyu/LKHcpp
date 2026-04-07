@@ -103,7 +103,7 @@ GainType FindTour(GainType OrdinalTourCost) {
   context.hash_table.reset_hash();
   do {
     (t->Suc = t->BestSuc)->Prd = t;
-    context.hash_table.update_hash(t->Id, t->SucNode()->Id);
+    context.hash_table.update_hash(t->index, t->SucNode()->index);
   } while ((t = t->BestSuc) != context.FirstNode);
   if (context.Trial > param.max_trials) context.Trial = param.max_trials;
   ResetCandidateSet();

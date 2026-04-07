@@ -60,7 +60,7 @@ void Flip(Node *t1, Node *t2, Node *t3) {
   Link(t3, t2);
   Link(t4, t1);
   context.swap_stack.push(t1, t2, t3, t4);
-  context.hash_table.update_hash(t1->Id, t2->Id, t3->Id, t4->Id);
+  context.hash_table.update_hash(t1->index, t2->index, t3->index, t4->index);
 }
 
 /*
@@ -315,7 +315,7 @@ void Flip_SL(Node *t1, Node *t2, Node *t3) {
     (t4->Prd == t3 ? t4->Prd : t4->Suc) = t1;
   }
   context.swap_stack.push(t1, t2, t3, t4);
-  context.hash_table.update_hash(t1->Id, t2->Id, t3->Id, t4->Id);
+  context.hash_table.update_hash(t1->index, t2->index, t3->index, t4->index);
 }
 
 /*
@@ -478,5 +478,5 @@ void Flip_SSL(Node *t1, Node *t2, Node *t3) {
     (t4->Prd == t3 ? t4->Prd : t4->Suc) = t1;
   }
   context.swap_stack.push(t1, t2, t3, t4);
-  context.hash_table.update_hash(t1->Id, t2->Id, t3->Id, t4->Id);
+  context.hash_table.update_hash(t1->index, t2->index, t3->index, t4->index);
 }

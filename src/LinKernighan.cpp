@@ -65,7 +65,7 @@ GainType LinKernighan() {
     t1->OldPrd = t1->PrdNode();
     t1->Rank = ++i;
     Cost += context.C(t1, t2) - t1->Pi - t2->Pi;
-    context.hash_table.update_hash(t1->Id, t2->Id);
+    context.hash_table.update_hash(t1->index, t2->index);
     t1->Cost = INT_MAX;
     for (const auto &c : t1->candidates) {
       Nt1 = c;

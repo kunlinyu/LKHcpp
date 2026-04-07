@@ -215,7 +215,7 @@ GainType MergeWithTourIPT() {
   } while ((N = N->OldSuc) != First);
   context.hash_table.reset_hash();
   N = First;
-  do context.hash_table.update_hash(N->Id, N->SucNode()->Id);
+  do context.hash_table.update_hash(N->index, N->SucNode()->index);
   while ((N = N->SucNode()) != First);
   GainType Cost = (Cost1 <= Cost2 ? Cost1 : Cost2);
   LOGD << "IPT: " << Cost;
