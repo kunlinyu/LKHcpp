@@ -3,6 +3,7 @@
 
 #include "data/Context.h"
 #include "data/Problem.h"
+#include "data/Tour.h"
 #include "plog/Log.h"
 
 /*
@@ -17,14 +18,6 @@
  */
 std::string FullName(const char* Name, GainType Cost);
 
-struct TourFile {
-  std::string name;
-  std::string type;
-  std::vector<std::string> comments;
-  int dimension;
-  std::vector<int> tour_section;
-};
-
 void WriteTourFile(std::ostream& os, const TourFile& tour_file) {
   os << "NAME : " << tour_file.name << "\n";
   for (const auto& comment : tour_file.comments) {
@@ -33,7 +26,7 @@ void WriteTourFile(std::ostream& os, const TourFile& tour_file) {
   os << "TYPE : " << tour_file.type << "\n";
   os << "DIMENSION : " << tour_file.dimension << "\n";
   os << "TOUR_SECTION\n";
-  for (const auto& node : tour_file.tour_section) {
+  for (const auto& node : tour_file.node_ids) {
     os << node << "\n";
   }
   os << "-1\nEOF\n";
@@ -41,17 +34,17 @@ void WriteTourFile(std::ostream& os, const TourFile& tour_file) {
 
 TourFile TourFileSTTSP(const TourFile& tour_file) {
   TourFile result = tour_file;
-  result.tour_section.clear();
-  for (size_t i = 0; i < tour_file.tour_section.size(); i++) {
+  result.node_ids.clear();
+  for (size_t i = 0; i < tour_file.node_ids.size(); i++) {
     size_t next_i = i + 1;
-    if (next_i >= tour_file.tour_section.size()) next_i = 0;
+    if (next_i >= tour_file.node_ids.size()) next_i = 0;
 
-    NodeIdType a = tour_file.tour_section[i];
-    NodeIdType b = tour_file.tour_section[next_i];
+    NodeIdType a = tour_file.node_ids[i];
+    NodeIdType b = tour_file.node_ids[next_i];
 
-    result.tour_section.push_back(context.NodeSet[a].OriginalId);
-    for (int k = 0; k < context.NodeSet[a].Paths[b].size(); k++)
-      result.tour_section.push_back(context.NodeSet[a].Paths[b][k]);
+    result.node_ids.push_back(context.NodeSet[a].OriginalId);
+    for (const int k : context.NodeSet[a].Paths[b])
+      result.node_ids.push_back(k);
   }
   return result;
 }
@@ -69,8 +62,8 @@ void WriteTour(const std::string& FileName, const std::vector<NodeIdType>& tour,
   TourFile tour_file;
   tour_file.name = problem.name + "." + std::to_string(Cost) + ".tour";
   tour_file.type = "TOUR";
-  tour_file.comments.push_back("Length = " + std::to_string(Cost));
-  tour_file.comments.push_back("Found by LKH-3 [Keld Helsgaun]");
+  tour_file.comments.emplace_back("Length = " + std::to_string(Cost));
+  tour_file.comments.emplace_back("Found by LKH-3 [Keld Helsgaun]");
   tour_file.dimension = problem.dimension;
 
   int i;
@@ -87,9 +80,9 @@ void WriteTour(const std::string& FileName, const std::vector<NodeIdType>& tour,
 
   i = 1;
   for (int j = 1; j <= problem.dimension; j++) {
-    int a = tour[i];
+    NodeIdType a = tour[i];
     if (a <= problem.dimension)
-      tour_file.tour_section.push_back(a);
+      tour_file.node_ids.push_back(a);
     else
       LOGE << "Warning: Node " << a
            << " is out of range and will be skipped in the tour file.";
