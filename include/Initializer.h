@@ -22,6 +22,7 @@ class Initializer {
     nodes.resize(Dimension + 1);
     for (int i = 1; i <= Dimension; ++i) {
       auto* node = &nodes[i];
+      node->index = i - 1;
       node->Id = node->OriginalId = i;
       if (i > 1) Link(&nodes[i - 1], node);
     }

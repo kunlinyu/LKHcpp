@@ -8,6 +8,7 @@ struct Segment;
 
 class Node : public TreeNode, public Coordinate {
  public:
+  size_t index;
   NodeIdType Id;   // Number of the node (1...Dimension)
   int OriginalId;  // The original Id in a SDVRP or STTSPinstance (REMOVE)
 
