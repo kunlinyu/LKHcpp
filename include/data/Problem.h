@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <functional>
 #include <vector>
 
 #include "ProblemType.h"
@@ -12,19 +13,23 @@ class Problem {
 
  public:
   ProblemType type = UNKNOW_PROBLEM;
-  int dimension = 0;
+  size_t dimension = 0;
 
  public:
   Problem() = default;
-  Problem(int dimension, ProblemType type) : dimension(dimension), type(type) {
-    costs_.resize((size_t)dimension * (dimension - 1) / 2);
+  Problem(int dimension, std::function<WeightType(size_t, size_t)> costs)
+      : dimension(dimension) {
+    costs_.resize(dimension * (dimension - 1) / 2);
+    for (size_t i = 0; i < dimension; i++)
+      for (size_t j = 0; j < i; j++) costs_[i * (i - 1) / 2 + j] = costs(i, j);
   }
   WeightType get(size_t i, size_t j) {
     assert(i < dimension);
     assert(j < dimension);
+    if (i == j) return 0;
     size_t min = std::min(i, j);
     size_t max = std::max(i, j);
-    return costs_[max * (max + 1) / 2 + min];
+    return costs_[max * (max - 1) / 2 + min];
   }
 };
 
