@@ -1,0 +1,10 @@
+{
+  "problem_filename": "INSTANCES/tech-routers_10percent.sttsp",
+  "tour_filename": "TOURS/tech-routers_10percent.1.4.$.tour",
+  "candidate_set_type": "POPMUSIC",
+  "popmusic_max_neighbors": 10,
+  "tree_type": 1,
+  "move_type": 4,
+  "known_optimum": 37383,
+  "seed": 42
+}

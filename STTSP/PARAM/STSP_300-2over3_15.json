@@ -1,0 +1,10 @@
+{
+  "problem_filename": "INSTANCES/STSP_300-2over3.sttsp",
+  "tour_filename": "TOURS/STSP_300-2over3.1.5.$.tour",
+  "candidate_set_type": "POPMUSIC",
+  "popmusic_max_neighbors": 10,
+  "tree_type": 1,
+  "move_type": 5,
+  "known_optimum": 2128,
+  "seed": 42
+}

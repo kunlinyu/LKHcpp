@@ -1,0 +1,10 @@
+{
+  "problem_filename": "INSTANCES/euroroad_10percent.sttsp",
+  "tour_filename": "TOURS/euroroad_10percent.3.3.$.tour",
+  "candidate_set_type": "POPMUSIC",
+  "popmusic_max_neighbors": 10,
+  "tree_type": 3,
+  "move_type": 3,
+  "known_optimum": 49975,
+  "seed": 42
+}
