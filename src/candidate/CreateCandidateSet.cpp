@@ -76,8 +76,8 @@ double CreateCandidateSet(POpMUSICCandicateSetCreator &popmusic) {
   }
   Na = context.FirstNode;
   do
-    for (int i = 1; i <= problem.dimension; i++)
-      Na->C[i - 1] += Na->Pi + context.node_set.ref(i).Pi;
+    for (int i = 0; i < problem.dimension; i++)
+      Na->C[i] += Na->Pi + context.node_set.dataref(i).Pi;
   while ((Na = Na->SucNode()) != context.FirstNode);
   PLOGI << CandidateReport(context.FirstNode);
   PLOGI << "Preprocessing time = " << std::fixed << std::setprecision(2)

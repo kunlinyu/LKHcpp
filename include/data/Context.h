@@ -15,7 +15,7 @@ typedef int (*CostFunction)(const Node *Na, const Node *Nb);
 
 class NodeSet {
 private:
-  std::vector<Node> data;
+  std::vector<Node> data_;
  public:
   using iterator = std::vector<Node>::iterator;
   using const_iterator = std::vector<Node>::const_iterator;
@@ -23,25 +23,26 @@ private:
  public:
   void CreateNodes(int Dimension) {
     PLOGF_IF(Dimension <= 0) << "DIMENSION is not positive (or not specified)";
-    data.resize(Dimension);
+    data_.resize(Dimension);
     for (int i = 0; i < Dimension; ++i) {
-      auto *node = &data[i];
+      auto *node = &data_[i];
       node->index = i;
       node->Id = node->OriginalId = i + 1;
-      if (i > 0) Link(&data[i - 1], node);
+      if (i > 0) Link(&data_[i - 1], node);
     }
-    Link(&data[Dimension - 1], &data[0]);
+    Link(&data_[Dimension - 1], &data_[0]);
   }
-  Node *get(size_t index) { return &data[index - 1]; }
-  Node& ref(size_t index) { return data[index - 1]; }
-  size_t size() { return data.size() + 1; }
+  Node *data(size_t index) { return &data_[index]; }
+  Node& dataref(size_t index) { return data_[index]; }
 
-  iterator begin() { return data.begin(); }
-  iterator end() { return data.end(); }
-  const_iterator begin() const { return data.begin(); }
-  const_iterator end() const { return data.end(); }
-  const_iterator cbegin() const { return data.cbegin(); }
-  const_iterator cend() const { return data.cend(); }
+  size_t size() { return data_.size(); }
+
+  iterator begin() { return data_.begin(); }
+  iterator end() { return data_.end(); }
+  const_iterator begin() const { return data_.begin(); }
+  const_iterator end() const { return data_.end(); }
+  const_iterator cbegin() const { return data_.cbegin(); }
+  const_iterator cend() const { return data_.cend(); }
 };
 
 struct Context {
