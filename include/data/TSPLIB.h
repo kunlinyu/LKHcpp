@@ -21,7 +21,6 @@ struct EdgeData {
 };
 
 enum EdgeWeightTypes {
-  UNSET_TYPE,
   EXPLICIT,
   ATT,
   EUC_2D,
@@ -78,7 +77,7 @@ struct TSPLIB {
   int dimension = 0;
   CapacityType capacity = 0;
 
-  EdgeWeightTypes edge_weight_type = UNSET_TYPE;
+  EdgeWeightTypes edge_weight_type = EXPLICIT;
   EdgeWeightFormat edge_weight_format = UNSET_FORMAT;
   EdgeDataFormat edge_data_format = EDGE_LIST;
   CoordTypes node_coord_type = NO_COORDS;

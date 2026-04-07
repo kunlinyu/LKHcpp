@@ -16,7 +16,6 @@ DECLARE_ENUM_CONVERSION(ProblemType, {
                                      });
 
 DECLARE_ENUM_CONVERSION(EdgeWeightTypes, {
-                                             {UNSET_TYPE, "UNSET_TYPE"},
                                              {EXPLICIT, "EXPLICIT"},
                                              {EUC_2D, "EUC_2D"},
                                              {EUC_3D, "EUC_3D"},
@@ -366,9 +365,6 @@ void TSPLIBReader::Check(TSPLIB& pb) {
   if (pb.type == UNKNOW_PROBLEM) throw std::invalid_argument("TYPE is missing");
   if (pb.dimension < 3)
     throw std::invalid_argument("DIMENSION < 3 or not specified");
-  if (pb.edge_weight_type == UNSET_TYPE && !pb.IsAsymmetric() &&
-      pb.type != HCP && pb.type != HPP && pb.type != STTSP)
-    throw std::invalid_argument("EDGE_WEIGHT_TYPE is missing");
   if (pb.edge_weight_type == EXPLICIT && pb.edge_weight_format == UNSET_FORMAT)
     throw std::invalid_argument("EDGE_WEIGHT_FORMAT is missing");
   if (pb.edge_weight_type == EXPLICIT && pb.edge_weight_format == FUNCTION)
@@ -379,7 +375,4 @@ void TSPLIBReader::Check(TSPLIB& pb) {
       pb.edge_weight_format != FUNCTION)
     throw std::invalid_argument(
         "Conflicting EDGE_WEIGHT_TYPE and EDGE_WEIGHT_FORMAT");
-  if (pb.type == ATSP && pb.edge_weight_type != EXPLICIT &&
-      pb.edge_weight_type != UNSET_TYPE)
-    throw std::invalid_argument("Conflicting TYPE and EDGE_WEIGHT_TYPE");
 }

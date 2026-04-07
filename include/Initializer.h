@@ -94,7 +94,6 @@ class Initializer {
       case GEOM_MEEUS: Distance = Distance_GEOM_MEEUS; break;
       case XRAY1: Distance = Distance_XRAY1; break;
       case XRAY2: Distance = Distance_XRAY2; break;
-      case UNSET_TYPE: break;
         // clang-format on
       default:
         PLOGF << "Unsupported edge weight type: " << tsp.edge_weight_type;
