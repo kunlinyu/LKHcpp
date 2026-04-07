@@ -37,9 +37,9 @@ int LKHmain(Param& pr) {
   context.StartTime = LastTime = GetTime();
   Initializer::Init(tsplib, param, context);
 
-  int** Matrix = nullptr;
+  std::vector<std::vector<int>> Matrix;
   if (problem.type == STTSP) {
-    Matrix = STTSP2TSP(tsplib.required_nodes_section);
+    STTSP2TSP(Matrix, tsplib.required_nodes_section);
     Initializer::AllocateSegments(param.tree_type, problem.dimension, context);
   }
 
@@ -94,9 +94,6 @@ int LKHmain(Param& pr) {
       break;
     }
   }
-  if (problem.type == STTSP) {
-    for (int i = 0; i < problem.dimension; i++) free(Matrix[i]);
-    free(Matrix);
-  }
+
   return EXIT_SUCCESS;
 }

@@ -10,18 +10,17 @@
 
 static std::unordered_map<Node *, Node *> Dijkstra(Node *Source);
 
-int **STTSP2TSP(const std::set<NodeIdType> &required) {
+void STTSP2TSP(std::vector<std::vector<int>>& Matrix, const std::set<NodeIdType> &required) {
   int NewDimension = 0;
-  int **Matrix;
   Node *N1 = context.FirstNode, *N2;
 
   std::unordered_map<Node *, int> new_id;
   do {
     if (required.count(N1->Id)) new_id[N1] = NewDimension++;
   } while ((N1 = N1->SucNode()) != context.FirstNode);
-  Matrix = (int **)malloc(NewDimension * sizeof(int **));
+  Matrix.resize(NewDimension);
   for (int i = 0; i < NewDimension; i++)
-    Matrix[i] = (int *)malloc(NewDimension * sizeof(int));
+    Matrix[i].resize(NewDimension);
   do {
     if (required.count(N1->Id)) {
       auto parent = Dijkstra(N1);
@@ -44,7 +43,7 @@ int **STTSP2TSP(const std::set<NodeIdType> &required) {
     N1 = &context.NodeSet[i];
     if (required.count(N1->Id)) {
       N1->Id = new_id[N1] + 1;
-      N1->C = Matrix[new_id[N1]] - 1;
+      N1->C = Matrix[new_id[N1]].data() - 1;
       N1->candidates.clear();
       j++;
       context.NodeSet[j].candidates.clear();
@@ -60,7 +59,6 @@ int **STTSP2TSP(const std::set<NodeIdType> &required) {
   }
   Link(N1, context.FirstNode);
   problem.dimension = NewDimension;
-  return Matrix;
 }
 
 static std::unordered_map<Node *, Node *> Dijkstra(Node *Source) {

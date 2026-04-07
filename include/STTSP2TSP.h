@@ -3,4 +3,4 @@
 
 #include "type.h"
 
-int** STTSP2TSP(const std::set<NodeIdType> &required);
+void STTSP2TSP(std::vector<std::vector<int>>& Matrix, const std::set<NodeIdType> &required);

@@ -49,10 +49,13 @@ struct Context {
 
   MoveFunction BestMove, BestSubsequentMove;
 
-  int C(const Node* Na, const Node* Nb) {
-    return Na->Id < Nb->Id ? Nb->C[Na->Id] : Na->C[Nb->Id];
+  static int C(const Node* Na, const Node* Nb) {
+    if (Na->Id < Nb->Id)
+      return Nb->C[Na->Id];
+    else
+      return Na->C[Nb->Id];
   }
-  int D(const Node* Na, const Node* Nb) {
+  static int D(const Node* Na, const Node* Nb) {
     return C(Na, Nb) + Na->Pi + Nb->Pi;
   }
 
