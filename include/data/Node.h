@@ -3,12 +3,12 @@
 
 #include "Coordinate.h"
 #include "TreeNode.h"
-#include "CandidateSet.h"
+#include "candidate/CandidateSet.h"
 struct Segment;
 
 class Node : public TreeNode, public Coordinate {
  public:
-  NodeIdType Id;          // Number of the node (1...Dimension)
+  NodeIdType Id;   // Number of the node (1...Dimension)
   int OriginalId;  // The original Id in a SDVRP or STTSPinstance (REMOVE)
 
   int Cost;      // "Best" cost of an edge emanating from the node
@@ -21,7 +21,10 @@ class Node : public TreeNode, public Coordinate {
 
   Node *SucNode() const { return static_cast<Node *>(Suc); }
   Node *PrdNode() const { return static_cast<Node *>(Prd); }
-  static Node *MoveSuc(Node *&node) { node = node->SucNode(); return node; }
+  static Node *MoveSuc(Node *&node) {
+    node = node->SucNode();
+    return node;
+  }
 
   Node *OldPrd;       // Previous values of Pred
   Node *OldSuc;       // Previous values of Suc

@@ -1,8 +1,3 @@
-// @file LKHcpp.h
-// @brief
-// @author Kunlin Yu
-// @date 2026-04-06
-
 #include <plog/Appenders/ColorConsoleAppender.h>
 #include <plog/Appenders/ConsoleAppender.h>
 #include <plog/Init.h>
@@ -12,13 +7,14 @@
 
 #include "FatalExitAppender.h"
 #include "FileLineFormatter.h"
-#include "LKHcpp.h"
 #include "data/Param.h"
-#include "data/ParamReader.h"
+
+int LKHmain(Param& pr);
+Param ReadJsonParameters(const std::string& filename);
 
 int main(int argc, char* argv[]) {
-  CLI::App app{"LKHcpp A C++11 implementation of the LKH algorithm"};
-  app.name("LKHcpp");
+  CLI::App app{"marieTSP A C++11 implementation of the LKH algorithm"};
+  app.name("marieTSP");
 
   std::string param_filename;
   app.add_option("--param,--parameter-file", param_filename,
@@ -83,10 +79,10 @@ int main(int argc, char* argv[]) {
 
   PLOGD << "Command line arguments parsed.";
 
-  Param pr = ParamReader::Read(param_filename);
+  Param pr = ReadJsonParameters(param_filename);
   if (not problem_filename.empty()) pr.problem_filename = problem_filename;
 
   pr.Patch(param_cli);
 
-  return EXIT_SUCCESS;
+  return LKHmain(pr);
 }

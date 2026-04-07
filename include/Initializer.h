@@ -1,0 +1,176 @@
+#pragma once
+#include <plog/Log.h>
+
+#include <cmath>
+
+#include "C.h"
+#include "Distance.h"
+#include "Move.h"
+#include "candidate/CandidateFuncs.h"
+#include "data/Context.h"
+#include "data/Param.h"
+#include "data/Problem.h"
+#include "data/TreeNode.h"
+#include "utils/Random.h"
+
+class Initializer {
+ public:
+  static std::vector<Node> CreateNodes(int Dimension) {
+    PLOGF_IF(Dimension <= 0) << "DIMENSION is not positive (or not specified)";
+
+    std::vector<Node> nodes;
+    nodes.resize(Dimension + 1);
+    for (int i = 1; i <= Dimension; ++i) {
+      auto* node = &nodes[i];
+      node->Id = node->OriginalId = i;
+      if (i > 1) Link(&nodes[i - 1], node);
+    }
+    Link(&nodes[Dimension], &nodes[1]);
+
+    return nodes;
+  }
+
+  static void AdjustParameters(Param& pr, const Problem& pb) {
+    if (pr.seed == 0) pr.seed = (unsigned)(time(0) * (size_t)(&pr.seed));
+    if (pr.initial_step_size == 0) pr.initial_step_size = 1;
+    if (pr.max_swaps < 0) pr.max_swaps = pb.dimension;
+    if (pr.runs == 0) pr.runs = 10;
+    if (pr.max_candidates > pb.dimension - 1)
+      pr.max_candidates = pb.dimension - 1;
+    else {
+      if (pr.ascent_candidates > pb.dimension - 1)
+        pr.ascent_candidates = pb.dimension - 1;
+      if (pr.initial_period < 0) {
+        pr.initial_period = pb.dimension / 2;
+        if (pr.initial_period < 100) pr.initial_period = 100;
+      }
+      if (pr.excess < 0) pr.excess = 1.0 / pb.dimension * pr.salesmen;
+      if (pr.max_trials == -1) pr.max_trials = pb.dimension;
+    }
+    if (pr.popmusic_max_neighbors > pb.dimension - 1)
+      pr.popmusic_max_neighbors = pb.dimension - 1;
+    if (pr.popmusic_sample_size > pb.dimension)
+      pr.popmusic_sample_size = pb.dimension;
+    PLOGF_IF(pr.salesmen > 1 and pr.salesmen < pb.dimension)
+        << "Too many salesmen/vehicles (>= DIMENSION)";
+
+    if (pr.subsequent_move_type == 0) {
+      pr.subsequent_move_type = pr.move_type;
+    }
+    int K = pr.move_type >= pr.subsequent_move_type ? pr.move_type
+                                                    : pr.subsequent_move_type;
+    if (pr.nonsequential_move_type == -1 || pr.nonsequential_move_type > K)
+      pr.nonsequential_move_type = K;
+    if (pb.type == HCP || pb.type == HPP) pr.max_candidates = 0;
+  }
+
+  static void Init(const Problem& pb, const Param& pr, Context& ctx) {
+    ctx.NodeSet = CreateNodes(pb.dimension);
+    ctx.FirstNode = &ctx.NodeSet[1];
+
+    for (const auto edge_data : pb.edge_data_section) {
+      AddCandidate(&ctx.NodeSet[edge_data.from], &ctx.NodeSet[edge_data.to],
+                   edge_data.weight, 1);
+      AddCandidate(&ctx.NodeSet[edge_data.to], &ctx.NodeSet[edge_data.from],
+                   edge_data.weight, 1);
+    }
+
+    ctx.BetterTour.resize(pb.dimension + 1);
+    ctx.hash_table.init_rand(pb.dimension + 1);
+
+    // clang-format off
+  int (*Distance) (const Coordinate * Na, const Coordinate * Nb) = nullptr;
+  switch (pb.edge_weight_type) {
+    case EXPLICIT: break;
+    case ATT: Distance = Distance_ATT; break;
+    case EUC_2D: Distance = Distance_EUC_2D; break;
+    case EUC_3D: Distance = Distance_EUC_3D; break;
+    case MAX_2D: Distance = Distance_MAX_2D; break;
+    case MAX_3D: Distance = Distance_MAN_3D; break;
+    case MAN_2D: Distance = Distance_MAN_2D; break;
+    case MAN_3D: Distance = Distance_MAN_3D; break;
+    case CEIL_2D: Distance = Distance_CEIL_2D; break;
+    case CEIL_3D: Distance = Distance_CEIL_3D; break;
+    case GEO: Distance = Distance_GEO; break;
+    case GEOM: Distance = Distance_GEOM; break;
+    case GEO_MEEUS: Distance = Distance_GEO_MEEUS; break;
+    case GEOM_MEEUS: Distance = Distance_GEOM_MEEUS; break;
+    case XRAY1: Distance = Distance_XRAY1; break;
+    case XRAY2: Distance = Distance_XRAY2; break;
+    case UNSET_TYPE: break;
+    default:
+      PLOGF << "Unsupported edge weight type: " << pb.edge_weight_type;
+  }
+    // clang-format on
+
+    ctx.CostMatrix.resize(pb.dimension + 1);
+    for (int i = 0; i <= pb.dimension; i++)
+      ctx.CostMatrix[i].resize(pb.dimension + 1);
+    for (auto& node : ctx.NodeSet) node.C = ctx.CostMatrix[node.Id].data();
+
+    if (Distance != nullptr)
+      for (int i = 1; i <= pb.dimension; i++) {
+        Node& Ni = ctx.NodeSet[i];
+        for (int j = i + 1; j <= pb.dimension; j++) {
+          Node& Nj = ctx.NodeSet[j];
+          const Coordinate& coord_i = pb.node_coord_section.at(Ni.Id);
+          const Coordinate& coord_j = pb.node_coord_section.at(Nj.Id);
+          int cost = Distance(&coord_i, &coord_j);
+          Ni.C[j] = cost;
+          Nj.C[i] = cost;
+        }
+      }
+
+    SRandom(pr.seed);
+    ctx.Optimum = pr.known_optimum;
+    ctx.C = C_EXPLICIT;
+    ctx.D = D_EXPLICIT;
+    MoveFunction BestOptMove[] = {
+        0, 0, Best2OptMove, Best3OptMove, Best4OptMove, Best5OptMove};
+    ctx.BestMove = BestOptMove[pr.move_type];
+    ctx.BestSubsequentMove = BestOptMove[pr.subsequent_move_type];
+    int K = pr.move_type;
+    if (pr.subsequent_move_type > K) K = pr.subsequent_move_type;
+    AllocateSegments(pr.tree_type, pb.dimension, ctx);
+  }
+
+  // The AllocateSegments function allocates the segments of the two-level tree.
+  static void AllocateSegments(short tree_type, int dimension, Context& ctx) {
+    ctx.segments.clear();
+    ctx.super_segments.clear();
+
+    if (tree_type == 3)
+      ctx.SegmentSize = static_cast<int>(pow(dimension, 1.0 / 3.0));
+    else if (tree_type == 2)
+      ctx.SegmentSize = static_cast<int>(sqrt(dimension));
+    else
+      ctx.SegmentSize = dimension;
+
+    int SegmentCount = 0;
+    for (int i = dimension; i > 0; i -= ctx.SegmentSize) {
+      TreeNode s{};
+      s.Rank = ++SegmentCount;
+      ctx.segments.emplace_back(s);
+    }
+
+    for (int i = 0; i < ctx.segments.size() - 1; i++)
+      SLink(ctx.segments[i], ctx.segments[i + 1]);
+    SLink(ctx.segments.back(), ctx.segments.front());
+
+    if (tree_type == 3)
+      ctx.SuperSegmentSize = static_cast<int>(sqrt(SegmentCount));
+    else
+      ctx.SuperSegmentSize = dimension;
+
+    int SuperSegmentCount = 0;
+    for (int i = SegmentCount; i > 0; i -= ctx.SuperSegmentSize) {
+      TreeNode ss{};
+      ss.Rank = ++SuperSegmentCount;
+      ctx.super_segments.emplace_back(ss);
+    }
+
+    for (int i = 0; i < ctx.super_segments.size() - 1; i++)
+      SLink(ctx.super_segments[i], ctx.super_segments[i + 1]);
+    SLink(ctx.super_segments.back(), ctx.super_segments.front());
+  }
+};

@@ -19,21 +19,52 @@ set(SRC
         src/candidate/POpMUSICCandidateSetCreator.cpp
         src/candidate/ResetCandidateSet.cpp
         src/candidate/TrimCandidateSet.cpp
-        src/Connect.cpp
-        src/Ascent.cpp
-        src/C.cpp
-        src/ChooseInitialTour.cpp
-        src/main.cpp
-        src/Minimum1TreeCost.cpp
-        src/MinimumSpanningTree.cpp
-        src/OrderCandidateSet.cpp
-        src/RecordBetterTour.cpp
-        src/SymmetrizeCandidateSet.cpp
+        src/move/Best2OptMove.cpp
+        src/move/Best3OptMove.cpp
+        src/move/Best4OptMove.cpp
+        src/move/Best5OptMove.cpp
+        src/move/Make2OptMove.cpp
+        src/move/Make3OptMove.cpp
+        src/move/Make4OptMove.cpp
+        src/move/Make5OptMove.cpp
         src/data/Context.cpp
         src/data/Param.cpp
         src/data/Problem.cpp
         src/data/ProblemReader.cpp
         src/utils/Random.cpp
+        src/Ascent.cpp
+        src/Between.cpp
+        src/Between_SL.cpp
+        src/Between_SSL.cpp
+        src/BridgeGain.cpp
+        src/C.cpp
+        src/ChooseInitialTour.cpp
+        src/Connect.cpp
+        src/Distance.cpp
+        src/Excludable.cpp
+        src/Exclude.cpp
+        src/FindTour.cpp
+        src/Flip.cpp
+        src/Gain23.cpp
+        src/Improvement.cpp
+        src/LinKernighan.cpp
+        src/LKHmain.cpp
+        src/main.cpp
+        src/MergeWithTourIPT.cpp
+        src/Minimum1TreeCost.cpp
+        src/MinimumSpanningTree.cpp
+        src/NormalizeNodeList.cpp
+        src/NormalizeSegmentList.cpp
+        src/OrderCandidateSet.cpp
+        src/ReadParameters.cpp
+        src/RecordBetterTour.cpp
+        src/RestoreTour.cpp
+        src/SegmentSize.cpp
+        src/StatusReport.cpp
+        src/StoreTour.cpp
+        src/STTSP2TSP.cpp
+        src/SymmetrizeCandidateSet.cpp
+        src/WriteTour.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SRC})
