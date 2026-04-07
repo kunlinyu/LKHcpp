@@ -37,6 +37,7 @@
 *.out
 *.app
 LKH
+LKHcpp
 build/
 
 # debug information files
