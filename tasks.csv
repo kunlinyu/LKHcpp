@@ -1,0 +1,9 @@
+subdirectory, command, level
+TSP, ../LKH --param PARAM/gr96_12.json, 0
+TSP, ../LKH --param PARAM/gr96_22.json, 0
+TSP, ../LKH --param PARAM/gr96_32.json, 0
+TSP, ../LKH --param PARAM/gr96_33.json, 0
+TSP, ../LKH --param PARAM/gr96_34.json, 0
+TSP, ../LKH --param PARAM/gr96_35.json, 0
+TSP, ../LKH --param PARAM/pla7397.json, 0
+TSP, ../LKH --param PARAM/pr2392.json, 0
