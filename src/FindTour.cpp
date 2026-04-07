@@ -26,14 +26,9 @@
 
 GainType CalcOrdinalTourCost() {
   GainType OrdinalTourCost = 0;
-  for (size_t i = 0; i < problem.dimension - 1; i++)
-    OrdinalTourCost +=
-        context.C(context.node_set.data(i), context.node_set.data(i + 1)) -
-        context.node_set.data(i)->Pi - context.node_set.data(i + 1)->Pi;
-  OrdinalTourCost += context.C(context.node_set.data(problem.dimension - 1),
-                               context.node_set.data(0)) -
-                     context.node_set.data(problem.dimension - 1)->Pi -
-                     context.node_set.data(0)->Pi;
+  context.node_set.ring_pair([&OrdinalTourCost](Node *a, Node *b) {
+    OrdinalTourCost += context.C(a, b) - a->Pi - b->Pi;
+  });
   return OrdinalTourCost;
 }
 
@@ -42,7 +37,7 @@ GainType MergeWithTourIPT();
 GainType FindTour(GainType OrdinalTourCost) {
   const double EntryTime = GetTime();
 
-  Node* t = context.FirstNode;
+  Node *t = context.FirstNode;
   do {
     t->OldPrd = nullptr;
     t->OldSuc = nullptr;
@@ -76,9 +71,7 @@ GainType FindTour(GainType OrdinalTourCost) {
       }
       if (Cost >= OrdinalTourCost && context.BetterCost > OrdinalTourCost) {
         // Merge tour with ordinal tour
-        for (int i = 0; i < problem.dimension - 1; i++)
-          context.node_set.dataref(i).Next = context.node_set.data(i + 1);
-        context.node_set.dataref(problem.dimension - 1).Next = context.node_set.data(0);
+        context.node_set.ring_pair([&](Node *a, Node *b) { a->Next = b; });
         Cost = MergeWithTourIPT();
       }
     }

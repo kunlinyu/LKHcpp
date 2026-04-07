@@ -3,6 +3,7 @@
 #include <limits>
 
 #include "HashTable.h"
+#include "Problem.h"
 #include "SwapStack.h"
 #include "TreeNode.h"
 #include "plog/Log.h"
@@ -14,8 +15,9 @@ typedef Node *(*MoveFunction)(Node *t1, Node *t2, GainType *G0, GainType *Gain);
 typedef int (*CostFunction)(const Node *Na, const Node *Nb);
 
 class NodeSet {
-private:
+ private:
   std::vector<Node> data_;
+
  public:
   using iterator = std::vector<Node>::iterator;
   using const_iterator = std::vector<Node>::const_iterator;
@@ -33,9 +35,14 @@ private:
     Link(&data_[Dimension - 1], &data_[0]);
   }
   Node *data(size_t index) { return &data_[index]; }
-  Node& dataref(size_t index) { return data_[index]; }
-
+  Node &dataref(size_t index) { return data_[index]; }
   size_t size() { return data_.size(); }
+
+  void ring_pair(const std::function<void(Node *, Node *)> &func) {
+    size_t n = problem.dimension;  // TODO: should not depends on dimension
+    if (n < 2) return;
+    for (size_t i = 0; i < n; ++i) func(&data_[i], &data_[(i + 1) % n]);
+  }
 
   iterator begin() { return data_.begin(); }
   iterator end() { return data_.end(); }
@@ -61,7 +68,7 @@ struct Context {
   HashTable hash_table;  // Hash table used for storing tours
 
   NodeSet node_set;  // Array of all nodes
-  int Norm;                   // Measure of a 1-tree's discrepancy from a tour
+  int Norm;          // Measure of a 1-tree's discrepancy from a tour
 
   GainType Optimum =
       std::numeric_limits<GainType>::min();  // If StopAtOptimum is 1, a
@@ -82,7 +89,10 @@ struct Context {
 
   MoveFunction BestMove, BestSubsequentMove;
 
-  static int C(const Node *Na, const Node *Nb) { return Na->C[Nb->index]; }
+  static int C(const Node *Na, const Node *Nb) {
+    assert(Na->C != nullptr);
+    return Na->C[Nb->index];
+  }
   static int D(const Node *Na, const Node *Nb) {
     return C(Na, Nb) + Na->Pi + Nb->Pi;
   }
