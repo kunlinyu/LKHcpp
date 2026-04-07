@@ -20,7 +20,6 @@ class NodeCoordEncoder : public VariantBase {
         PLOGE << "explicit weight type should not contains NodeCoordSection";
         throw std::invalid_argument(
             "explicit weight type should not contains NodeCoordSection");
-        break;
         // clang-format off
       case ATT: Distance = Distance_ATT; break;
       case EUC_2D: Distance = Distance_EUC_2D; break;
@@ -46,12 +45,12 @@ class NodeCoordEncoder : public VariantBase {
 
     std::map<size_t, NodeIdType> index_2_id_;
     size_t index = 0;
-    for (const auto& pair : tsplib.edge_weight_section)
+    for (const auto& pair : tsplib.node_coord_section)
       index_2_id_[index++] = pair.first;
 
     Problem pb(tsplib.dimension, [&](size_t i, size_t j) {
-      const Coordinate& coord_i = tsplib.edge_weight_section.at(index_2_id_[i]);
-      const Coordinate& coord_j = tsplib.edge_weight_section.at(index_2_id_[j]);
+      const Coordinate& coord_i = tsplib.node_coord_section.at(index_2_id_[i]);
+      const Coordinate& coord_j = tsplib.node_coord_section.at(index_2_id_[j]);
       return Distance(&coord_i, &coord_j);
     });
     return pb;
