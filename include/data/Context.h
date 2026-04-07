@@ -1,13 +1,13 @@
 #pragma once
 
 #include <limits>
-#include <list>
 
 #include "HashTable.h"
 #include "SwapStack.h"
 #include "TreeNode.h"
 #include "type.h"
-struct Node;
+
+class Node;
 
 typedef Node *(*MoveFunction)(Node *t1, Node *t2, GainType *G0, GainType *Gain);
 typedef int (*CostFunction)(const Node *Na, const Node *Nb);
@@ -49,13 +49,8 @@ struct Context {
 
   MoveFunction BestMove, BestSubsequentMove;
 
-  static int C(const Node* Na, const Node* Nb) {
-    if (Na->Id < Nb->Id)
-      return Nb->C[Na->Id];
-    else
-      return Na->C[Nb->Id];
-  }
-  static int D(const Node* Na, const Node* Nb) {
+  static int C(const Node *Na, const Node *Nb) { return Na->C[Nb->Id]; }
+  static int D(const Node *Na, const Node *Nb) {
     return C(Na, Nb) + Na->Pi + Nb->Pi;
   }
 

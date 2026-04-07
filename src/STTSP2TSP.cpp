@@ -10,7 +10,8 @@
 
 static std::unordered_map<Node *, Node *> Dijkstra(Node *Source);
 
-void STTSP2TSP(std::vector<std::vector<int>>& Matrix, const std::set<NodeIdType> &required) {
+void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
+               const std::set<NodeIdType> &required) {
   int NewDimension = 0;
   Node *N1 = context.FirstNode, *N2;
 
@@ -19,8 +20,7 @@ void STTSP2TSP(std::vector<std::vector<int>>& Matrix, const std::set<NodeIdType>
     if (required.count(N1->Id)) new_id[N1] = NewDimension++;
   } while ((N1 = N1->SucNode()) != context.FirstNode);
   Matrix.resize(NewDimension);
-  for (int i = 0; i < NewDimension; i++)
-    Matrix[i].resize(NewDimension);
+  for (int i = 0; i < NewDimension; i++) Matrix[i].resize(NewDimension);
   do {
     if (required.count(N1->Id)) {
       auto parent = Dijkstra(N1);
