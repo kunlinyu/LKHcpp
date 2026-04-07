@@ -8,7 +8,7 @@ struct Problem {
   ProblemType type = UNKNOW_PROBLEM;
   int dimension = 0;
 
-  bool IsAsymmetric() const { return type == ATSP; }
+  bool IsAsymmetric() const { return false; }
 };
 
 extern thread_local Problem problem;

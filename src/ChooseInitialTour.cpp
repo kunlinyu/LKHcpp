@@ -68,8 +68,7 @@ Start:
     /* Case B */
     if (Alternatives == 0) {
     }
-    if (Alternatives == 0 && context.Trial > 1 && problem.type != HCP &&
-        problem.type != HPP) {
+    if (Alternatives == 0 && context.Trial > 1) {
       /* Case C */
       for (const auto& c : N->candidates) {
         NN = c;

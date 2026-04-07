@@ -71,8 +71,7 @@ Node *Best5OptMove(Node * t1, Node * t2, GainType * G0, GainType * Gain)
         t3 = Nt2->To;
         if (t3 == t2->Prd || t3 == t2->Suc ||
             ((G1 = *G0 - Nt2->Cost) <= 0 &&
-             param.gain_criterion_used &&
-             problem.type != HCP && problem.type != HPP))
+             param.gain_criterion_used))
             continue;
         if (++Breadth2 > param.max_breadth)
             break;
@@ -95,8 +94,7 @@ Node *Best5OptMove(Node * t1, Node * t2, GainType * G0, GainType * Gain)
                 t5 = Nt4->To;
                 if (t5 == t4->Prd || t5 == t4->Suc ||
                     ((G3 = G2 - Nt4->Cost) <= 0 &&
-                     param.gain_criterion_used &&
-                     problem.type != HCP && problem.type != HPP))
+                     param.gain_criterion_used))
                     continue;
                 if (++Breadth4 > param.max_breadth)
                     break;
@@ -143,8 +141,7 @@ Node *Best5OptMove(Node * t1, Node * t2, GainType * G0, GainType * Gain)
                             (t6 == t2 && t7 == t3) ||
                             (t6 == t3 && t7 == t2) ||
                             ((G5 = G4 - Nt6->Cost) <= 0 &&
-                             param.gain_criterion_used &&
-                             problem.type != HCP && problem.type != HPP))
+                             param.gain_criterion_used))
                             continue;
                         if (++Breadth6 > param.max_breadth)
                             break;
@@ -248,9 +245,7 @@ Node *Best5OptMove(Node * t1, Node * t2, GainType * G0, GainType * Gain)
                                     (t8 == t4 && t9 == t5) ||
                                     (t8 == t5 && t9 == t4) ||
                                     ((G7 = G6 - Nt8->Cost) <= 0 &&
-                                     param.gain_criterion_used &&
-                                     problem.type != HCP &&
-                                     problem.type != HPP))
+                                     param.gain_criterion_used))
                                     continue;
                                 if (++Breadth8 > param.max_breadth)
                                     break;
@@ -517,8 +512,6 @@ Node *Best5OptMove(Node * t1, Node * t2, GainType * G0, GainType * Gain)
                                         && Excludable(t9, t10)) {
                                         /* Ignore the move if the gain does not vary */
                                         if (param.restricted_search &&
-                                            problem.type != HCP &&
-                                            problem.type != HPP &&
                                             G2 - t4->Pi == G4 - t6->Pi
                                             && G4 - t6->Pi ==
                                             G6 - t8->Pi

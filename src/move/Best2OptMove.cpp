@@ -54,8 +54,7 @@ Node *Best2OptMove(Node *t1, Node *t2, GainType *G0, GainType *Gain) {
     Node *t3 = Nt2->To;
     GainType G1 = *G0 - Nt2->Cost;
     if (t3 == t2->Prd || t3 == t2->Suc ||
-        (G1 <= 0 && param.gain_criterion_used && problem.type != HCP &&
-         problem.type != HPP))
+        (G1 <= 0 && param.gain_criterion_used))
       continue;
     // Choose t4 (only one choice gives a closed tour)
     Node *t4 = PRD(t3);

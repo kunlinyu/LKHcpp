@@ -9,7 +9,6 @@
 #include "candidate/CandidateFuncs.h"
 #include "data/Context.h"
 #include "data/Param.h"
-#include "data/Problem.h"
 #include "data/TSPLIB.h"
 #include "data/TreeNode.h"
 #include "utils/Random.h"
@@ -31,28 +30,28 @@ class Initializer {
     return nodes;
   }
 
-  static void AdjustParameters(Param& pr, const TSPLIB& pb) {
+  static void AdjustParameters(Param& pr, const TSPLIB& tsp) {
     if (pr.seed == 0) pr.seed = (unsigned)(time(0) * (size_t)(&pr.seed));
     if (pr.initial_step_size == 0) pr.initial_step_size = 1;
-    if (pr.max_swaps < 0) pr.max_swaps = pb.dimension;
+    if (pr.max_swaps < 0) pr.max_swaps = tsp.dimension;
     if (pr.runs == 0) pr.runs = 10;
-    if (pr.max_candidates > pb.dimension - 1)
-      pr.max_candidates = pb.dimension - 1;
+    if (pr.max_candidates > tsp.dimension - 1)
+      pr.max_candidates = tsp.dimension - 1;
     else {
-      if (pr.ascent_candidates > pb.dimension - 1)
-        pr.ascent_candidates = pb.dimension - 1;
+      if (pr.ascent_candidates > tsp.dimension - 1)
+        pr.ascent_candidates = tsp.dimension - 1;
       if (pr.initial_period < 0) {
-        pr.initial_period = pb.dimension / 2;
+        pr.initial_period = tsp.dimension / 2;
         if (pr.initial_period < 100) pr.initial_period = 100;
       }
-      if (pr.excess < 0) pr.excess = 1.0 / pb.dimension * pr.salesmen;
-      if (pr.max_trials == -1) pr.max_trials = pb.dimension;
+      if (pr.excess < 0) pr.excess = 1.0 / tsp.dimension * pr.salesmen;
+      if (pr.max_trials == -1) pr.max_trials = tsp.dimension;
     }
-    if (pr.popmusic_max_neighbors > pb.dimension - 1)
-      pr.popmusic_max_neighbors = pb.dimension - 1;
-    if (pr.popmusic_sample_size > pb.dimension)
-      pr.popmusic_sample_size = pb.dimension;
-    PLOGF_IF(pr.salesmen > 1 and pr.salesmen < pb.dimension)
+    if (pr.popmusic_max_neighbors > tsp.dimension - 1)
+      pr.popmusic_max_neighbors = tsp.dimension - 1;
+    if (pr.popmusic_sample_size > tsp.dimension)
+      pr.popmusic_sample_size = tsp.dimension;
+    PLOGF_IF(pr.salesmen > 1 and pr.salesmen < tsp.dimension)
         << "Too many salesmen/vehicles (>= DIMENSION)";
 
     if (pr.subsequent_move_type == 0) {
@@ -62,26 +61,25 @@ class Initializer {
                                                     : pr.subsequent_move_type;
     if (pr.nonsequential_move_type == -1 || pr.nonsequential_move_type > K)
       pr.nonsequential_move_type = K;
-    if (pb.type == HCP || pb.type == HPP) pr.max_candidates = 0;
   }
 
-  static void Init(const TSPLIB& pb, const Param& pr, Context& ctx) {
-    ctx.NodeSet = CreateNodes(pb.dimension);
+  static void Init(const TSPLIB& tsp, const Param& pr, Context& ctx) {
+    ctx.NodeSet = CreateNodes(tsp.dimension);
     ctx.FirstNode = &ctx.NodeSet[1];
 
-    for (const auto edge_data : pb.edge_data_section) {
+    for (const auto edge_data : tsp.edge_data_section) {
       AddCandidate(&ctx.NodeSet[edge_data.from], &ctx.NodeSet[edge_data.to],
                    edge_data.weight, 1);
       AddCandidate(&ctx.NodeSet[edge_data.to], &ctx.NodeSet[edge_data.from],
                    edge_data.weight, 1);
     }
 
-    ctx.BetterTour.resize(pb.dimension + 1);
-    ctx.hash_table.init_rand(pb.dimension + 1);
+    ctx.BetterTour.resize(tsp.dimension + 1);
+    ctx.hash_table.init_rand(tsp.dimension + 1);
 
     // clang-format off
   int (*Distance) (const Coordinate * Na, const Coordinate * Nb) = nullptr;
-  switch (pb.edge_weight_type) {
+  switch (tsp.edge_weight_type) {
     case EXPLICIT: break;
     case ATT: Distance = Distance_ATT; break;
     case EUC_2D: Distance = Distance_EUC_2D; break;
@@ -100,22 +98,22 @@ class Initializer {
     case XRAY2: Distance = Distance_XRAY2; break;
     case UNSET_TYPE: break;
     default:
-      PLOGF << "Unsupported edge weight type: " << pb.edge_weight_type;
+      PLOGF << "Unsupported edge weight type: " << tsp.edge_weight_type;
   }
     // clang-format on
 
-    ctx.CostMatrix.resize(pb.dimension + 1);
-    for (int i = 0; i <= pb.dimension; i++)
-      ctx.CostMatrix[i].resize(pb.dimension + 1);
+    ctx.CostMatrix.resize(tsp.dimension + 1);
+    for (int i = 0; i <= tsp.dimension; i++)
+      ctx.CostMatrix[i].resize(tsp.dimension + 1);
     for (auto& node : ctx.NodeSet) node.C = ctx.CostMatrix[node.Id].data();
 
     if (Distance != nullptr)
-      for (int i = 1; i <= pb.dimension; i++) {
+      for (int i = 1; i <= tsp.dimension; i++) {
         Node& Ni = ctx.NodeSet[i];
-        for (int j = i + 1; j <= pb.dimension; j++) {
+        for (int j = i + 1; j <= tsp.dimension; j++) {
           Node& Nj = ctx.NodeSet[j];
-          const Coordinate& coord_i = pb.node_coord_section.at(Ni.Id);
-          const Coordinate& coord_j = pb.node_coord_section.at(Nj.Id);
+          const Coordinate& coord_i = tsp.node_coord_section.at(Ni.Id);
+          const Coordinate& coord_j = tsp.node_coord_section.at(Nj.Id);
           int cost = Distance(&coord_i, &coord_j);
           Ni.C[j] = cost;
           Nj.C[i] = cost;
@@ -132,7 +130,7 @@ class Initializer {
     ctx.BestSubsequentMove = BestOptMove[pr.subsequent_move_type];
     int K = pr.move_type;
     if (pr.subsequent_move_type > K) K = pr.subsequent_move_type;
-    AllocateSegments(pr.tree_type, pb.dimension, ctx);
+    AllocateSegments(pr.tree_type, tsp.dimension, ctx);
   }
 
   // The AllocateSegments function allocates the segments of the two-level tree.

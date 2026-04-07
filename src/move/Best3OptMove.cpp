@@ -67,8 +67,7 @@ Node *Best3OptMove(Node * t1, Node * t2, GainType * G0, GainType * Gain)
         t3 = Nt2->To;
         if (t3 == t2->Prd || t3 == t2->Suc ||
             ((G1 = *G0 - Nt2->Cost) <= 0 &&
-             param.gain_criterion_used &&
-             problem.type != HCP && problem.type != HPP))
+             param.gain_criterion_used))
             continue;
         if (++Breadth2 > param.max_breadth)
             break;
@@ -91,8 +90,7 @@ Node *Best3OptMove(Node * t1, Node * t2, GainType * G0, GainType * Gain)
                 t5 = Nt4->To;
                 if (t5 == t4->Prd || t5 == t4->Suc ||
                     ((G3 = G2 - Nt4->Cost) <= 0 &&
-                     param.gain_criterion_used &&
-                     problem.type != HCP && problem.type != HPP) ||
+                     param.gain_criterion_used) ||
                     (X4 == 2 && !BETWEEN(t2, t5, t3)))
                     continue;
                 if (++Breadth4 > param.max_breadth)
@@ -126,8 +124,6 @@ Node *Best3OptMove(Node * t1, Node * t2, GainType * G0, GainType * Gain)
                         Excludable(t5, t6)) {
                         /* Ignore the move if the gain does not vary */
                         if (param.restricted_search &&
-                            problem.type != HCP &&
-                            problem.type != HPP &&
                             G2 - t4->Pi == G4 - t6->Pi &&
                             G3 + t5->Pi == G1 + t3->Pi)
                             continue;
