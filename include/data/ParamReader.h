@@ -43,7 +43,7 @@ class ParamReader {
       nlohmann::json j;
       parameter_file >> j;
       Param p = j;
-      PLOGI << "Json parameter file read ";
+      PLOGI << "Json parameter file read:";
       PLOGI << "\n" << j.dump(2);
       return p;
     } catch (const nlohmann::json::parse_error &e) {

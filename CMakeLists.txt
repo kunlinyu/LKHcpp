@@ -11,7 +11,11 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 set(SRC
-    src/main.cpp
+        src/main.cpp
+        src/data/Context.cpp
+        src/data/Param.cpp
+        src/data/Problem.cpp
+        src/data/ProblemReader.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SRC})
