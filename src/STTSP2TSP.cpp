@@ -44,7 +44,7 @@ void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
     if (required.count(N1->Id)) {
       N1->index = new_id[N1];
       N1->Id = new_id[N1] + 1;
-      N1->C = Matrix[new_id[N1]].data() - 1;
+      N1->C = Matrix[new_id[N1]].data();
       N1->candidates.clear();
       j++;
       context.NodeSet[j].candidates.clear();

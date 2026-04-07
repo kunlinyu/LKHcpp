@@ -49,7 +49,7 @@ struct Context {
 
   MoveFunction BestMove, BestSubsequentMove;
 
-  static int C(const Node *Na, const Node *Nb) { return Na->C[Nb->Id]; }
+  static int C(const Node *Na, const Node *Nb) { return Na->C[Nb->index]; }
   static int D(const Node *Na, const Node *Nb) {
     return C(Na, Nb) + Na->Pi + Nb->Pi;
   }
