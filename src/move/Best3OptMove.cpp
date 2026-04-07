@@ -72,7 +72,7 @@ Node *Best3OptMove(Node * t1, Node * t2, GainType * G0, GainType * Gain)
         if (++Breadth2 > param.max_breadth)
             break;
         /* Choose t4 as one of t3's two neighbors on the tour */
-        for (X4 = !problem.IsAsymmetric() ? 1 : 2; X4 <= 2; X4++) {
+        for (X4 = 1; X4 <= 2; X4++) {
             t4 = X4 == 1 ? PRD(t3) : SUC(t3);
             G2 = G1 + context.C(t3, t4);
             if (X4 == 1 && t4 != t1) {

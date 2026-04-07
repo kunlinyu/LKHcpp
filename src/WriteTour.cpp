@@ -70,9 +70,8 @@ void WriteTour(const std::string& FileName, const std::vector<NodeIdType>& tour,
   int i;
   for (i = 1; i < problem.dimension && tour[i] != DepotIndex; i++);
   PLOGI << "i value : " << i;
-  bool Forward =
-      problem.IsAsymmetric() || tour[i < problem.dimension ? i + 1 : 1] <
-                                    tour[i > 1 ? i - 1 : problem.dimension];
+  bool Forward = tour[i < problem.dimension ? i + 1 : 1] <
+                 tour[i > 1 ? i - 1 : problem.dimension];
   if (Forward) {
     LOGI << "Tour direction: forward";
   } else {

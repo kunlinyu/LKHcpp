@@ -208,8 +208,6 @@ GainType Gain23(void) {
       }
     } while ((s1 = s2) != s1Stop);
   }
-  if (problem.IsAsymmetric() && SUC(s1) != SUCs1)
-    context.Reversed = !context.Reversed;
   return 0;
 }
 
