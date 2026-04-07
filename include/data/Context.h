@@ -5,12 +5,33 @@
 #include "HashTable.h"
 #include "SwapStack.h"
 #include "TreeNode.h"
+#include "plog/Log.h"
 #include "type.h"
 
 class Node;
 
 typedef Node *(*MoveFunction)(Node *t1, Node *t2, GainType *G0, GainType *Gain);
 typedef int (*CostFunction)(const Node *Na, const Node *Nb);
+
+class NodeSet {
+ public:
+  std::vector<Node> data;
+
+ public:
+  void CreateNodes(int Dimension) {
+    PLOGF_IF(Dimension <= 0) << "DIMENSION is not positive (or not specified)";
+    data.resize(Dimension + 1);
+    for (int i = 1; i <= Dimension; ++i) {
+      auto *node = &data[i];
+      node->index = i - 1;
+      node->Id = node->OriginalId = i;
+      if (i > 1) Link(&data[i - 1], node);
+    }
+    Link(&data[Dimension], &data[1]);
+  }
+  Node *get(size_t index) { return &data[index]; }
+  Node& ref(size_t index) { return data[index]; }
+};
 
 struct Context {
   GainType BetterCost;  // Cost of the tour stored in BetterTour
@@ -27,7 +48,7 @@ struct Context {
 
   HashTable hash_table;  // Hash table used for storing tours
 
-  std::vector<Node> NodeSet;  // Array of all nodes
+  NodeSet node_set;  // Array of all nodes
   int Norm;                   // Measure of a 1-tree's discrepancy from a tour
 
   GainType Optimum =

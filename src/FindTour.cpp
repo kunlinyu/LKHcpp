@@ -60,7 +60,7 @@ GainType FindTour(GainType OrdinalTourCost) {
       break;
     }
     // Choose FirstNode at random
-    context.FirstNode = &context.NodeSet[1 + Random() % problem.dimension];
+    context.FirstNode = &context.node_set.data[1 + Random() % problem.dimension];
     ChooseInitialTour(context.FirstNode);
     GainType Cost = LinKernighan();
     if (GetTime() - EntryTime < param.time_limit &&
@@ -74,8 +74,8 @@ GainType FindTour(GainType OrdinalTourCost) {
       if (Cost >= OrdinalTourCost && context.BetterCost > OrdinalTourCost) {
         // Merge tour with ordinal tour
         for (int i = 1; i < problem.dimension; i++)
-          context.NodeSet[i].Next = &context.NodeSet[i + 1];
-        context.NodeSet[problem.dimension].Next = &context.NodeSet[1];
+          context.node_set.data[i].Next = &context.node_set.data[i + 1];
+        context.node_set.data[problem.dimension].Next = &context.node_set.data[1];
         Cost = MergeWithTourIPT();
       }
     }

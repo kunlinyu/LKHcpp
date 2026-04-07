@@ -40,7 +40,7 @@ void GenerateCandidates(int MaxCandidates, GainType MaxAlpha, int Symmetric) {
   PLOGD << "Generating candidates ... ";
   if (MaxAlpha < 0 || MaxAlpha > INT_MAX) MaxAlpha = INT_MAX;
   // Initialize CandidateSet for each node
-  for (auto &node : context.NodeSet) node.candidates.clear();
+  for (auto &node : context.node_set.data) node.candidates.clear();
   Node *From = context.FirstNode;
 
   // Consider a path from "From" to "To" in the minimum spanning tree,

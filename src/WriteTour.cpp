@@ -43,8 +43,8 @@ TourFile TourFileSTTSP(const TourFile& tour_file) {
     NodeIdType a = tour_file.node_ids[i];
     NodeIdType b = tour_file.node_ids[next_i];
 
-    result.node_ids.push_back(context.NodeSet[a].OriginalId);
-    for (const int k : context.NodeSet[a].Paths[b])
+    result.node_ids.push_back(context.node_set.data[a].OriginalId);
+    for (const int k : context.node_set.data[a].Paths[b])
       result.node_ids.push_back(k);
   }
   return result;

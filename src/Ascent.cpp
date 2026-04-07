@@ -165,7 +165,7 @@ Start:
       degree_2);
 
   if (param.max_candidates > 0 && param.candidate_set_type != POPMUSIC) {
-    for (auto& node : context.NodeSet) node.candidates.clear();
+    for (auto& node : context.node_set.data) node.candidates.clear();
   } else {
     t = context.FirstNode;
     do {
