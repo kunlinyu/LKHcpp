@@ -10,6 +10,7 @@
 #include "data/Context.h"
 #include "data/Param.h"
 #include "data/Problem.h"
+#include "data/TSPLIB.h"
 #include "data/TreeNode.h"
 #include "utils/Random.h"
 

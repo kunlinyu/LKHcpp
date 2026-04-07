@@ -1,11 +1,10 @@
-#include "data/ProblemReader.h"
-
 #include <plog/Log.h>
 
 #include <iostream>
 #include <nlohmann/json.hpp>
 
 #include "data/Problem.h"
+#include "data/TSPLIBReader.h"
 #include "type.h"
 #include "utils/EnumConversion.h"
 
@@ -70,7 +69,7 @@ DECLARE_ENUM_CONVERSION(EdgeDataFormat, {
                                             {ADJ_LIST, "ADJ_LIST"},
                                         });
 
-TSPLIB ProblemReader::Read(std::istream& is) {
+TSPLIB TSPLIBReader::Read(std::istream& is) {
   TSPLIB pb;
   std::string line;
   auto field_funcs = FieldFuncs();
@@ -115,7 +114,7 @@ TSPLIB ProblemReader::Read(std::istream& is) {
   return pb;
 }
 
-std::string ProblemReader::trim(const std::string& str) {
+std::string TSPLIBReader::trim(const std::string& str) {
   auto start = str.find_first_not_of(" \t\r\n");
   auto end = str.find_last_not_of(" \t\r\n");
   if (start != std::string::npos && end != std::string::npos)
@@ -124,7 +123,7 @@ std::string ProblemReader::trim(const std::string& str) {
     return "";
 }
 
-std::vector<std::string> ProblemReader::split(const std::string& str,
+std::vector<std::string> TSPLIBReader::split(const std::string& str,
                                               const std::string& delimiters) {
   std::vector<std::string> components;
   size_t start = 0;
@@ -138,8 +137,8 @@ std::vector<std::string> ProblemReader::split(const std::string& str,
   return components;
 }
 
-const std::map<std::string, ProblemReader::FieldFunc>&
-ProblemReader::FieldFuncs() {
+const std::map<std::string, TSPLIBReader::FieldFunc>&
+TSPLIBReader::FieldFuncs() {
   static std::map<std::string, FieldFunc> field_funcs = {
       {"NAME",
        [](const std::string& v, TSPLIB& pb) {
@@ -211,8 +210,8 @@ ProblemReader::FieldFuncs() {
   return field_funcs;
 }
 
-const std::map<std::string, ProblemReader::SectionFunc>&
-ProblemReader::SectionFuncs() {
+const std::map<std::string, TSPLIBReader::SectionFunc>&
+TSPLIBReader::SectionFuncs() {
   static std::map<std::string, SectionFunc> section_funcs = {
       {"NODE_COORD_SECTION",
        [](const std::string& line, TSPLIB& pb) {
@@ -363,7 +362,7 @@ ProblemReader::SectionFuncs() {
   return section_funcs;
 }
 
-void ProblemReader::Check(TSPLIB& pb) {
+void TSPLIBReader::Check(TSPLIB& pb) {
   if (pb.type == UNKNOW_PROBLEM) throw std::invalid_argument("TYPE is missing");
   if (pb.dimension < 3)
     throw std::invalid_argument("DIMENSION < 3 or not specified");

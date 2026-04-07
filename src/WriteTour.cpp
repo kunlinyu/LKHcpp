@@ -3,6 +3,7 @@
 
 #include "data/Context.h"
 #include "data/Problem.h"
+#include "data/TSPLIB.h"
 #include "data/Tour.h"
 #include "plog/Log.h"
 

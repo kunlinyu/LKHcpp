@@ -15,7 +15,7 @@
 #include "data/Context.h"
 #include "data/Param.h"
 #include "data/Problem.h"
-#include "data/ProblemReader.h"
+#include "data/TSPLIBReader.h"
 #include "utils/GetTime.h"
 
 int LKHmain(Param& pr) {
@@ -25,7 +25,7 @@ int LKHmain(Param& pr) {
     return EXIT_FAILURE;
   }
 
-  const TSPLIB pb = ProblemReader::Read(fproblem);
+  const TSPLIB pb = TSPLIBReader::Read(fproblem);
   Initializer::AdjustParameters(pr, pb);
 
   // set to global variables

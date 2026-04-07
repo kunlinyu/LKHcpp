@@ -30,7 +30,7 @@ set(SRC
         src/data/Context.cpp
         src/data/Param.cpp
         src/data/Problem.cpp
-        src/data/ProblemReader.cpp
+        src/data/TSPLIBReader.cpp
         src/utils/Random.cpp
         src/Ascent.cpp
         src/Between.cpp

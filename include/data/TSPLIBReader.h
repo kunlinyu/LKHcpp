@@ -5,9 +5,9 @@
 #include <string>
 #include <vector>
 
-#include "Problem.h"
+#include "TSPLIB.h"
 
-class ProblemReader {
+class TSPLIBReader {
   typedef std::function<bool(const std::string& value, TSPLIB& problem)>
       FieldFunc;
   typedef std::function<bool(const std::string& line, TSPLIB& problem)>
