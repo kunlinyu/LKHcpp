@@ -11,7 +11,7 @@
 class VariantBase {
  public:
   virtual ~VariantBase() = default;
-  virtual Problem Encode(TSPLIB& stplib) = 0;
-  virtual Tour Decode(const Tour& tour) = 0;
+  virtual Problem Encode(TSPLIB& tsplib) = 0;
+  virtual Tour Decode(const Tour& tour) { return tour; };
   virtual GainType Penalty() { return 0; }
 };

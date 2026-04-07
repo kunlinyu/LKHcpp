@@ -8,6 +8,7 @@
 #include "FatalExitAppender.h"
 #include "FileLineFormatter.h"
 #include "data/Param.h"
+#include "data/TSPLIB.h"
 
 int LKHmain(Param& pr);
 Param ReadJsonParameters(const std::string& filename);

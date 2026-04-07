@@ -74,7 +74,7 @@ struct TSPLIB {
   std::string name;
   std::vector<std::string> comments;
   ProblemType type = UNKNOW_PROBLEM;
-  int dimension = 0;
+  size_t dimension = 0;
   CapacityType capacity = 0;
 
   EdgeWeightTypes edge_weight_type = EXPLICIT;
