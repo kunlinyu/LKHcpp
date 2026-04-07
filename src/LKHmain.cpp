@@ -68,7 +68,7 @@ int LKHmain(Param& pr) {
   }
 
   GainType OrdinalTourCost = 0;
-  OrdinalTourCost = CalcOrdinalTourCost(context.node_set.data);
+  OrdinalTourCost = CalcOrdinalTourCost();
   for (int Run = 1; Run <= param.runs; Run++) {
     LastTime = GetTime();
     GainType Cost =

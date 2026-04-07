@@ -63,13 +63,13 @@ class Initializer {
   }
 
   static void Init(const TSPLIB& tsp, const Param& pr, Context& ctx) {
-    ctx.node_set.data = CreateNodes(tsp.dimension);
-    ctx.FirstNode = &ctx.node_set.data[1];
+    ctx.node_set.CreateNodes(tsp.dimension);
+    ctx.FirstNode = ctx.node_set.get(1);
 
     for (const auto edge_data : tsp.edge_data_section) {
-      AddCandidate(&ctx.node_set.data[edge_data.from], &ctx.node_set.data[edge_data.to],
+      AddCandidate(ctx.node_set.get(edge_data.from), ctx.node_set.get(edge_data.to),
                    edge_data.weight, 1);
-      AddCandidate(&ctx.node_set.data[edge_data.to], &ctx.node_set.data[edge_data.from],
+      AddCandidate(ctx.node_set.get(edge_data.to), ctx.node_set.get(edge_data.from),
                    edge_data.weight, 1);
     }
 
@@ -103,13 +103,13 @@ class Initializer {
     ctx.CostMatrix.resize(tsp.dimension);
     for (int i = 0; i < tsp.dimension; i++)
       ctx.CostMatrix[i].resize(tsp.dimension);
-    for (auto& node : ctx.node_set.data) node.C = ctx.CostMatrix[node.index].data();
+    for (auto& node : ctx.node_set) node.C = ctx.CostMatrix[node.index].data();
 
     if (Distance != nullptr)
       for (int i = 1; i <= tsp.dimension; i++) {
-        Node& Ni = ctx.node_set.data[i];
+        Node& Ni = ctx.node_set.ref(i);
         for (int j = i + 1; j <= tsp.dimension; j++) {
-          Node& Nj = ctx.node_set.data[j];
+          Node& Nj = ctx.node_set.ref(j);
           const Coordinate& coord_i = tsp.node_coord_section.at(Ni.Id);
           const Coordinate& coord_j = tsp.node_coord_section.at(Nj.Id);
           int cost = Distance(&coord_i, &coord_j);

@@ -14,8 +14,11 @@ typedef Node *(*MoveFunction)(Node *t1, Node *t2, GainType *G0, GainType *Gain);
 typedef int (*CostFunction)(const Node *Na, const Node *Nb);
 
 class NodeSet {
- public:
+private:
   std::vector<Node> data;
+ public:
+  using iterator = std::vector<Node>::iterator;
+  using const_iterator = std::vector<Node>::const_iterator;
 
  public:
   void CreateNodes(int Dimension) {
@@ -31,6 +34,14 @@ class NodeSet {
   }
   Node *get(size_t index) { return &data[index]; }
   Node& ref(size_t index) { return data[index]; }
+  size_t size() { return data.size(); }
+
+  iterator begin() { return data.begin(); }
+  iterator end() { return data.end(); }
+  const_iterator begin() const { return data.begin(); }
+  const_iterator end() const { return data.end(); }
+  const_iterator cbegin() const { return data.cbegin(); }
+  const_iterator cend() const { return data.cend(); }
 };
 
 struct Context {

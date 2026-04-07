@@ -5,7 +5,7 @@
 #include "type.h"
 
 GainType Ascent(POpMUSICCandicateSetCreator& popmusic);
-GainType CalcOrdinalTourCost(const std::vector<Node>& NodeSet);
+GainType CalcOrdinalTourCost();
 GainType FindTour(GainType);
 
 void ChooseInitialTour(Node* FirstNode);

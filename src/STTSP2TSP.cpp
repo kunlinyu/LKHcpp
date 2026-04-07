@@ -39,20 +39,20 @@ void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
       } while ((N2 = N2->SucNode()) != context.FirstNode);
     }
   } while ((N1 = N1->SucNode()) != context.FirstNode);
-  for (int i = 1, j = 0; i < context.node_set.data.size(); i++) {
-    N1 = &context.node_set.data[i];
+  for (int i = 1, j = 0; i < context.node_set.size(); i++) {
+    N1 = context.node_set.get(i);
     if (required.count(N1->Id)) {
       N1->index = new_id[N1];
       N1->Id = new_id[N1] + 1;
       N1->C = Matrix[new_id[N1]].data();
       N1->candidates.clear();
       j++;
-      context.node_set.data[j].candidates.clear();
-      context.node_set.data[j] = *N1;
+      context.node_set.get(j)->candidates.clear();
+      context.node_set.ref(j) = *N1;
     }
   }
   for (int i = 1; i <= NewDimension; i++, N1 = N2) {
-    N2 = &context.node_set.data[i];
+    N2 = context.node_set.get(i);
     if (i == 1)
       context.FirstNode = N2;
     else

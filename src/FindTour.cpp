@@ -24,13 +24,16 @@
  * The original candidate set is re-established at exit from FindTour.
  */
 
-GainType CalcOrdinalTourCost(const std::vector<Node>& NodeSet) {
+GainType CalcOrdinalTourCost() {
   GainType OrdinalTourCost = 0;
   for (size_t i = 1; i < problem.dimension; i++)
-    OrdinalTourCost += context.C(&NodeSet[i], &NodeSet[i + 1]) - NodeSet[i].Pi -
-                       NodeSet[i + 1].Pi;
-  OrdinalTourCost += context.C(&NodeSet[problem.dimension], &NodeSet[1]) -
-                     NodeSet[problem.dimension].Pi - NodeSet[1].Pi;
+    OrdinalTourCost +=
+        context.C(context.node_set.get(i), context.node_set.get(i + 1)) -
+        context.node_set.get(i)->Pi - context.node_set.get(i + 1)->Pi;
+  OrdinalTourCost += context.C(context.node_set.get(problem.dimension),
+                               context.node_set.get(1)) -
+                     context.node_set.get(problem.dimension)->Pi -
+                     context.node_set.get(1)->Pi;
   return OrdinalTourCost;
 }
 
@@ -60,7 +63,7 @@ GainType FindTour(GainType OrdinalTourCost) {
       break;
     }
     // Choose FirstNode at random
-    context.FirstNode = &context.node_set.data[1 + Random() % problem.dimension];
+    context.FirstNode = context.node_set.get(1 + Random() % problem.dimension);
     ChooseInitialTour(context.FirstNode);
     GainType Cost = LinKernighan();
     if (GetTime() - EntryTime < param.time_limit &&
@@ -74,8 +77,8 @@ GainType FindTour(GainType OrdinalTourCost) {
       if (Cost >= OrdinalTourCost && context.BetterCost > OrdinalTourCost) {
         // Merge tour with ordinal tour
         for (int i = 1; i < problem.dimension; i++)
-          context.node_set.data[i].Next = &context.node_set.data[i + 1];
-        context.node_set.data[problem.dimension].Next = &context.node_set.data[1];
+          context.node_set.ref(i).Next = context.node_set.get(i + 1);
+        context.node_set.ref(problem.dimension).Next = context.node_set.get(1);
         Cost = MergeWithTourIPT();
       }
     }
