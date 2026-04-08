@@ -108,14 +108,14 @@ class Initializer {
 
     if (Distance != nullptr)
       for (int i = 0; i < tsp.dimension; i++) {
-        Node& Ni = ctx.node_set.dataref(i);
+        Node* Ni = ctx.node_set.data(i);
         for (int j = i + 1; j < tsp.dimension; j++) {
-          Node& Nj = ctx.node_set.dataref(j);
-          const Coordinate& coord_i = tsp.node_coord_section.at(Ni.Id);
-          const Coordinate& coord_j = tsp.node_coord_section.at(Nj.Id);
+          Node* Nj = ctx.node_set.data(j);
+          const Coordinate& coord_i = tsp.node_coord_section.at(Ni->Id);
+          const Coordinate& coord_j = tsp.node_coord_section.at(Nj->Id);
           int cost = Distance(&coord_i, &coord_j);
-          Ni.C[j] = cost;
-          Nj.C[i] = cost;
+          Ni->C[j] = cost;
+          Nj->C[i] = cost;
         }
       }
 

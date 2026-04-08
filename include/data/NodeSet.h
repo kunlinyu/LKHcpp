@@ -27,7 +27,6 @@ class NodeSet {
     Link(&data_[Dimension - 1], &data_[0]);
   }
   Node *data(size_t index) { return &data_[index]; }
-  Node &dataref(size_t index) { return data_[index]; }
   size_t size() const { return data_.size(); }
   void resize(size_t size) { data_.resize(size); }
   Node &front() { return data_.front(); }
