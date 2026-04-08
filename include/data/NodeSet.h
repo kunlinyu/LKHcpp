@@ -4,16 +4,17 @@
 // @date 2026/4/8
 #pragma once
 
+#include <plog/Log.h>
+
 #include <vector>
 
 #include "Node.h"
-#include <plog/Log.h>
 
 class NodeSet {
-private:
+ private:
   std::vector<Node> data_;
 
-public:
+ public:
   void CreateNodes(int Dimension) {
     PLOGF_IF(Dimension <= 0) << "DIMENSION is not positive (or not specified)";
     data_.resize(Dimension);
@@ -29,6 +30,12 @@ public:
   Node &dataref(size_t index) { return data_[index]; }
   size_t size() const { return data_.size(); }
   void resize(size_t size) { data_.resize(size); }
+  Node &front() { return data_.front(); }
+  Node &back() { return data_.back(); }
+  void erase(std::vector<Node>::const_iterator begin,
+             std::vector<Node>::const_iterator end) {
+    data_.erase(begin, end);
+  }
 
   void ring_pair(const std::function<void(Node *, Node *)> &func) {
     size_t n = data_.size();

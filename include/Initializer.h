@@ -64,7 +64,7 @@ class Initializer {
 
   static void Init(const TSPLIB& tsp, const Param& pr, Context& ctx) {
     ctx.node_set.CreateNodes(tsp.dimension);
-    ctx.FirstNode = ctx.node_set.data(0);
+    ctx.FirstNode = &ctx.node_set.front();
 
     // TODO: convert id to index
     for (const auto edge_data : tsp.edge_data_section) {

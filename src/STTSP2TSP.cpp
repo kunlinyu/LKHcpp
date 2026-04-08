@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <cassert>
-#include <cstdlib>
 
 #include "data/Candidate.h"
 #include "data/Context.h"
@@ -15,9 +14,9 @@ void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
   int NewDimension = 0;
   Node *N1 = context.FirstNode, *N2;
 
-  std::unordered_map<Node *, int> new_id;
+  std::unordered_map<int, int> new_index;
   do {
-    if (required.count(N1->Id)) new_id[N1] = NewDimension++;
+    if (required.count(N1->Id)) new_index[N1->Id] = NewDimension++;
   } while ((N1 = N1->SucNode()) != context.FirstNode);
   Matrix.resize(NewDimension);
   for (int i = 0; i < NewDimension; i++) Matrix[i].resize(NewDimension);
@@ -25,11 +24,11 @@ void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
     if (required.count(N1->Id)) {
       auto parent = Dijkstra(N1);
       N1->Paths.resize(NewDimension + 1);
-      int i = new_id[N1];
+      int i = new_index[N1->Id];
       N2 = context.FirstNode;
       do {
         if (N2 != N1 && required.count(N2->Id)) {
-          int j = new_id[N2];
+          int j = new_index[N2->Id];
           Matrix[i][j] = N2->Cost;
           Node *N = N2;
           while ((N = parent[N]) != N1)
@@ -39,18 +38,19 @@ void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
       } while ((N2 = N2->SucNode()) != context.FirstNode);
     }
   } while ((N1 = N1->SucNode()) != context.FirstNode);
-  for (int i = 0, j = 0; i < context.node_set.size(); i++) {
-    N1 = context.node_set.data(i);
-    if (required.count(N1->Id)) {
-      N1->index = new_id[N1];
-      N1->Id = new_id[N1] + 1;
-      N1->C = Matrix[new_id[N1]].data();
-      N1->candidates.clear();
-      context.node_set.data(j)->candidates.clear();
-      context.node_set.dataref(j) = *N1;
-      j++;
-    }
+  context.node_set.erase(
+      std::remove_if(
+          context.node_set.begin(), context.node_set.end(),
+          [&required](const Node &node) { return !required.count(node.Id); }),
+      context.node_set.end());
+  for (auto &node : context.node_set) {
+    NodeIdType old_id = node.Id;
+    node.index = new_index[old_id];
+    node.Id = new_index[old_id] + 1;
+    node.C = Matrix[new_index[old_id]].data();
+    node.candidates.clear();
   }
+
   context.node_set.resize(NewDimension);
   for (int i = 0; i < NewDimension; i++, N1 = N2) {
     N2 = context.node_set.data(i);
