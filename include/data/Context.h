@@ -53,7 +53,7 @@ struct Context {
   MoveFunction BestMove, BestSubsequentMove;
 
   int C(const Node *Na, const Node *Nb) {
-    return Na->C[Nb->index];
+    return CostMatrix[Na->index][Nb->index];
   }
   int D(const Node *Na, const Node *Nb) {
     return C(Na, Nb) + Na->Pi + Nb->Pi;

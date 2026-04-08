@@ -18,8 +18,6 @@ class Node : public TreeNode, public Coordinate {
 
   int Pi;  // Pi-value of the node
 
-  int *C = nullptr;  // A row in the cost matrix(REMOVE)
-
   Node *SucNode() const { return static_cast<Node *>(Suc); }
   Node *PrdNode() const { return static_cast<Node *>(Prd); }
   static Node *MoveSuc(Node *&node) {

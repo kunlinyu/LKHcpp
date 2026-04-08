@@ -48,7 +48,6 @@ void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
     NodeIdType old_id = node.Id;
     node.index = new_index[old_id];
     node.Id = new_index[old_id] + 1;
-    node.C = Matrix[new_index[old_id]].data();
     node.candidates.clear();
   }
 

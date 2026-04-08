@@ -101,7 +101,6 @@ class Initializer {
     ctx.CostMatrix.resize(tsp.dimension);
     for (int i = 0; i < tsp.dimension; i++)
       ctx.CostMatrix[i].resize(tsp.dimension);
-    for (auto& node : ctx.node_set) node.C = ctx.CostMatrix[node.index].data();
 
     if (Distance != nullptr)
       for (int i = 0; i < tsp.dimension; i++) {
@@ -111,8 +110,8 @@ class Initializer {
           const Coordinate& coord_i = tsp.node_coord_section.at(Ni.Id);
           const Coordinate& coord_j = tsp.node_coord_section.at(Nj.Id);
           int cost = Distance(&coord_i, &coord_j);
-          Ni.C[j] = cost;
-          Nj.C[i] = cost;
+          ctx.CostMatrix[i][j] = cost;
+          ctx.CostMatrix[j][i] = cost;
         }
       }
 
