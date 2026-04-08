@@ -51,6 +51,7 @@ void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
       j++;
     }
   }
+  context.node_set.resize(NewDimension);
   for (int i = 0; i < NewDimension; i++, N1 = N2) {
     N2 = context.node_set.data(i);
     if (i == 0)

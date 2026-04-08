@@ -37,9 +37,10 @@ class NodeSet {
   Node *data(size_t index) { return &data_[index]; }
   Node &dataref(size_t index) { return data_[index]; }
   size_t size() { return data_.size(); }
+  void resize(size_t size) { data_.resize(size); }
 
   void ring_pair(const std::function<void(Node *, Node *)> &func) {
-    size_t n = problem.dimension;  // TODO: should not depends on dimension
+    size_t n = data_.size();
     if (n < 2) return;
     for (size_t i = 0; i < n; ++i) func(&data_[i], &data_[(i + 1) % n]);
   }
