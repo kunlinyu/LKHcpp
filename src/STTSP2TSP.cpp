@@ -11,7 +11,7 @@
 template <typename NodeType>
 struct SearchNode {
   NodeType parent;
-  WeightType cost = INT_MAX / 2;
+  WeightType cost;
 };
 
 template <typename NodeType>
@@ -20,14 +20,13 @@ static std::unordered_map<NodeType, SearchNode<NodeType>> Dijkstra(
     std::function<std::vector<std::pair<NodeType, WeightType>>(NodeType)>
         neighbors) {
   std::unordered_map<NodeType, SearchNode<NodeType>> record;
+  std::set<NodeType> visited;
 
   Heap<NodeType> heap([&record](NodeType a, NodeType b) {
     return record[a].cost < record[b].cost;
   });
   heap.Reserve(problem.dimension);
   heap.Insert(Source);
-  record[Source].parent = 0;
-  record[Source].cost = 0;
 
   NodeType N = Source;
   while ((N = N->SucNode()) != Source) {
@@ -35,16 +34,11 @@ static std::unordered_map<NodeType, SearchNode<NodeType>> Dijkstra(
     record[N].cost = INT_MAX / 2;
     heap.LazyInsert(N);
   }
-  for (const auto &neighbor_cost : neighbors(Source)) {
-    NodeType neighbor = neighbor_cost.first;
-    record[neighbor].parent = Source;
-    record[neighbor].cost = neighbor_cost.second;
-    heap.SiftUp(neighbor);
-  }
   while (heap.size() > 0) {
     NodeType current = heap.DeleteMin();
     for (const auto &neighbor_cost : neighbors(current)) {
       NodeType neighbor = neighbor_cost.first;
+      if (visited.count(neighbor)) continue;
       int d = record[current].cost + neighbor_cost.second;
       if (heap.contains(neighbor) && d < record[neighbor].cost) {
         record[neighbor].parent = current;
@@ -52,6 +46,7 @@ static std::unordered_map<NodeType, SearchNode<NodeType>> Dijkstra(
         heap.SiftUp(neighbor);
       }
     }
+    visited.insert(current);
   }
   return record;
 }
@@ -83,7 +78,7 @@ void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
           int j = new_index[N2->Id];
           Matrix[i][j] = record[N2].cost;
           Node *N = N2;
-          while ((N = record[N].parent) != N1)
+          while ((N = record[N].parent) != N1 and N != nullptr)
             N1->Paths[j + 1].push_back(N->OriginalId);
           std::reverse(N1->Paths[j + 1].begin(), N1->Paths[j + 1].end());
         }
