@@ -68,10 +68,10 @@ class Initializer {
 
     // TODO: convert id to index
     for (const auto edge_data : tsp.edge_data_section) {
-      AddCandidate(ctx.node_set.data(edge_data.from - 1), ctx.node_set.data(edge_data.to - 1),
-                   edge_data.weight, 1);
-      AddCandidate(ctx.node_set.data(edge_data.to - 1), ctx.node_set.data(edge_data.from - 1),
-                   edge_data.weight, 1);
+      AddCandidate(&ctx.node_set[edge_data.from - 1],
+                   &ctx.node_set[edge_data.to - 1], edge_data.weight, 1);
+      AddCandidate(&ctx.node_set[edge_data.to - 1],
+                   &ctx.node_set[edge_data.from - 1], edge_data.weight, 1);
     }
 
     ctx.BetterTour.resize(tsp.dimension + 1);
@@ -108,14 +108,14 @@ class Initializer {
 
     if (Distance != nullptr)
       for (int i = 0; i < tsp.dimension; i++) {
-        Node* Ni = ctx.node_set.data(i);
+        Node& Ni = ctx.node_set[i];
         for (int j = i + 1; j < tsp.dimension; j++) {
-          Node* Nj = ctx.node_set.data(j);
-          const Coordinate& coord_i = tsp.node_coord_section.at(Ni->Id);
-          const Coordinate& coord_j = tsp.node_coord_section.at(Nj->Id);
+          Node& Nj = ctx.node_set[j];
+          const Coordinate& coord_i = tsp.node_coord_section.at(Ni.Id);
+          const Coordinate& coord_j = tsp.node_coord_section.at(Nj.Id);
           int cost = Distance(&coord_i, &coord_j);
-          Ni->C[j] = cost;
-          Nj->C[i] = cost;
+          Ni.C[j] = cost;
+          Nj.C[i] = cost;
         }
       }
 

@@ -18,15 +18,12 @@ class NodeSet {
   void CreateNodes(int Dimension) {
     PLOGF_IF(Dimension <= 0) << "DIMENSION is not positive (or not specified)";
     data_.resize(Dimension);
-    for (int i = 0; i < Dimension; ++i) {
-      auto *node = &data_[i];
-      node->index = i;
-      node->Id = node->OriginalId = i + 1;
-      if (i > 0) Link(&data_[i - 1], node);
+    for (size_t index = 0; index < data_.size(); ++index) {
+      data_[index].index = index;
+      data_[index].Id = data_[index].OriginalId = index + 1;
     }
-    Link(&data_[Dimension - 1], &data_[0]);
+    ring_pair([](Node *a, Node *b) { Link(a, b); });
   }
-  Node *data(size_t index) { return &data_[index]; }
   size_t size() const { return data_.size(); }
   void resize(size_t size) { data_.resize(size); }
   Node &front() { return data_.front(); }
@@ -35,6 +32,9 @@ class NodeSet {
              std::vector<Node>::const_iterator end) {
     data_.erase(begin, end);
   }
+
+  Node& operator[](size_t index) { return data_[index]; }
+  const Node& operator[](size_t index) const { return data_[index]; }
 
   void ring_pair(const std::function<void(Node *, Node *)> &func) {
     size_t n = data_.size();
