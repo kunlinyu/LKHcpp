@@ -1,57 +1,19 @@
 #pragma once
 
 #include <limits>
+#include <plog/Log.h>
 
+#include "data/NodeSet.h"
 #include "HashTable.h"
 #include "Problem.h"
 #include "SwapStack.h"
 #include "TreeNode.h"
-#include "plog/Log.h"
 #include "type.h"
 
 class Node;
 
 typedef Node *(*MoveFunction)(Node *t1, Node *t2, GainType *G0, GainType *Gain);
 typedef int (*CostFunction)(const Node *Na, const Node *Nb);
-
-class NodeSet {
- private:
-  std::vector<Node> data_;
-
- public:
-  using iterator = std::vector<Node>::iterator;
-  using const_iterator = std::vector<Node>::const_iterator;
-
- public:
-  void CreateNodes(int Dimension) {
-    PLOGF_IF(Dimension <= 0) << "DIMENSION is not positive (or not specified)";
-    data_.resize(Dimension);
-    for (int i = 0; i < Dimension; ++i) {
-      auto *node = &data_[i];
-      node->index = i;
-      node->Id = node->OriginalId = i + 1;
-      if (i > 0) Link(&data_[i - 1], node);
-    }
-    Link(&data_[Dimension - 1], &data_[0]);
-  }
-  Node *data(size_t index) { return &data_[index]; }
-  Node &dataref(size_t index) { return data_[index]; }
-  size_t size() { return data_.size(); }
-  void resize(size_t size) { data_.resize(size); }
-
-  void ring_pair(const std::function<void(Node *, Node *)> &func) {
-    size_t n = data_.size();
-    if (n < 2) return;
-    for (size_t i = 0; i < n; ++i) func(&data_[i], &data_[(i + 1) % n]);
-  }
-
-  iterator begin() { return data_.begin(); }
-  iterator end() { return data_.end(); }
-  const_iterator begin() const { return data_.begin(); }
-  const_iterator end() const { return data_.end(); }
-  const_iterator cbegin() const { return data_.cbegin(); }
-  const_iterator cend() const { return data_.cend(); }
-};
 
 struct Context {
   GainType BetterCost;  // Cost of the tour stored in BetterTour
