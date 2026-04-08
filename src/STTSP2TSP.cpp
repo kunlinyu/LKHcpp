@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cassert>
+#include <map>
 
 #include "data/Candidate.h"
 #include "data/Context.h"
@@ -16,11 +17,17 @@ struct SearchNode {
 };
 
 template <typename NodeType>
-static std::unordered_map<NodeType, SearchNode<NodeType>> Dijkstra(
-    NodeType source,
-    std::function<std::vector<std::pair<NodeType, WeightType>>(NodeType)>
-        neighbors) {
-  std::unordered_map<NodeType, SearchNode<NodeType>> record;
+using NeighborFunction =
+    std::function<std::vector<std::pair<NodeType, WeightType>>(NodeType)>;
+
+template <typename NodeType>
+using BreakFunction = std::function<bool(NodeType)>;
+
+template <typename NodeType>
+static std::map<NodeType, SearchNode<NodeType>> Dijkstra(
+    NodeType source, const NeighborFunction<NodeType> &neighbors,
+    const BreakFunction<NodeType> &break_condition) {
+  std::map<NodeType, SearchNode<NodeType>> record;
   std::set<NodeType> visited;
 
   Heap<NodeType> heap([&record](NodeType a, NodeType b) {
@@ -31,6 +38,7 @@ static std::unordered_map<NodeType, SearchNode<NodeType>> Dijkstra(
 
   while (heap.size() > 0) {
     NodeType current = heap.DeleteMin();
+    if (break_condition(current)) break;
     for (const auto &neighbor_cost : neighbors(current)) {
       NodeType neighbor = neighbor_cost.first;
       WeightType cost = neighbor_cost.second;
@@ -62,16 +70,19 @@ void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
   for (int i = 0; i < NewDimension; i++) Matrix[i].resize(NewDimension);
   do {
     if (required.count(N1->Id)) {
-      auto record = Dijkstra<Node *>(N1, [](Node *node) {
-        std::vector<std::pair<Node *, WeightType>> neighbors;
-        for (const auto &c : node->candidates)
-          neighbors.emplace_back(c->To, c->Cost);
-        return neighbors;
-      });
-      if (record.size() < problem.dimension) {
-        PLOGE << "the graph has multiple connected components";
-        throw std::runtime_error("the graph has multiple connected components");
-      }
+      std::set<NodeIdType> target = required;
+      auto record = Dijkstra<Node *>(
+          N1,
+          [](Node *node) {
+            std::vector<std::pair<Node *, WeightType>> neighbors;
+            for (const auto &c : node->candidates)
+              neighbors.emplace_back(c->To, c->Cost);
+            return neighbors;
+          },
+          [target](Node *node) mutable {
+            if (target.count(node->Id)) target.erase(node->Id);
+            return target.empty();
+          });
       N1->Paths.resize(NewDimension + 1);
       int i = new_index[N1->Id];
       N2 = context.FirstNode;
