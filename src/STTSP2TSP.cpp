@@ -52,14 +52,8 @@ void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
   }
 
   context.node_set.resize(NewDimension);
-  for (int i = 0; i < NewDimension; i++, N1 = N2) {
-    N2 = context.node_set.data(i);
-    if (i == 0)
-      context.FirstNode = N2;
-    else
-      Link(N1, N2);
-  }
-  Link(N1, context.FirstNode);
+  context.FirstNode = &context.node_set.front();
+  context.node_set.ring_pair([](Node *a, Node *b) { Link(a, b); });
   problem.dimension = NewDimension;
 }
 
