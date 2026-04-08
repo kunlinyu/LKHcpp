@@ -6,6 +6,7 @@
 #include "data/Param.h"
 #include "data/Problem.h"
 #include "utils/Heap.h"
+#include "utils/RingPair.h"
 
 static std::unordered_map<Node *, Node *> Dijkstra(Node *Source);
 
@@ -53,7 +54,7 @@ void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
 
   context.node_set.resize(NewDimension);
   context.FirstNode = &context.node_set.front();
-  context.node_set.ring_pair([](Node *a, Node *b) { Link(a, b); });
+  RingPair<Node>(context.node_set, [](Node &a, Node &b) { Link(a, b); });
   problem.dimension = NewDimension;
 }
 

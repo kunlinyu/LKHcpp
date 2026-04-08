@@ -59,6 +59,11 @@ inline void Link(TreeNode *a, TreeNode *b) {
   b->Prd = a;
 }
 
+inline void Link(TreeNode& a, TreeNode& b) {
+  a.Suc = &b;
+  b.Prd = &a;
+}
+
 inline bool InBestTour(Node *a, Node *b) {
   return a->BestSuc == b || b->BestSuc == a;
 }

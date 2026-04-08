@@ -12,22 +12,19 @@
 #include "data/TSPLIB.h"
 #include "data/TreeNode.h"
 #include "utils/Random.h"
+#include "utils/RingPair.h"
 
 class Initializer {
  public:
   static std::vector<Node> CreateNodes(int Dimension) {
     PLOGF_IF(Dimension <= 0) << "DIMENSION is not positive (or not specified)";
-
     std::vector<Node> nodes;
-    nodes.resize(Dimension + 1);
-    for (int i = 1; i <= Dimension; ++i) {
-      auto* node = &nodes[i];
-      node->index = i - 1;
-      node->Id = node->OriginalId = i;
-      if (i > 1) Link(&nodes[i - 1], node);
+    nodes.resize(Dimension);
+    for (size_t index = 0; index < nodes.size(); ++index) {
+      nodes[index].index = index;
+      nodes[index].Id = nodes[index].OriginalId = index + 1;
     }
-    Link(&nodes[Dimension], &nodes[1]);
-
+    RingPair<Node>(nodes, [](Node& a, Node& b) { Link(a, b); });
     return nodes;
   }
 
@@ -63,7 +60,7 @@ class Initializer {
   }
 
   static void Init(const TSPLIB& tsp, const Param& pr, Context& ctx) {
-    ctx.node_set.CreateNodes(tsp.dimension);
+    ctx.node_set = CreateNodes(tsp.dimension);
     ctx.FirstNode = &ctx.node_set.front();
 
     // TODO: convert id to index

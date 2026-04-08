@@ -8,6 +8,7 @@
 #include "data/Param.h"
 #include "data/Problem.h"
 #include "utils/GetTime.h"
+#include "utils/RingPair.h"
 
 /*
  * After the candidate set has been created the FindTour function is called
@@ -26,8 +27,8 @@
 
 GainType CalcOrdinalTourCost() {
   GainType OrdinalTourCost = 0;
-  context.node_set.ring_pair([&OrdinalTourCost](Node *a, Node *b) {
-    OrdinalTourCost += context.C(a, b) - a->Pi - b->Pi;
+  RingPair<Node>(context.node_set, [&OrdinalTourCost](Node &a, Node &b) {
+    OrdinalTourCost += context.C(&a, &b) - a.Pi - b.Pi;
   });
   return OrdinalTourCost;
 }
@@ -71,7 +72,7 @@ GainType FindTour(GainType OrdinalTourCost) {
       }
       if (Cost >= OrdinalTourCost && context.BetterCost > OrdinalTourCost) {
         // Merge tour with ordinal tour
-        context.node_set.ring_pair([&](Node *a, Node *b) { a->Next = b; });
+        RingPair<Node>(context.node_set, [](Node &a, Node &b) { a.Next = &b; });
         Cost = MergeWithTourIPT();
       }
     }

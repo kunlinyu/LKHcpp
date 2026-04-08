@@ -1,9 +1,9 @@
 #pragma once
 
-#include <limits>
 #include <plog/Log.h>
 
-#include "data/NodeSet.h"
+#include <limits>
+
 #include "HashTable.h"
 #include "Problem.h"
 #include "SwapStack.h"
@@ -30,8 +30,8 @@ struct Context {
 
   HashTable hash_table;  // Hash table used for storing tours
 
-  NodeSet node_set;  // Array of all nodes
-  int Norm;          // Measure of a 1-tree's discrepancy from a tour
+  std::vector<Node> node_set;  // Array of all nodes
+  int Norm;                    // Measure of a 1-tree's discrepancy from a tour
 
   GainType Optimum =
       std::numeric_limits<GainType>::min();  // If StopAtOptimum is 1, a
