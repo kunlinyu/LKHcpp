@@ -5,18 +5,19 @@
 #include "data/Context.h"
 #include "data/Param.h"
 #include "data/Problem.h"
+#include "plog/Log.h"
 #include "utils/Heap.h"
 #include "utils/RingPair.h"
 
 template <typename NodeType>
 struct SearchNode {
   NodeType parent;
-  WeightType cost;
+  WeightType cost = INT_MAX / 2;
 };
 
 template <typename NodeType>
 static std::unordered_map<NodeType, SearchNode<NodeType>> Dijkstra(
-    NodeType Source,
+    NodeType source,
     std::function<std::vector<std::pair<NodeType, WeightType>>(NodeType)>
         neighbors) {
   std::unordered_map<NodeType, SearchNode<NodeType>> record;
@@ -25,24 +26,21 @@ static std::unordered_map<NodeType, SearchNode<NodeType>> Dijkstra(
   Heap<NodeType> heap([&record](NodeType a, NodeType b) {
     return record[a].cost < record[b].cost;
   });
-  heap.Reserve(problem.dimension);
-  heap.Insert(Source);
+  heap.Insert(source);
+  record[source].cost = 0;
 
-  NodeType N = Source;
-  while ((N = N->SucNode()) != Source) {
-    record[N].parent = Source;
-    record[N].cost = INT_MAX / 2;
-    heap.LazyInsert(N);
-  }
   while (heap.size() > 0) {
     NodeType current = heap.DeleteMin();
     for (const auto &neighbor_cost : neighbors(current)) {
       NodeType neighbor = neighbor_cost.first;
+      WeightType cost = neighbor_cost.second;
       if (visited.count(neighbor)) continue;
-      int d = record[current].cost + neighbor_cost.second;
-      if (heap.contains(neighbor) && d < record[neighbor].cost) {
+
+      int d = record[current].cost + cost;
+      if (d < record[neighbor].cost) {
         record[neighbor].parent = current;
         record[neighbor].cost = d;
+        if (not heap.contains(neighbor)) heap.LazyInsert(neighbor);
         heap.SiftUp(neighbor);
       }
     }
@@ -70,6 +68,10 @@ void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
           neighbors.emplace_back(c->To, c->Cost);
         return neighbors;
       });
+      if (record.size() < problem.dimension) {
+        PLOGE << "the graph has multiple connected components";
+        throw std::runtime_error("the graph has multiple connected components");
+      }
       N1->Paths.resize(NewDimension + 1);
       int i = new_index[N1->Id];
       N2 = context.FirstNode;
