@@ -3,7 +3,6 @@
 
 #include <cmath>
 
-#include "C.h"
 #include "Distance.h"
 #include "Move.h"
 #include "candidate/CandidateFuncs.h"

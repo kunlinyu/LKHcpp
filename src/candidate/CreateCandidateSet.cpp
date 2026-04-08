@@ -2,7 +2,6 @@
 #include <iomanip>
 #include <sstream>
 
-#include "C.h"
 #include "LKH.h"
 #include "candidate/CandidateFuncs.h"
 #include "data/Context.h"
@@ -74,11 +73,6 @@ double CreateCandidateSet(POpMUSICCandicateSetCreator &popmusic) {
       }
     } while ((Na = Na->SucNode()) != context.FirstNode);
   }
-  Na = context.FirstNode;
-  do
-    for (int j = 0; j < problem.dimension; j++)
-      context.CostMatrix[Na->index][j] += Na->Pi + context.node_set[j].Pi;
-  while ((Na = Na->SucNode()) != context.FirstNode);
   PLOGI << CandidateReport(context.FirstNode);
   PLOGI << "Preprocessing time = " << std::fixed << std::setprecision(2)
         << fabs(GetTime() - EntryTime) << " sec.";

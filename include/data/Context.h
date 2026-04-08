@@ -1,7 +1,5 @@
 #pragma once
 
-#include <plog/Log.h>
-
 #include <limits>
 
 #include "HashTable.h"
@@ -40,6 +38,7 @@ struct Context {
                                              // this value
 
   std::vector<std::vector<int>> CostMatrix;  // Cost matrix of the problem
+  std::vector<std::vector<int>> DMatrix;     // CostMatrix + Nodes' Pi values
 
   bool Reversed =
       false;  // Boolean used to indicate whether a tour has been reversed
@@ -52,11 +51,26 @@ struct Context {
 
   MoveFunction BestMove, BestSubsequentMove;
 
-  int C(const Node *Na, const Node *Nb) {
+  std::function<int(const Node *, const Node *)> C =
+      [this](const Node *Na, const Node *Nb) { return C_EXPLICIT(Na, Nb); };
+  std::function<int(const Node *, const Node *)> D =
+      [this](const Node *Na, const Node *Nb) { return D_EXPLICIT(Na, Nb); };
+
+  int C_EXPLICIT(const Node *Na, const Node *Nb) {
     return CostMatrix[Na->index][Nb->index];
   }
-  int D(const Node *Na, const Node *Nb) {
-    return C(Na, Nb) + Na->Pi + Nb->Pi;
+  int D_EXPLICIT(const Node *Na, const Node *Nb) {
+    return C_EXPLICIT(Na, Nb) + Na->Pi + Nb->Pi;
+  }
+
+  void SwitchCostToD() {
+    DMatrix = CostMatrix;
+    for (int i = 0; i < node_set.size(); i++)
+      for (int j = 0; j < node_set.size(); j++)
+        DMatrix[i][j] += node_set[i].Pi + node_set[j].Pi;
+    C = [this](const Node *Na, const Node *Nb) {
+      return DMatrix[Na->index][Nb->index];
+    };
   }
 
   Node *gain23_s1 = nullptr;

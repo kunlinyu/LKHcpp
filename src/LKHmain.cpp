@@ -55,6 +55,7 @@ int LKHmain(Param& pr) {
   popmusic.set_trails(param.popmusic_trials);
 
   double LowerBound = CreateCandidateSet(popmusic);
+  context.SwitchCostToD();
 
   std::vector<NodeIdType> BestTour(problem.dimension + 1);
 
