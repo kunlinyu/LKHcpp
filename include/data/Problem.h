@@ -17,8 +17,20 @@ class Problem {
 
  public:
   Problem() = default;
-  Problem(int dimension, std::function<WeightType(size_t, size_t)> costs)
-      : dimension(dimension) {
+  Problem(int dimension, const std::function<WeightType(size_t, size_t)>& costs) {
+    init(dimension, costs);
+  }
+  Problem(int dimension, const std::vector<std::vector<WeightType>> costs) {
+    init(dimension, costs);
+  }
+  void init(int dim, const std::vector<std::vector<WeightType>>& costs) {
+    dimension = dim;
+    costs_.resize(dimension * (dimension - 1) / 2);
+    for (size_t i = 0; i < dimension; i++)
+      for (size_t j = 0; j < i; j++) costs_[i * (i - 1) / 2 + j] = costs[i][j];
+  }
+  void init(int dim, const std::function<WeightType(size_t, size_t)>& costs) {
+    dimension = dim;
     costs_.resize(dimension * (dimension - 1) / 2);
     for (size_t i = 0; i < dimension; i++)
       for (size_t j = 0; j < i; j++) costs_[i * (i - 1) / 2 + j] = costs(i, j);
@@ -30,6 +42,10 @@ class Problem {
     size_t min = std::min(i, j);
     size_t max = std::max(i, j);
     return costs_[max * (max - 1) / 2 + min];
+  }
+  void clear() {
+    costs_.clear();
+    costs_.shrink_to_fit();
   }
 };
 

@@ -17,6 +17,7 @@
 #include "data/Problem.h"
 #include "data/TSPLIBReader.h"
 #include "utils/GetTime.h"
+#include "variant/VariantFactory.h"
 
 int LKHmain(Param& pr) {
   std::ifstream fproblem(pr.problem_filename.c_str());
@@ -36,6 +37,10 @@ int LKHmain(Param& pr) {
   double LastTime;
   context.StartTime = LastTime = GetTime();
   Initializer::Init(tsplib, param, context);
+
+  std::unique_ptr<VariantBase> variant = VariantFactory::CreateVariant(tsplib);
+  context.problem = variant->Encode(tsplib);
+
 
   std::vector<std::vector<int>> Matrix;
   if (problem.type == STTSP) {

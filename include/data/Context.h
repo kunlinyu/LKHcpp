@@ -54,6 +54,7 @@ struct Context {
 
   static int C(const Node *Na, const Node *Nb) {
     assert(Na->C != nullptr);
+
     return Na->C[Nb->index];
   }
   static int D(const Node *Na, const Node *Nb) {
@@ -62,6 +63,8 @@ struct Context {
 
   Node *gain23_s1 = nullptr;
   bool gain23_old_reversed = false;
+
+  Problem problem;
 };
 
 extern Context context;
