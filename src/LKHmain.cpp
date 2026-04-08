@@ -42,9 +42,8 @@ int LKHmain(Param& pr) {
   context.problem = variant->Encode(tsplib);
 
 
-  std::vector<std::vector<int>> Matrix;
   if (problem.type == STTSP) {
-    STTSP2TSP(Matrix, tsplib.required_nodes_section);
+    STTSP2TSP(context.CostMatrix, tsplib.required_nodes_section);
     Initializer::AllocateSegments(param.tree_type, problem.dimension, context);
   }
 
