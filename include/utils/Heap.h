@@ -17,6 +17,8 @@ class Heap {
 
   void Reserve(size_t size) { heap_.reserve(size); }
 
+  size_t size() const { return heap_.size(); }
+
   void Insert(T n) {
     LazyInsert(n);
     SiftUp(n);

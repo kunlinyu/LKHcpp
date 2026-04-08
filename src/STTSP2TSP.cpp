@@ -8,7 +8,53 @@
 #include "utils/Heap.h"
 #include "utils/RingPair.h"
 
-static std::unordered_map<Node *, Node *> Dijkstra(Node *Source);
+template <typename NodeType>
+struct SearchNode {
+  NodeType parent;
+  WeightType cost = INT_MAX / 2;
+};
+
+template <typename NodeType>
+static std::unordered_map<NodeType, SearchNode<NodeType>> Dijkstra(
+    NodeType Source,
+    std::function<std::vector<std::pair<NodeType, WeightType>>(NodeType)>
+        neighbors) {
+  std::unordered_map<NodeType, SearchNode<NodeType>> record;
+
+  Heap<NodeType> heap([&record](NodeType a, NodeType b) {
+    return record[a].cost < record[b].cost;
+  });
+  heap.Reserve(problem.dimension);
+  heap.Insert(Source);
+  record[Source].parent = 0;
+  record[Source].cost = 0;
+
+  NodeType N = Source;
+  while ((N = N->SucNode()) != Source) {
+    record[N].parent = Source;
+    record[N].cost = INT_MAX / 2;
+    heap.LazyInsert(N);
+  }
+  for (const auto &neighbor_cost : neighbors(Source)) {
+    NodeType neighbor = neighbor_cost.first;
+    record[neighbor].parent = Source;
+    record[neighbor].cost = neighbor_cost.second;
+    heap.SiftUp(neighbor);
+  }
+  while (heap.size() > 0) {
+    NodeType current = heap.DeleteMin();
+    for (const auto &neighbor_cost : neighbors(current)) {
+      NodeType neighbor = neighbor_cost.first;
+      int d = record[current].cost + neighbor_cost.second;
+      if (heap.contains(neighbor) && d < record[neighbor].cost) {
+        record[neighbor].parent = current;
+        record[neighbor].cost = d;
+        heap.SiftUp(neighbor);
+      }
+    }
+  }
+  return record;
+}
 
 void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
                const std::set<NodeIdType> &required) {
@@ -23,16 +69,21 @@ void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
   for (int i = 0; i < NewDimension; i++) Matrix[i].resize(NewDimension);
   do {
     if (required.count(N1->Id)) {
-      auto parent = Dijkstra(N1);
+      auto record = Dijkstra<Node *>(N1, [](Node *node) {
+        std::vector<std::pair<Node *, WeightType>> neighbors;
+        for (const auto &c : node->candidates)
+          neighbors.emplace_back(c->To, c->Cost);
+        return neighbors;
+      });
       N1->Paths.resize(NewDimension + 1);
       int i = new_index[N1->Id];
       N2 = context.FirstNode;
       do {
         if (N2 != N1 && required.count(N2->Id)) {
           int j = new_index[N2->Id];
-          Matrix[i][j] = N2->Cost;
+          Matrix[i][j] = record[N2].cost;
           Node *N = N2;
-          while ((N = parent[N]) != N1)
+          while ((N = record[N].parent) != N1)
             N1->Paths[j + 1].push_back(N->OriginalId);
           std::reverse(N1->Paths[j + 1].begin(), N1->Paths[j + 1].end());
         }
@@ -55,43 +106,4 @@ void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
   context.FirstNode = &context.node_set.front();
   RingPair<Node>(context.node_set, [](Node &a, Node &b) { Link(a, b); });
   problem.dimension = NewDimension;
-}
-
-static std::unordered_map<Node *, Node *> Dijkstra(Node *Source) {
-  std::unordered_map<Node *, Node *> parent;
-  std::unordered_map<Node *, GainType> cost;
-
-  Node *N = Source;
-  Node *Blue = Source;
-  Blue->Cost = 0;
-
-  Heap<Node*> heap([&cost](Node *a, Node *b) { return cost[a] < cost[b]; });
-  heap.Reserve(problem.dimension);
-  heap.Clear();
-  while ((N = N->SucNode()) != Source) {
-    parent[N] = Blue;
-    N->Cost = INT_MAX / 2;
-    cost[N] = INT_MAX / 2;
-    heap.LazyInsert(N);
-  }
-  for (const auto &NBlue : Blue->candidates) {
-    N = NBlue->To;
-    parent[N] = Blue;
-    N->Cost = NBlue->Cost;
-    cost[N] = NBlue->Cost;
-    heap.SiftUp(N);
-  }
-  int d;
-  while ((Blue = heap.DeleteMin())) {
-    for (const auto &NBlue : Blue->candidates) {
-      N = NBlue->To;
-      if (heap.contains(N) && (d = Blue->Cost + NBlue->Cost) < N->Cost) {
-        parent[N] = Blue;
-        N->Cost = d;
-        cost[N] = d;
-        heap.SiftUp(N);
-      }
-    }
-  }
-  return parent;
 }
