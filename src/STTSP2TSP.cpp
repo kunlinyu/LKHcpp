@@ -65,7 +65,7 @@ static std::unordered_map<Node *, Node *> Dijkstra(Node *Source) {
   Node *Blue = Source;
   Blue->Cost = 0;
 
-  Heap<Node> heap([&cost](Node *a, Node *b) { return cost[a] < cost[b]; });
+  Heap<Node*> heap([&cost](Node *a, Node *b) { return cost[a] < cost[b]; });
   heap.Reserve(problem.dimension);
   heap.Clear();
   while ((N = N->SucNode()) != Source) {

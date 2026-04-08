@@ -34,7 +34,7 @@ void MinimumSpanningTree(bool Sparse) {
   Blue = N = context.FirstNode;
   Blue->Dad = nullptr;  // The root of the tree has no father
   std::unordered_map<Node *, int> rank;
-  Heap<Node> heap([&rank](Node *a, Node *b) { return rank[a] < rank[b]; });
+  Heap<Node*> heap([&rank](Node *a, Node *b) { return rank[a] < rank[b]; });
   if (Sparse && not Blue->candidates.empty()) {
     // The graph is sparse
     // Insert all nodes in the heap

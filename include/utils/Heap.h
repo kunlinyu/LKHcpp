@@ -7,22 +7,22 @@
 template <typename T>
 class Heap {
  private:
-  std::vector<T*> heap_;
-  std::unordered_map<T*, size_t> loc_;
-  std::function<bool(T*, T*)> less_than_;
+  std::vector<T> heap_;
+  std::unordered_map<T, size_t> loc_;
+  std::function<bool(T, T)> less_than_;
 
  public:
-  explicit Heap(const std::function<bool(T*, T*)>& less_than)
+  explicit Heap(const std::function<bool(T, T)>& less_than)
       : less_than_(less_than) {}
 
   void Reserve(size_t size) { heap_.reserve(size); }
 
-  void Insert(T* n) {
+  void Insert(T n) {
     LazyInsert(n);
     SiftUp(n);
   }
 
-  void LazyInsert(T* n) {
+  void LazyInsert(T n) {
     loc_[n] = heap_.size();
     heap_.push_back(n);
   }
@@ -32,10 +32,10 @@ class Heap {
     heap_.clear();
   }
 
-  T* DeleteMin() {
+  T DeleteMin() {
     if (heap_.empty()) return nullptr;
 
-    T* remove = heap_.front();
+    T remove = heap_.front();
 
     loc_[heap_.back()] = 0;
     heap_.front() = heap_.back();
@@ -48,7 +48,7 @@ class Heap {
     return remove;
   }
 
-  void SiftUp(T* n) {
+  void SiftUp(T n) {
     size_t loc = loc_[n];
     size_t parent = (loc - 1) / 2;
     while (loc > 0 && less_than_(n, heap_[parent])) {
@@ -61,7 +61,7 @@ class Heap {
     loc_[n] = loc;
   }
 
-  void SiftDown(T* n) {
+  void SiftDown(T n) {
     size_t loc = loc_[n];
     size_t child;
     while ((child = loc * 2 + 1) < heap_.size()) {
@@ -77,5 +77,5 @@ class Heap {
     loc_[n] = loc;
   }
 
-  bool contains(T* n) { return loc_.find(n) != loc_.end(); }
+  bool contains(T n) { return loc_.find(n) != loc_.end(); }
 };
