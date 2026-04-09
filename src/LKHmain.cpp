@@ -43,7 +43,7 @@ int LKHmain(Param& pr) {
 
 
   if (problem.type == STTSP) {
-    STTSP2TSP(context.CostMatrix, tsplib.required_nodes_section);
+    context.CostMatrix = STTSP2TSP(tsplib.required_nodes_section);
     Initializer::AllocateSegments(param.tree_type, problem.dimension, context);
   }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <set>
+#include <vector>
 
 #include "type.h"
 
-void STTSP2TSP(std::vector<std::vector<int>>& Matrix, const std::set<NodeIdType> &required);
+std::vector<std::vector<int>> STTSP2TSP(const std::set<NodeIdType> &required);

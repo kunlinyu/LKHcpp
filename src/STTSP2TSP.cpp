@@ -1,4 +1,6 @@
 #include <algorithm>
+#include <map>
+#include <vector>
 
 #include "data/Candidate.h"
 #include "data/Context.h"
@@ -9,8 +11,7 @@
 
 
 
-void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
-               const std::set<NodeIdType> &required) {
+std::vector<std::vector<int>> STTSP2TSP(const std::set<NodeIdType> &required) {
   int NewDimension = 0;
   Node *N1 = context.FirstNode, *N2;
 
@@ -18,7 +19,10 @@ void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
   do {
     if (required.count(N1->Id)) new_index[N1->Id] = NewDimension++;
   } while ((N1 = N1->SucNode()) != context.FirstNode);
+  std::vector<std::vector<int>> Matrix;
+
   Matrix.resize(NewDimension);
+
   for (int i = 0; i < NewDimension; i++) Matrix[i].resize(NewDimension);
   do {
     if (required.count(N1->Id)) {
@@ -66,4 +70,6 @@ void STTSP2TSP(std::vector<std::vector<int>> &Matrix,
   context.FirstNode = &context.node_set.front();
   RingPair<Node>(context.node_set, [](Node &a, Node &b) { Link(a, b); });
   problem.dimension = NewDimension;
+
+  return Matrix;
 }
