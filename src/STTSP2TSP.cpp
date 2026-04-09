@@ -2,6 +2,7 @@
 #include <map>
 #include <vector>
 
+#include "Initializer.h"
 #include "data/Candidate.h"
 #include "data/Context.h"
 #include "data/Problem.h"
@@ -11,16 +12,18 @@
 #include "utils/Heap.h"
 #include "utils/RingPair.h"
 
-std::vector<std::vector<WeightType>> STTSP2TSP(const TSPLIB& tsplib) {
+std::vector<std::vector<WeightType>> STTSP2TSP(const TSPLIB& tsplib, std::vector<Node>& node_set) {
   auto& required = tsplib.required_nodes_section;
   auto& edge_data_section = tsplib.edge_data_section;
   int NewDimension = 0;
-  Node *N1 = context.FirstNode, *N2;
+
+  node_set = Initializer::CreateNodes(tsplib.dimension);
+  Node *N1 = &node_set.front(), *N2;
 
   std::unordered_map<int, int> new_index;
   do {
     if (required.count(N1->Id)) new_index[N1->Id] = NewDimension++;
-  } while ((N1 = N1->SucNode()) != context.FirstNode);
+  } while ((N1 = N1->SucNode()) != &node_set.front());
 
   std::unordered_map<NodeIdType, std::unordered_map<NodeIdType, WeightType>> node_2_edges;
   for (const auto &edge_data : edge_data_section) {
@@ -37,10 +40,10 @@ std::vector<std::vector<WeightType>> STTSP2TSP(const TSPLIB& tsplib) {
       std::set<NodeIdType> target = required;
       auto record = Dijkstra<Node *>(
           N1,
-          [&node_2_edges](Node *node) {
+          [&node_2_edges, &node_set](Node *node) {
             std::vector<std::pair<Node *, WeightType>> neighbors;
             for (const auto &pair : node_2_edges[node->Id])
-              neighbors.emplace_back(&context.node_set[pair.first - 1], pair.second);
+              neighbors.emplace_back(&node_set[pair.first - 1], pair.second);
             return neighbors;
           },
           [target](Node *node) mutable {
@@ -49,7 +52,7 @@ std::vector<std::vector<WeightType>> STTSP2TSP(const TSPLIB& tsplib) {
           });
       N1->Paths.resize(NewDimension + 1);
       int i = new_index[N1->Id];
-      N2 = context.FirstNode;
+      N2 = &node_set.front();
       do {
         if (N2 != N1 && required.count(N2->Id)) {
           int j = new_index[N2->Id];
@@ -59,24 +62,22 @@ std::vector<std::vector<WeightType>> STTSP2TSP(const TSPLIB& tsplib) {
             N1->Paths[j + 1].push_back(N->OriginalId);
           std::reverse(N1->Paths[j + 1].begin(), N1->Paths[j + 1].end());
         }
-      } while ((N2 = N2->SucNode()) != context.FirstNode);
+      } while ((N2 = N2->SucNode()) != &node_set.front());
     }
-  } while ((N1 = N1->SucNode()) != context.FirstNode);
-  context.node_set.erase(
+  } while ((N1 = N1->SucNode()) != &node_set.front());
+  node_set.erase(
       std::remove_if(
-          context.node_set.begin(), context.node_set.end(),
+          node_set.begin(), node_set.end(),
           [&required](const Node &node) { return !required.count(node.Id); }),
-      context.node_set.end());
-  for (auto &node : context.node_set) {
+      node_set.end());
+  for (auto &node : node_set) {
     NodeIdType old_id = node.Id;
     node.index = new_index[old_id];
     node.Id = new_index[old_id] + 1;
     node.candidates.clear();
   }
 
-  context.node_set.resize(NewDimension);
-  context.FirstNode = &context.node_set.front();
-  RingPair<Node>(context.node_set, [](Node &a, Node &b) { Link(a, b); });
+  RingPair<Node>(node_set, [](Node &a, Node &b) { Link(a, b); });
   problem.dimension = NewDimension;
 
   return Matrix;

@@ -43,10 +43,16 @@ int LKHmain(Param& pr) {
 
   Initializer::Init(param, context, context.problem);
 
-
   if (problem.type == STTSP) {
-    context.CostMatrix = STTSP2TSP(tsplib);
-    Initializer::AllocateSegments(param.tree_type, problem.dimension, context);
+    std::vector<Node> node_set;
+    context.problem = Problem(tsplib.required_nodes_section.size(),
+                              STTSP2TSP(tsplib, node_set));
+    Initializer::ReInit(param, context, context.problem);
+    for (size_t i = 0; i < context.node_set.size(); i++) {
+      context.node_set[i].Paths = node_set[i].Paths;
+      context.node_set[i].OriginalId = node_set[i].OriginalId;
+    }
+
   }
 
   POpMUSICCandicateSetCreator popmusic;

@@ -56,6 +56,25 @@ class Initializer {
     if (pr.nonsequential_move_type == -1 || pr.nonsequential_move_type > K)
       pr.nonsequential_move_type = K;
   }
+  static void ReInit(const Param& pr, Context& ctx, const Problem& problem) {
+    ctx.node_set = CreateNodes(problem.dimension);
+    ctx.FirstNode = &ctx.node_set.front();
+
+    ctx.BetterTour.resize(problem.dimension + 1);
+    // ctx.hash_table.init_rand(problem.dimension + 1);
+
+    ctx.CostMatrix = problem.costs();
+
+    SRandom(pr.seed);
+    ctx.Optimum = pr.known_optimum;
+    MoveFunction BestOptMove[] = {
+      nullptr, nullptr, Best2OptMove, Best3OptMove, Best4OptMove, Best5OptMove};
+    ctx.BestMove = BestOptMove[pr.move_type];
+    ctx.BestSubsequentMove = BestOptMove[pr.subsequent_move_type];
+    int K = pr.move_type;
+    if (pr.subsequent_move_type > K) K = pr.subsequent_move_type;
+    AllocateSegments(pr.tree_type, problem.dimension, ctx);
+  }
 
   static void Init(const Param& pr, Context& ctx, const Problem& problem) {
     ctx.node_set = CreateNodes(problem.dimension);

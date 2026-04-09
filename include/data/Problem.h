@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "ProblemType.h"
+#include "plog/Log.h"
 #include "type.h"
 
 class Problem {
