@@ -41,7 +41,7 @@ int LKHmain(Param& pr) {
   PLOGI << variant->chain();
   context.problem = variant->Encode(tsplib);
 
-  Initializer::Init(tsplib, param, context, context.problem);
+  Initializer::Init(param, context, context.problem);
 
 
   if (problem.type == STTSP) {

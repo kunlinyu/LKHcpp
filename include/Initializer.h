@@ -57,7 +57,7 @@ class Initializer {
       pr.nonsequential_move_type = K;
   }
 
-  static void Init(const TSPLIB& tsp, const Param& pr, Context& ctx, const Problem& problem) {
+  static void Init(const Param& pr, Context& ctx, const Problem& problem) {
     ctx.node_set = CreateNodes(problem.dimension);
     ctx.FirstNode = &ctx.node_set.front();
 
