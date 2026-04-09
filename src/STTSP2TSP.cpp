@@ -5,13 +5,15 @@
 #include "data/Candidate.h"
 #include "data/Context.h"
 #include "data/Problem.h"
+#include "data/TSPLIB.h"
+#include "plog/Log.h"
 #include "utils/Dijkstra.h"
 #include "utils/Heap.h"
 #include "utils/RingPair.h"
 
-
-
-std::vector<std::vector<WeightType>> STTSP2TSP(const std::set<NodeIdType> &required) {
+std::vector<std::vector<WeightType>> STTSP2TSP(
+    const std::set<NodeIdType> &required,
+    std::vector<EdgeData> edge_data_section) {
   int NewDimension = 0;
   Node *N1 = context.FirstNode, *N2;
 
@@ -19,8 +21,13 @@ std::vector<std::vector<WeightType>> STTSP2TSP(const std::set<NodeIdType> &requi
   do {
     if (required.count(N1->Id)) new_index[N1->Id] = NewDimension++;
   } while ((N1 = N1->SucNode()) != context.FirstNode);
-  std::vector<std::vector<WeightType>> Matrix;
 
+  std::unordered_map<NodeIdType, std::unordered_map<NodeIdType, WeightType>> node_2_edges;
+  for (const auto &edge_data : edge_data_section) {
+    node_2_edges[edge_data.from].insert(std::make_pair(edge_data.to, edge_data.weight));
+    node_2_edges[edge_data.to].insert(std::make_pair(edge_data.from, edge_data.weight));
+  }
+  std::vector<std::vector<WeightType>> Matrix;
   Matrix.resize(NewDimension);
 
   for (int i = 0; i < NewDimension; i++) Matrix[i].resize(NewDimension);
@@ -29,10 +36,10 @@ std::vector<std::vector<WeightType>> STTSP2TSP(const std::set<NodeIdType> &requi
       std::set<NodeIdType> target = required;
       auto record = Dijkstra<Node *>(
           N1,
-          [](Node *node) {
+          [&node_2_edges](Node *node) {
             std::vector<std::pair<Node *, WeightType>> neighbors;
-            for (const auto &c : node->candidates)
-              neighbors.emplace_back(c->To, c->Cost);
+            for (const auto &pair : node_2_edges[node->Id])
+              neighbors.emplace_back(&context.node_set[pair.first - 1], pair.second);
             return neighbors;
           },
           [target](Node *node) mutable {

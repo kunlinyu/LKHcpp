@@ -3,7 +3,6 @@
 
 #include <cmath>
 
-#include "Distance.h"
 #include "Move.h"
 #include "candidate/CandidateFuncs.h"
 #include "data/Context.h"
@@ -62,14 +61,6 @@ class Initializer {
     ctx.node_set = CreateNodes(problem.dimension);
     ctx.FirstNode = &ctx.node_set.front();
 
-    // TODO: convert id to index
-    for (const auto edge_data : tsp.edge_data_section) {
-      AddCandidate(&ctx.node_set[edge_data.from - 1],
-                   &ctx.node_set[edge_data.to - 1], edge_data.weight, 1);
-      AddCandidate(&ctx.node_set[edge_data.to - 1],
-                   &ctx.node_set[edge_data.from - 1], edge_data.weight, 1);
-    }
-
     ctx.BetterTour.resize(problem.dimension + 1);
     ctx.hash_table.init_rand(problem.dimension + 1);
 
@@ -78,7 +69,7 @@ class Initializer {
     SRandom(pr.seed);
     ctx.Optimum = pr.known_optimum;
     MoveFunction BestOptMove[] = {
-        0, 0, Best2OptMove, Best3OptMove, Best4OptMove, Best5OptMove};
+        nullptr, nullptr, Best2OptMove, Best3OptMove, Best4OptMove, Best5OptMove};
     ctx.BestMove = BestOptMove[pr.move_type];
     ctx.BestSubsequentMove = BestOptMove[pr.subsequent_move_type];
     int K = pr.move_type;
