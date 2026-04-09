@@ -12,6 +12,7 @@
 class VariantBase {
  public:
   virtual ~VariantBase() = default;
+  virtual std::string chain() const { return "VariantBase"; }
   virtual Problem Encode(const TSPLIB& tsplib) = 0;
   virtual Tour Decode(const Tour& tour) { return tour; };
   virtual GainType Penalty() { return 0; }

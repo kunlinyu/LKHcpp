@@ -38,6 +38,7 @@ int LKHmain(Param& pr) {
   context.StartTime = LastTime = GetTime();
 
   std::unique_ptr<VariantBase> variant = VariantFactory::CreateVariant(tsplib);
+  PLOGI << variant->chain();
   context.problem = variant->Encode(tsplib);
 
   Initializer::Init(tsplib, param, context, context.problem);

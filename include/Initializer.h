@@ -73,47 +73,7 @@ class Initializer {
     ctx.BetterTour.resize(problem.dimension + 1);
     ctx.hash_table.init_rand(problem.dimension + 1);
 
-    int (*Distance)(const Coordinate* Na, const Coordinate* Nb) = nullptr;
-    switch (tsp.edge_weight_type) {
-        // clang-format off
-      case EXPLICIT: break;
-      case ATT: Distance = Distance_ATT; break;
-      case EUC_2D: Distance = Distance_EUC_2D; break;
-      case EUC_3D: Distance = Distance_EUC_3D; break;
-      case MAX_2D: Distance = Distance_MAX_2D; break;
-      case MAX_3D: Distance = Distance_MAN_3D; break;
-      case MAN_2D: Distance = Distance_MAN_2D; break;
-      case MAN_3D: Distance = Distance_MAN_3D; break;
-      case CEIL_2D: Distance = Distance_CEIL_2D; break;
-      case CEIL_3D: Distance = Distance_CEIL_3D; break;
-      case GEO: Distance = Distance_GEO; break;
-      case GEOM: Distance = Distance_GEOM; break;
-      case GEO_MEEUS: Distance = Distance_GEO_MEEUS; break;
-      case GEOM_MEEUS: Distance = Distance_GEOM_MEEUS; break;
-      case XRAY1: Distance = Distance_XRAY1; break;
-      case XRAY2: Distance = Distance_XRAY2; break;
-        // clang-format on
-      default:
-        PLOGF << "Unsupported edge weight type: " << tsp.edge_weight_type;
-    }
-
-    // ctx.CostMatrix = problem.costs();
-    ctx.CostMatrix.resize(problem.dimension);
-    for (int i = 0; i < problem.dimension; i++)
-      ctx.CostMatrix[i].resize(problem.dimension);
-
-    if (Distance != nullptr)
-      for (int i = 0; i < problem.dimension; i++) {
-        Node& Ni = ctx.node_set[i];
-        for (int j = i + 1; j < problem.dimension; j++) {
-          Node& Nj = ctx.node_set[j];
-          const Coordinate& coord_i = tsp.node_coord_section.at(Ni.Id);
-          const Coordinate& coord_j = tsp.node_coord_section.at(Nj.Id);
-          int cost = Distance(&coord_i, &coord_j);
-          ctx.CostMatrix[i][j] = cost;
-          ctx.CostMatrix[j][i] = cost;
-        }
-      }
+    ctx.CostMatrix = problem.costs();
 
     SRandom(pr.seed);
     ctx.Optimum = pr.known_optimum;

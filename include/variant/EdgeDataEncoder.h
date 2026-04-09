@@ -10,6 +10,9 @@
 
 class EdgeDataEncoder : public VariantBase {
  public:
+  std::string chain() const override {
+    return "EdgeDataEncoder -> " + VariantBase::chain();
+  }
   Problem Encode(const TSPLIB& tsplib) override {
     std::set<NodeIdType> id_set;
     for (const auto& edge_data : tsplib.edge_data_section) {

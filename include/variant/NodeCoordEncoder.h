@@ -13,6 +13,9 @@
 
 class NodeCoordEncoder : public VariantBase {
  public:
+  std::string chain() const override {
+    return "NodeCoordEncoder -> " + VariantBase::chain();
+  }
   Problem Encode(const TSPLIB& tsplib) override {
     int (*Distance)(const Coordinate* Na, const Coordinate* Nb) = nullptr;
     switch (tsplib.edge_weight_type) {

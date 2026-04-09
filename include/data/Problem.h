@@ -18,7 +18,8 @@ class Problem {
 
  public:
   Problem() = default;
-  Problem(int dimension, const std::function<WeightType(size_t, size_t)>& costs) {
+  Problem(int dimension,
+          const std::function<WeightType(size_t, size_t)>& costs) {
     init(dimension, costs);
   }
   Problem(int dimension, const std::vector<std::vector<WeightType>> costs) {
@@ -33,10 +34,10 @@ class Problem {
     costs_.resize(dimension);
     for (size_t i = 0; i < dimension; i++) {
       costs_[i].resize(dimension);
-      for (size_t j = 0; j < i; j++) costs_[i][j] = costs(i, j);
+      for (size_t j = 0; j < i; j++) costs_[i][j] = costs_[j][i] = costs(i, j);
     }
   }
-  WeightType get(size_t i, size_t j) {
+  WeightType get(size_t i, size_t j) const {
     assert(i < dimension);
     assert(j < dimension);
     return costs_[i][j];
