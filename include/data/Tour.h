@@ -11,6 +11,8 @@
 
 struct Tour {
   std::vector<NodeIdType> node_ids;
+  Tour() = default;
+  explicit Tour(const std::vector<NodeIdType>& node_ids) : node_ids(node_ids) {}
 };
 
 struct TourFile {

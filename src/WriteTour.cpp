@@ -33,15 +33,15 @@ void WriteTourFile(std::ostream& os, const TourFile& tour_file) {
   os << "-1\nEOF\n";
 }
 
-TourFile TourFileSTTSP(const TourFile& tour_file) {
-  TourFile result = tour_file;
+Tour TourFileSTTSP(const Tour& tour) {
+  Tour result = tour;
   result.node_ids.clear();
-  for (size_t i = 0; i < tour_file.node_ids.size(); i++) {
+  for (size_t i = 0; i < tour.node_ids.size(); i++) {
     size_t next_i = i + 1;
-    if (next_i >= tour_file.node_ids.size()) next_i = 0;
+    if (next_i >= tour.node_ids.size()) next_i = 0;
 
-    NodeIdType a = tour_file.node_ids[i];
-    NodeIdType b = tour_file.node_ids[next_i];
+    NodeIdType a = tour.node_ids[i];
+    NodeIdType b = tour.node_ids[next_i];
 
     // TODO: convert id to index
     result.node_ids.push_back(context.node_set[a - 1].OriginalId);
@@ -93,7 +93,8 @@ void WriteTour(const std::string& FileName, const std::vector<NodeIdType>& tour,
     if (i > problem.dimension) i = 1;
     if (i < 1) i = problem.dimension;
   }
-  if (problem.type == STTSP) tour_file = TourFileSTTSP(tour_file);
+  if (problem.type == STTSP)
+    tour_file.node_ids = TourFileSTTSP(Tour(tour_file.node_ids)).node_ids;
   WriteTourFile(ofs, tour_file);
   ofs.close();
 }
