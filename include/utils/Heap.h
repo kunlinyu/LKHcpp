@@ -35,7 +35,7 @@ class Heap {
   }
 
   T DeleteMin() {
-    if (heap_.empty()) return nullptr;
+    if (heap_.empty()) return 0;
 
     T remove = heap_.front();
 

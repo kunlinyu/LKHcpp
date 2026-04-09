@@ -11,9 +11,9 @@
 #include "utils/Heap.h"
 #include "utils/RingPair.h"
 
-std::vector<std::vector<WeightType>> STTSP2TSP(
-    const std::set<NodeIdType> &required,
-    std::vector<EdgeData> edge_data_section) {
+std::vector<std::vector<WeightType>> STTSP2TSP(const TSPLIB& tsplib) {
+  auto& required = tsplib.required_nodes_section;
+  auto& edge_data_section = tsplib.edge_data_section;
   int NewDimension = 0;
   Node *N1 = context.FirstNode, *N2;
 
@@ -27,6 +27,7 @@ std::vector<std::vector<WeightType>> STTSP2TSP(
     node_2_edges[edge_data.from].insert(std::make_pair(edge_data.to, edge_data.weight));
     node_2_edges[edge_data.to].insert(std::make_pair(edge_data.from, edge_data.weight));
   }
+
   std::vector<std::vector<WeightType>> Matrix;
   Matrix.resize(NewDimension);
 
