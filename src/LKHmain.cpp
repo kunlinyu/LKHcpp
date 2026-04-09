@@ -31,8 +31,6 @@ int LKHmain(Param& pr) {
 
   // set to global variables
   param = pr;
-  problem.dimension = tsplib.dimension;
-  problem.type = tsplib.type;
 
   double LastTime;
   context.StartTime = LastTime = GetTime();
@@ -40,21 +38,10 @@ int LKHmain(Param& pr) {
   std::unique_ptr<VariantBase> variant = VariantFactory::CreateVariant(tsplib);
   PLOGI << variant->chain();
   context.problem = variant->Encode(tsplib);
-
-  std::vector<Node> node_set;
-  if (problem.type == STTSP) {
-    context.problem = Problem(tsplib.required_nodes_section.size(),
-                              STTSP2TSP(tsplib, node_set));
-  }
+  context.problem.type = tsplib.type;
+  problem = context.problem;
 
   Initializer::Init(param, context, context.problem);
-
-  if (problem.type == STTSP) {
-    for (size_t i = 0; i < context.node_set.size(); i++) {
-      context.node_set[i].Paths = node_set[i].Paths;
-      context.node_set[i].OriginalId = node_set[i].OriginalId;
-    }
-  }
 
   POpMUSICCandicateSetCreator popmusic;
   popmusic.set_initial_tour(param.popmusic_initial_tour);
@@ -76,7 +63,10 @@ int LKHmain(Param& pr) {
     context.Optimum = BestCost = (GainType)LowerBound;
     RecordBetterTour(context.BetterTour, context.FirstNode);
     BestTour = context.BetterTour;
-    WriteTour(param.tour_filename, BestTour, BestCost);
+
+    Tour tour = ExtractFinalTour(BestTour);
+    tour = variant->Decode(tour);
+    WriteTour(param.tour_filename, tour, BestCost);
     param.runs = 0;
     return EXIT_SUCCESS;
   }
@@ -91,7 +81,9 @@ int LKHmain(Param& pr) {
       BestCost = Cost;
       RecordBetterTour(context.BetterTour, context.FirstNode);
       BestTour = context.BetterTour;
-      WriteTour(param.tour_filename, BestTour, BestCost);
+      Tour tour = ExtractFinalTour(BestTour);
+      tour = variant->Decode(tour);
+      WriteTour(param.tour_filename, tour, BestCost);
     }
 
     GainType OldOptimum = context.Optimum;

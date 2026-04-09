@@ -6,7 +6,22 @@
 #include "data/TSPLIB.h"
 #include "data/Tour.h"
 #include "plog/Log.h"
+/*
+ * The ReplaceCost function returns a copy of the string Name where all
+ * occurrences of the character '$' have been replaced by Cost.
+ */
 
+std::string ReplaceCost(const char* Name, GainType Cost) {
+  std::string result(Name);
+  const std::string cost_str = std::to_string(Cost);
+
+  size_t pos = 0;
+  while ((pos = result.find('$', pos)) != std::string::npos) {
+    result.replace(pos, 1, cost_str);
+    pos += cost_str.length();
+  }
+  return result;
+}
 /*
  * The WriteTour function writes a tour to file. The tour
  * is written in TSPLIB format to file FileName.
@@ -17,7 +32,6 @@
  *
  * Nothing happens if FileName is 0.
  */
-std::string FullName(const char* Name, GainType Cost);
 
 void WriteTourFile(std::ostream& os, const TourFile& tour_file) {
   os << "NAME : " << tour_file.name << "\n";
@@ -34,8 +48,7 @@ void WriteTourFile(std::ostream& os, const TourFile& tour_file) {
 }
 
 Tour TourFileSTTSP(const Tour& tour) {
-  Tour result = tour;
-  result.node_ids.clear();
+  Tour result;
   for (size_t i = 0; i < tour.node_ids.size(); i++) {
     size_t next_i = i + 1;
     if (next_i >= tour.node_ids.size()) next_i = 0;
@@ -51,41 +64,24 @@ Tour TourFileSTTSP(const Tour& tour) {
   return result;
 }
 
-void WriteTour(const std::string& FileName, const std::vector<NodeIdType>& tour,
-               GainType Cost) {
-  if (FileName.empty()) return;
-  std::string FullFileName = FullName(FileName.c_str(), Cost);
-  PLOGI << "Writing: " << FullFileName;
-  std::ofstream ofs(FullFileName, std::ios::binary);
-  if (!ofs.is_open()) {
-    PLOGF << "WriteTour: Cannot open " << FullFileName;
-  }
-
-  TourFile tour_file;
-  size_t found = FullFileName.find_last_of("/\\");
-  tour_file.name = found != std::string::npos ? FullFileName.substr(found + 1)
-                                              : FullFileName;
-  tour_file.type = "TOUR";
-  tour_file.comments.emplace_back("Length = " + std::to_string(Cost));
-  tour_file.comments.emplace_back("Found by LKH-3 [Keld Helsgaun]");
-  tour_file.dimension = problem.dimension;
-
+Tour ExtractFinalTour(const std::vector<NodeIdType>& ids) {
   int i;
-  for (i = 1; i < problem.dimension && tour[i] != DepotIndex; i++);
+  for (i = 1; i < problem.dimension && ids[i] != DepotIndex; i++);
   PLOGI << "i value : " << i;
-  bool Forward = tour[i < problem.dimension ? i + 1 : 1] <
-                 tour[i > 1 ? i - 1 : problem.dimension];
+  bool Forward = ids[i < problem.dimension ? i + 1 : 1] <
+                 ids[i > 1 ? i - 1 : problem.dimension];
   if (Forward) {
     LOGI << "Tour direction: forward";
   } else {
     LOGI << "Tour direction: backward";
   }
 
+  Tour tour;
   i = 1;
   for (int j = 1; j <= problem.dimension; j++) {
-    NodeIdType a = tour[i];
+    NodeIdType a = ids[i];
     if (a <= problem.dimension)
-      tour_file.node_ids.push_back(a);
+      tour.node_ids.push_back(a);
     else
       LOGE << "Warning: Node " << a
            << " is out of range and will be skipped in the tour file.";
@@ -93,25 +89,40 @@ void WriteTour(const std::string& FileName, const std::vector<NodeIdType>& tour,
     if (i > problem.dimension) i = 1;
     if (i < 1) i = problem.dimension;
   }
-  if (problem.type == STTSP)
-    tour_file.node_ids = TourFileSTTSP(Tour(tour_file.node_ids)).node_ids;
-  WriteTourFile(ofs, tour_file);
-  ofs.close();
+  return tour;
 }
 
-/*
- * The FullName function returns a copy of the string Name where all
- * occurrences of the character '$' have been replaced by Cost.
- */
+TourFile CreateTourFile(const Tour& tour, const std::string& name,
+                        GainType cost) {
+  TourFile tour_file;
+  tour_file.name = name;
+  tour_file.type = "TOUR";
+  tour_file.comments.emplace_back("Length = " + std::to_string(cost));
+  tour_file.comments.emplace_back("Found by LKH-3 [Keld Helsgaun]");
+  tour_file.dimension = problem.dimension;
+  tour_file.node_ids = tour.node_ids;
+  return tour_file;
+}
 
-std::string FullName(const char* Name, GainType Cost) {
-  std::string result(Name);
-  const std::string cost_str = std::to_string(Cost);
+inline std::string FileName(const std::string& file_path) {
+  size_t found = file_path.find_last_of("/\\");
+  if (found == std::string::npos) return file_path;
+  return file_path.substr(found + 1);
+}
 
-  size_t pos = 0;
-  while ((pos = result.find('$', pos)) != std::string::npos) {
-    result.replace(pos, 1, cost_str);
-    pos += cost_str.length();
+void WriteTour(const std::string& file_path, const Tour& tour,
+               GainType Cost) {
+  if (file_path.empty()) return;
+  std::string file_path_cost = ReplaceCost(file_path.c_str(), Cost);
+  PLOGI << "Writing: " << file_path_cost;
+
+  std::string name = FileName(file_path_cost);
+  TourFile tour_file = CreateTourFile(tour, name, Cost);
+
+  std::ofstream ofs(file_path_cost, std::ios::binary);
+  if (!ofs.is_open()) {
+    PLOGF << "WriteTour: Cannot open " << file_path_cost;
   }
-  return result;
+  WriteTourFile(ofs, tour_file);
+  ofs.close();
 }

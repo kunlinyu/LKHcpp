@@ -11,7 +11,7 @@
 #include "data/Node.h"
 #include "utils/Dijkstra.h"
 
-class STTSPVariant : public EdgeDataEncoder {
+class STTSPVariant : public VariantBase {
  private:
   std::vector<Node> node_set;
 
@@ -88,7 +88,6 @@ class STTSPVariant : public EdgeDataEncoder {
     }
 
     RingPair<Node>(node_set, [](Node &a, Node &b) { Link(a, b); });
-    problem.dimension = NewDimension;
 
     return Problem(NewDimension, Matrix);
   }
@@ -103,7 +102,8 @@ class STTSPVariant : public EdgeDataEncoder {
 
       // TODO: convert id to index
       result.node_ids.push_back(node_set[a - 1].OriginalId);
-      for (const int k : node_set[a - 1].Paths[b]) result.node_ids.push_back(k);
+      for (const int k : node_set[a - 1].Paths[b])
+        result.node_ids.push_back(k);
     }
     return result;
   };

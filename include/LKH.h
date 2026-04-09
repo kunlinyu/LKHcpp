@@ -2,6 +2,7 @@
 
 #include "candidate/POpMUSICCandidateSetCreator.h"
 #include "data/Problem.h"
+#include "data/Tour.h"
 #include "type.h"
 
 GainType Ascent(POpMUSICCandicateSetCreator& popmusic);
@@ -15,8 +16,10 @@ GainType Gain23();
 int Improvement(GainType* Gain, Node* t1, Node* SUCt1);
 
 void RestoreTour();
-void WriteTour(const std::string& FileName, const std::vector<NodeIdType>& tour,
+void WriteTour(const std::string& file_path, const Tour& tour,
                GainType Cost);
+Tour ExtractFinalTour(const std::vector<NodeIdType>& ids);
+Tour TourFileSTTSP(const Tour& tour);
 
 bool Excludable(Node* ta, Node* tb);
 void Exclude(Node* ta, Node* tb);

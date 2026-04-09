@@ -75,7 +75,6 @@ std::vector<std::vector<WeightType>> STTSP2TSP(const TSPLIB& tsplib, std::vector
   }
 
   RingPair<Node>(node_set, [](Node &a, Node &b) { Link(a, b); });
-  problem.dimension = NewDimension;
 
   return Matrix;
 }
