@@ -3,11 +3,8 @@
 #include <vector>
 
 #include "Initializer.h"
-#include "data/Candidate.h"
-#include "data/Context.h"
 #include "data/Problem.h"
 #include "data/TSPLIB.h"
-#include "plog/Log.h"
 #include "utils/Dijkstra.h"
 #include "utils/Heap.h"
 #include "utils/RingPair.h"

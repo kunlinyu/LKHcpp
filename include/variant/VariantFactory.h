@@ -9,10 +9,13 @@
 #include "EdgeDataEncoder.h"
 #include "NodeCoordEncoder.h"
 #include "VariantBase.h"
+#include "STTSPVariant.h"
 
 class VariantFactory {
  public:
   static std::unique_ptr<VariantBase> CreateVariant(const TSPLIB& tsplib) {
+    // if (tsplib.type == STTSP)
+    //   return std::unique_ptr<VariantBase>(new STTSPVariant());
     if (not tsplib.edge_data_section.empty())
       return std::unique_ptr<VariantBase>(new EdgeDataEncoder());
     if (not tsplib.node_coord_section.empty())
