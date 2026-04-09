@@ -4,4 +4,4 @@
 
 #include "type.h"
 
-std::vector<std::vector<int>> STTSP2TSP(const std::set<NodeIdType> &required);
+std::vector<std::vector<WeightType>> STTSP2TSP(const std::set<NodeIdType> &required);

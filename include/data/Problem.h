@@ -14,6 +14,7 @@ class Problem {
  public:
   ProblemType type = UNKNOW_PROBLEM;
   size_t dimension = 0;
+  const std::vector<std::vector<WeightType>>& costs() const { return costs_; }
 
  public:
   Problem() = default;

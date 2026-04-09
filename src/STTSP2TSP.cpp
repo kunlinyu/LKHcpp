@@ -11,7 +11,7 @@
 
 
 
-std::vector<std::vector<int>> STTSP2TSP(const std::set<NodeIdType> &required) {
+std::vector<std::vector<WeightType>> STTSP2TSP(const std::set<NodeIdType> &required) {
   int NewDimension = 0;
   Node *N1 = context.FirstNode, *N2;
 
@@ -19,7 +19,7 @@ std::vector<std::vector<int>> STTSP2TSP(const std::set<NodeIdType> &required) {
   do {
     if (required.count(N1->Id)) new_index[N1->Id] = NewDimension++;
   } while ((N1 = N1->SucNode()) != context.FirstNode);
-  std::vector<std::vector<int>> Matrix;
+  std::vector<std::vector<WeightType>> Matrix;
 
   Matrix.resize(NewDimension);
 

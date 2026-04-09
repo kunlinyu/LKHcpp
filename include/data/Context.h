@@ -37,8 +37,8 @@ struct Context {
                                              // as a tour length becomes equal
                                              // this value
 
-  std::vector<std::vector<int>> CostMatrix;  // Cost matrix of the problem
-  std::vector<std::vector<int>> DMatrix;     // CostMatrix + Nodes' Pi values
+  std::vector<std::vector<WeightType>> CostMatrix;  // Cost matrix of the problem
+  std::vector<std::vector<WeightType>> DMatrix;     // CostMatrix + Nodes' Pi values
 
   bool Reversed =
       false;  // Boolean used to indicate whether a tour has been reversed
@@ -56,10 +56,10 @@ struct Context {
   std::function<int(const Node *, const Node *)> D =
       [this](const Node *Na, const Node *Nb) { return D_EXPLICIT(Na, Nb); };
 
-  int C_EXPLICIT(const Node *Na, const Node *Nb) {
+  WeightType C_EXPLICIT(const Node *Na, const Node *Nb) {
     return CostMatrix[Na->index][Nb->index];
   }
-  int D_EXPLICIT(const Node *Na, const Node *Nb) {
+  WeightType D_EXPLICIT(const Node *Na, const Node *Nb) {
     return C_EXPLICIT(Na, Nb) + Na->Pi + Nb->Pi;
   }
 

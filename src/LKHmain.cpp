@@ -36,10 +36,11 @@ int LKHmain(Param& pr) {
 
   double LastTime;
   context.StartTime = LastTime = GetTime();
-  Initializer::Init(tsplib, param, context);
 
   std::unique_ptr<VariantBase> variant = VariantFactory::CreateVariant(tsplib);
   context.problem = variant->Encode(tsplib);
+
+  Initializer::Init(tsplib, param, context, context.problem);
 
 
   if (problem.type == STTSP) {

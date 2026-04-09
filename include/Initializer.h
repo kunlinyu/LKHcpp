@@ -58,8 +58,8 @@ class Initializer {
       pr.nonsequential_move_type = K;
   }
 
-  static void Init(const TSPLIB& tsp, const Param& pr, Context& ctx) {
-    ctx.node_set = CreateNodes(tsp.dimension);
+  static void Init(const TSPLIB& tsp, const Param& pr, Context& ctx, const Problem& problem) {
+    ctx.node_set = CreateNodes(problem.dimension);
     ctx.FirstNode = &ctx.node_set.front();
 
     // TODO: convert id to index
@@ -70,8 +70,8 @@ class Initializer {
                    &ctx.node_set[edge_data.from - 1], edge_data.weight, 1);
     }
 
-    ctx.BetterTour.resize(tsp.dimension + 1);
-    ctx.hash_table.init_rand(tsp.dimension + 1);
+    ctx.BetterTour.resize(problem.dimension + 1);
+    ctx.hash_table.init_rand(problem.dimension + 1);
 
     int (*Distance)(const Coordinate* Na, const Coordinate* Nb) = nullptr;
     switch (tsp.edge_weight_type) {
@@ -97,14 +97,15 @@ class Initializer {
         PLOGF << "Unsupported edge weight type: " << tsp.edge_weight_type;
     }
 
-    ctx.CostMatrix.resize(tsp.dimension);
-    for (int i = 0; i < tsp.dimension; i++)
-      ctx.CostMatrix[i].resize(tsp.dimension);
+    // ctx.CostMatrix = problem.costs();
+    ctx.CostMatrix.resize(problem.dimension);
+    for (int i = 0; i < problem.dimension; i++)
+      ctx.CostMatrix[i].resize(problem.dimension);
 
     if (Distance != nullptr)
-      for (int i = 0; i < tsp.dimension; i++) {
+      for (int i = 0; i < problem.dimension; i++) {
         Node& Ni = ctx.node_set[i];
-        for (int j = i + 1; j < tsp.dimension; j++) {
+        for (int j = i + 1; j < problem.dimension; j++) {
           Node& Nj = ctx.node_set[j];
           const Coordinate& coord_i = tsp.node_coord_section.at(Ni.Id);
           const Coordinate& coord_j = tsp.node_coord_section.at(Nj.Id);
@@ -122,7 +123,7 @@ class Initializer {
     ctx.BestSubsequentMove = BestOptMove[pr.subsequent_move_type];
     int K = pr.move_type;
     if (pr.subsequent_move_type > K) K = pr.subsequent_move_type;
-    AllocateSegments(pr.tree_type, tsp.dimension, ctx);
+    AllocateSegments(pr.tree_type, problem.dimension, ctx);
   }
 
   // The AllocateSegments function allocates the segments of the two-level tree.
