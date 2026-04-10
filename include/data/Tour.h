@@ -4,9 +4,9 @@
 // @date 2026-04-07
 
 #pragma once
+#include <limits>
 #include <string>
 #include <vector>
-#include <limits>
 
 #include "type.h"
 
@@ -14,7 +14,8 @@ struct Tour {
   std::vector<NodeIdType> node_ids;
   GainType cost = std::numeric_limits<GainType>::max();
   Tour() = default;
-  Tour(const std::vector<NodeIdType>& node_ids, GainType cost) : node_ids(node_ids), cost(cost) {}
+  Tour(const std::vector<NodeIdType>& node_ids, GainType cost)
+      : node_ids(node_ids), cost(cost) {}
 };
 
 struct TourFile {
@@ -23,4 +24,18 @@ struct TourFile {
   std::vector<std::string> comments;
   size_t dimension = 0;
   Tour tour;
+
+  void write(std::ostream& os) {
+    os << "NAME : " << name << "\n";
+    for (const auto& comment : comments) {
+      os << "COMMENT : " << comment << "\n";
+    }
+    os << "TYPE : " << type << "\n";
+    os << "DIMENSION : " << dimension << "\n";
+    os << "TOUR_SECTION\n";
+    for (const auto& node : tour.node_ids) {
+      os << node << "\n";
+    }
+    os << "-1\nEOF\n";
+  }
 };

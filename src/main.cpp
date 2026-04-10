@@ -12,9 +12,8 @@
 #include "data/TSPLIBReader.h"
 #include "data/Tour.h"
 
-TourFile LKHmain(Param& pr, const TSPLIB& tsplib);
+TourFile Solve(Param& pr, const TSPLIB& tsplib);
 Param ReadJsonParameters(const std::string& filename);
-void WriteTourFile(std::ostream& os, const TourFile& tour_file);
 
 std::string ReplaceCost(const char* Name, GainType Cost);
 
@@ -85,11 +84,12 @@ int main(int argc, char* argv[]) {
 
   PLOGD << "Command line arguments parsed.";
 
+  // ******** Read parameters ********
   Param pr = ReadJsonParameters(param_filename);
   if (not problem_filename.empty()) pr.tsplib_filename = problem_filename;
-
   pr.Patch(param_cli);
 
+  // ******** Read TSPLIB ********
   std::ifstream fproblem(pr.tsplib_filename.c_str());
   if (!fproblem.is_open()) {
     PLOGE << "TSPLIB file " << pr.tsplib_filename << " not found ";
@@ -97,18 +97,19 @@ int main(int argc, char* argv[]) {
   }
   const TSPLIB tsplib = TSPLIBReader::Read(fproblem);
 
-  TourFile tour_file = LKHmain(pr, tsplib);
+  // ******** solve the problem ********
+  TourFile tour_file = Solve(pr, tsplib);
 
+  // ******** write to tour file ********
   std::string file_path_cost =
       ReplaceCost(param.tour_filename.c_str(), tour_file.tour.cost);
   PLOGI << "Writing: " << file_path_cost;
-
   std::ofstream ofs(file_path_cost, std::ios::binary);
-  if (!ofs.is_open()) {
-    PLOGE << "WriteTour: Cannot open " << file_path_cost;
-  } else {
-    WriteTourFile(ofs, tour_file);
+  if (ofs.is_open()) {
+    tour_file.write(ofs);
     ofs.close();
+  } else {
+    PLOGE << "Cannot open " << file_path_cost;
   }
 
   return EXIT_SUCCESS;

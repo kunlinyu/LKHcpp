@@ -87,7 +87,7 @@ Tour Solve(Param& pr, const Problem& problem) {
   return best_tour;
 }
 
-TourFile LKHmain(Param& pr, const TSPLIB& tsplib) {
+TourFile Solve(Param& pr, const TSPLIB& tsplib) {
   pr.adjust(tsplib.dimension);
 
   std::unique_ptr<VariantBase> variant = VariantFactory::Create(tsplib);
@@ -107,6 +107,4 @@ TourFile LKHmain(Param& pr, const TSPLIB& tsplib) {
   tour_file.tour = tour;
 
   return tour_file;
-
-  WriteTour(param.tour_filename, tour, tour.cost);
 }
