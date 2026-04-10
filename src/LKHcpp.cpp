@@ -8,6 +8,8 @@
 #include "Initializer.h"
 #include "LKH.h"
 #include "data/Context.h"
+#include "data/ParamReader.h"
+#include "data/TSPLIBReader.h"
 #include "utils/GetTime.h"
 #include "variant/VariantFactory.h"
 
@@ -101,4 +103,12 @@ TourFile LKHcpp::Solve(const Param& pr, const TSPLIB& tsplib) {
   tour_file.tour = tour;
 
   return tour_file;
+}
+
+void LKHcpp::Solve(std::istream& param_json, std::istream& tsplib_text,
+                   std::ostream& tour_text) {
+  Param pr = ParamReader::ReadStream(param_json);
+  TSPLIB tsplib = TSPLIBReader::Read(tsplib_text);
+  TourFile tour_file = Solve(pr, tsplib);
+  tour_file.write(tour_text);
 }

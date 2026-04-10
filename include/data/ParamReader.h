@@ -33,27 +33,36 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(
     salesmen)
 
 class ParamReader {
- public:
-  static Param Read(const std::string &filename) {
-    std::ifstream parameter_file(filename);
-    if (!parameter_file.is_open())
-      throw std::invalid_argument("Cannot open parameter file");
-
+ private:
+  template <typename ParseFunc>
+  static Param Read(ParseFunc parse) {
     try {
-      nlohmann::json j;
-      parameter_file >> j;
+      nlohmann::json j = parse();
       Param p = j;
-      PLOGI << "Json parameter file read:";
-      PLOGI << "\n" << j.dump(2);
+      LOGI << "Json parameter read:";
+      LOGI << "\n" << j.dump(2);
       return p;
-    } catch (const nlohmann::json::parse_error &e) {
-      PLOGE << "parse parameter error: " << e.what();
+    } catch (const nlohmann::json::parse_error& e) {
+      LOGE << "parse parameter error: " << e.what();
       throw std::invalid_argument("Error parsing parameter file: " +
                                   std::string(e.what()));
-    } catch (const nlohmann::json::type_error &e) {
-      PLOGE << "parse parameter error: " << e.what();
+    } catch (const nlohmann::json::type_error& e) {
+      LOGE << "parse parameter error: " << e.what();
       throw std::invalid_argument("Error in parameter types: " +
                                   std::string(e.what()));
     }
+  }
+
+ public:
+  static Param ReadString(const std::string& param_json) {
+    return Read([&]() { return nlohmann::json::parse(param_json); });
+  }
+
+  static Param ReadStream(std::istream& is) {
+    return Read([&]() {
+      nlohmann::json j;
+      is >> j;
+      return j;
+    });
   }
 };

@@ -14,4 +14,6 @@ class LKHcpp {
  public:
   static Tour Solve(const Param& param, const Problem& problem);
   static TourFile Solve(const Param& param, const TSPLIB& tsplib);
+  static void Solve(std::istream& param_json, std::istream& tsplib_text,
+                    std::ostream& tour_text);
 };

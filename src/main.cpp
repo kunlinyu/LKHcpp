@@ -82,12 +82,18 @@ int main(int argc, char* argv[]) {
   PLOGD << "Command line arguments parsed.";
 
   // ******** Read parameters ********
-  Param pr = ParamReader::Read(param_filename);
-  if (not problem_filename.empty()) pr.tsplib_filename = problem_filename;
+  std::ifstream fparam(param_filename);
+  if (!fparam.is_open()) {
+    PLOGE << "param file " << param_filename << " not found ";
+    return EXIT_FAILURE;
+  }
+  Param pr = ParamReader::ReadStream(fparam);
+  // patch by command line arguments
   pr.Patch(param_cli);
+  if (not problem_filename.empty()) pr.tsplib_filename = problem_filename;
 
   // ******** Read TSPLIB ********
-  std::ifstream fproblem(pr.tsplib_filename.c_str());
+  std::ifstream fproblem(pr.tsplib_filename);
   if (!fproblem.is_open()) {
     PLOGE << "TSPLIB file " << pr.tsplib_filename << " not found ";
     return EXIT_FAILURE;
