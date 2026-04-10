@@ -20,7 +20,7 @@
  * The function returns the cost of the resulting tour.
  */
 void StoreTour(const std::function<void(Node *)> &enqueue);
-GainType LinKernighan(const std::atomic<bool>& stop) {
+GainType LinKernighan(const std::atomic<bool> &stop) {
   GainType Gain;
   int log_counter = 0;
   int X2, i;
@@ -154,7 +154,7 @@ GainType LinKernighan(const std::atomic<bool>& stop) {
           << StatusReport(Cost, EntryTime, " + ");
       if (context.hash_table.search(Cost)) goto End_LinKernighan;
     }
-  } while (Gain > 0 and !stop);
+  } while (Gain > 0 and !stop.load(std::memory_order_acquire));
 End_LinKernighan:
   NormalizeNodeList();
   NormalizeSegmentList();

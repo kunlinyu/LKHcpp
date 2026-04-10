@@ -23,5 +23,7 @@ class LKHcpp {
   void Solve(std::istream& param_json, std::istream& tsplib_text,
              std::ostream& tour_text);
 
-  void stop() { stop_.store(true); }
+  void stop() {
+    stop_.store(true, std::memory_order_release);
+  }
 };

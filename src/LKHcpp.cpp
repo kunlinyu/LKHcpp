@@ -55,11 +55,13 @@ Tour LKHcpp::Solve(const Param& pr, const Problem& pb) {
   GainType OrdinalTourCost = 0;
   OrdinalTourCost = CalcOrdinalTourCost();
   Tour best_tour;
-  for (int Run = 1; Run <= param.runs and !stop_; Run++) {
+  for (int Run = 1;
+       Run <= param.runs and !stop_.load(std::memory_order_acquire); Run++) {
     LastTime = GetTime();
 
     // using the Lin-Kernighan heuristic
-    GainType Cost = FindTour(OrdinalTourCost, stop_);
+    GainType Cost =
+        FindTour(OrdinalTourCost, stop_);
     if (Cost < BestCost) {
       BestCost = Cost;
       RecordBetterTour(context.BetterTour, context.FirstNode);
@@ -132,6 +134,7 @@ TourFile LKHcpp::Solve(const Param& pr, const TSPLIB& tsplib) {
   std::unique_ptr<VariantBase> variant = VariantFactory::Create(tsplib);
   PLOGI << "Encode problem with variant: " << variant->chain();
   Problem problem = variant->Encode(tsplib);
+  if (stop_.load(std::memory_order_acquire)) return TourFile();
 
   Tour tour;
   if (param.threads <= 1)

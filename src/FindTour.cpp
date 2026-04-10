@@ -35,7 +35,7 @@ GainType CalcOrdinalTourCost() {
 
 GainType MergeWithTourIPT();
 
-GainType FindTour(GainType OrdinalTourCost, const std::atomic<bool>& stop) {
+GainType FindTour(GainType OrdinalTourCost, const std::atomic<bool> &stop) {
   const double EntryTime = GetTime();
 
   Node *t = context.FirstNode;
@@ -51,7 +51,9 @@ GainType FindTour(GainType OrdinalTourCost, const std::atomic<bool>& stop) {
     context.Trial = 1;
     ChooseInitialTour(context.FirstNode);
   }
-  for (context.Trial = 1; context.Trial <= param.max_trials and !stop; context.Trial++) {
+  for (context.Trial = 1; context.Trial <= param.max_trials and
+                          !stop.load(std::memory_order_acquire);
+       context.Trial++) {
     if (GetTime() - EntryTime >= param.time_limit ||
         GetTime() - context.StartTime >= param.total_time_limit) {
       PLOGI << "*** Time limit exceeded ***";

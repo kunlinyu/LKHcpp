@@ -17,20 +17,14 @@
 #include "data/Tour.h"
 
 std::atomic<bool> g_stop{false};
-void HandleSigInt(int signum) {
-  if (signum == SIGINT) {
-    g_stop.store(true, std::memory_order_relaxed);
-  }
-
-  PLOGW << "Signal " << signum << " received, setting stop flag.";
-}
+void HandleSigInt(int signum) { g_stop.store(true, std::memory_order_relaxed); }
 
 int main(int argc, char* argv[]) {
   g_stop.store(false, std::memory_order_relaxed);
   std::signal(SIGINT, HandleSigInt);
 
-  CLI::App app{"marieTSP A C++11 implementation of the LKH algorithm"};
-  app.name("marieTSP");
+  CLI::App app{"LKHcpp A C++11 implementation of the LKH algorithm"};
+  app.name("LKHcpp");
 
   std::string param_filename;
   app.add_option("--param,--parameter-file", param_filename,
@@ -119,7 +113,6 @@ int main(int argc, char* argv[]) {
   const TSPLIB tsplib = TSPLIBReader::Read(fproblem);
 
   // ******** solve the problem ********
-
   LKHcpp lkh;
   TourFile tour_file;
   std::atomic<bool> solve_done{false};
@@ -129,17 +122,20 @@ int main(int argc, char* argv[]) {
     solve_done.store(true, std::memory_order_release);
   });
 
+  // ******** wait for result ********
   while (!solve_done.load(std::memory_order_acquire)) {
     if (g_stop.load(std::memory_order_relaxed)) {
-      PLOGW << "SIGINT received, requesting solver stop...";
+      LOGW << "SIGINT received, requesting solver stop...";
       lkh.stop();
       break;
     }
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
+  if (solver_thread.joinable()) solver_thread.join();
 
-  if (solver_thread.joinable()) {
-    solver_thread.join();
+  if (tour_file.tour.empty())  {
+    LOGW << "nothing found";
+    return EXIT_SUCCESS;
   }
 
   // ******** write to tour file ********

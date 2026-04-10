@@ -16,6 +16,9 @@ struct Tour {
   Tour() = default;
   Tour(const std::vector<NodeIdType>& node_ids, GainType cost)
       : node_ids(node_ids), cost(cost) {}
+  bool empty() const {
+    return node_ids.empty() and cost == std::numeric_limits<GainType>::max();
+  }
 };
 
 struct TourFile {
