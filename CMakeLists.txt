@@ -46,7 +46,7 @@ set(SRC
         src/Gain23.cpp
         src/Improvement.cpp
         src/LinKernighan.cpp
-        src/LKHmain.cpp
+        src/LKHcpp.cpp
         src/main.cpp
         src/MergeWithTourIPT.cpp
         src/Minimum1TreeCost.cpp

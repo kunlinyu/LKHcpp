@@ -7,11 +7,11 @@
 
 #include "data/Param.h"
 #include "data/Problem.h"
+#include "data/TSPLIB.h"
 #include "data/Tour.h"
 
 class LKHcpp {
  public:
   static Tour Solve(const Param& param, const Problem& problem);
-  static Tour Solve(const std::string& param_json, const Problem& problem);
-  static void WriteTour(std::ostream& os, const TourFile& tour);
+  static TourFile Solve(const Param& param, const TSPLIB& tsplib);
 };

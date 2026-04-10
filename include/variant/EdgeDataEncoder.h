@@ -4,6 +4,7 @@
 // @date 2026/4/7
 
 #pragma once
+#include <unordered_map>
 #include <plog/Log.h>
 
 #include "VariantBase.h"

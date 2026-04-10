@@ -7,12 +7,12 @@
 
 #include "FatalExitAppender.h"
 #include "FileLineFormatter.h"
+#include "LKHcpp.h"
 #include "data/Param.h"
 #include "data/TSPLIB.h"
 #include "data/TSPLIBReader.h"
 #include "data/Tour.h"
 
-TourFile Solve(Param& pr, const TSPLIB& tsplib);
 Param ReadJsonParameters(const std::string& filename);
 
 std::string ReplaceCost(const char* Name, GainType Cost);
@@ -98,7 +98,7 @@ int main(int argc, char* argv[]) {
   const TSPLIB tsplib = TSPLIBReader::Read(fproblem);
 
   // ******** solve the problem ********
-  TourFile tour_file = Solve(pr, tsplib);
+  TourFile tour_file = LKHcpp::Solve(pr, tsplib);
 
   // ******** write to tour file ********
   std::string file_path_cost =
