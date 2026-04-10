@@ -18,15 +18,7 @@
 #include "utils/GetTime.h"
 #include "variant/VariantFactory.h"
 
-int LKHmain(Param& pr) {
-  std::ifstream fproblem(pr.problem_filename.c_str());
-  if (!fproblem.is_open()) {
-    PLOGE << "Problem file %s not found: " << pr.problem_filename;
-    return EXIT_FAILURE;
-  }
-
-  const TSPLIB tsplib = TSPLIBReader::Read(fproblem);
-  Initializer::AdjustParameters(pr, tsplib.dimension);
+int Solve(Param& pr, const TSPLIB& tsplib) {
 
   // set to global variables
   param = pr;
@@ -34,13 +26,13 @@ int LKHmain(Param& pr) {
   double LastTime;
   context.StartTime = LastTime = GetTime();
 
-  std::unique_ptr<VariantBase> variant = VariantFactory::CreateVariant(tsplib);
-  PLOGI << variant->chain();
-  context.problem = variant->Encode(tsplib);
-  context.problem.type = tsplib.type;
-  problem = context.problem;
+  std::unique_ptr<VariantBase> variant = VariantFactory::Create(tsplib);
+  PLOGI << "Encode problem with variant: " << variant->chain();
+  problem = variant->Encode(tsplib);
+  problem.type = tsplib.type;
 
-  Initializer::Init(param, context, context.problem);
+  PLOGI << "Initialize context by parameters and problem";
+  Initializer::Init(param, context, problem);
 
   POpMUSICCandicateSetCreator popmusic;
   popmusic.set_initial_tour(param.popmusic_initial_tour);
@@ -101,4 +93,18 @@ int LKHmain(Param& pr) {
   }
 
   return EXIT_SUCCESS;
+}
+
+int LKHmain(Param& pr) {
+  std::ifstream fproblem(pr.problem_filename.c_str());
+  if (!fproblem.is_open()) {
+    PLOGE << "Problem file %s not found: " << pr.problem_filename;
+    return EXIT_FAILURE;
+  }
+
+  const TSPLIB tsplib = TSPLIBReader::Read(fproblem);
+  Initializer::AdjustParameters(pr, tsplib.dimension);
+
+
+  return Solve(pr, tsplib);
 }

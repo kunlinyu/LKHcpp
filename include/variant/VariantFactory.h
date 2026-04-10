@@ -8,22 +8,26 @@
 
 #include "EdgeDataEncoder.h"
 #include "NodeCoordEncoder.h"
-#include "VariantBase.h"
 #include "STTSPVariant.h"
+#include "VariantBase.h"
 
 class VariantFactory {
  public:
-  static std::unique_ptr<VariantBase> CreateVariant(const TSPLIB& tsplib) {
+  static std::unique_ptr<VariantBase> Create(const TSPLIB& tsplib) {
+    std::unique_ptr<VariantBase> result;
     if (tsplib.type == STTSP)
-      return std::unique_ptr<VariantBase>(new STTSPVariant());
-    if (not tsplib.edge_data_section.empty())
-      return std::unique_ptr<VariantBase>(new EdgeDataEncoder());
-    if (not tsplib.node_coord_section.empty())
-      return std::unique_ptr<VariantBase>(new NodeCoordEncoder());
-    if (not tsplib.edge_weight_section.empty()) {
+      result = std::unique_ptr<VariantBase>(new STTSPVariant());
+    else if (not tsplib.edge_data_section.empty())
+      result = std::unique_ptr<VariantBase>(new EdgeDataEncoder());
+    else if (not tsplib.node_coord_section.empty())
+      result = std::unique_ptr<VariantBase>(new NodeCoordEncoder());
+    else if (not tsplib.edge_weight_section.empty()) {
       PLOGE << "unsupported edge weight section";
       throw std::invalid_argument("unsupported edge weight section");
-    }
-    throw std::invalid_argument("unknown variant");
+    } else
+      throw std::invalid_argument("unknown variant");
+
+    PLOGI << "create variant with inherit chain: " << result->chain();
+    return result;
   }
 };
