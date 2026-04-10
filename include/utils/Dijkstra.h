@@ -20,17 +20,17 @@ struct SearchNode {
 };
 
 template <typename NodeType>
-using NeighborFunction =
+using NeighborFunc =
     std::function<std::vector<std::pair<NodeType, WeightType>>(NodeType)>;
 
 template <typename NodeType>
-using BreakFunction = std::function<bool(NodeType)>;
+using Breaker = std::function<bool(NodeType)>;
 
 template <typename NodeType>
-static std::map<NodeType, SearchNode<NodeType>> Dijkstra(
-    NodeType source, const NeighborFunction<NodeType> &neighbors,
-    const BreakFunction<NodeType> &break_condition) {
-  std::map<NodeType, SearchNode<NodeType>> record;
+std::unordered_map<NodeType, SearchNode<NodeType>> Dijkstra(
+    NodeType source, const NeighborFunc<NodeType> &neighbors,
+    const Breaker<NodeType> &break_condition) {
+  std::unordered_map<NodeType, SearchNode<NodeType>> record;
   std::set<NodeType> visited;
 
   Heap<NodeType> heap([&record](NodeType a, NodeType b) {

@@ -9,7 +9,6 @@
 
 #include "Initializer.h"
 #include "LKH.h"
-#include "STTSP2TSP.h"
 #include "candidate/CandidateFuncs.h"
 #include "candidate/POpMUSICCandidateSetCreator.h"
 #include "data/Context.h"

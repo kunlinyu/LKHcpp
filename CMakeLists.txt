@@ -61,7 +61,6 @@ set(SRC
         src/SegmentSize.cpp
         src/StatusReport.cpp
         src/StoreTour.cpp
-        src/STTSP2TSP.cpp
         src/SymmetrizeCandidateSet.cpp
         src/WriteTour.cpp
 )
