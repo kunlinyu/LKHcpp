@@ -1,5 +1,5 @@
 {
-  "problem_filename": "INSTANCES/rome99_05percent.sttsp",
+  "tsplib_filename": "INSTANCES/rome99_05percent.sttsp",
   "tour_filename": "TOURS/rome99_05percent.3.3.$.tour",
   "candidate_set_type": "POPMUSIC",
   "popmusic_max_neighbors": 10,

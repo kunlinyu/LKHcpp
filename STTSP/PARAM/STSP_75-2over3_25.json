@@ -1,5 +1,5 @@
 {
-  "problem_filename": "INSTANCES/STSP_75-2over3.sttsp",
+  "tsplib_filename": "INSTANCES/STSP_75-2over3.sttsp",
   "tour_filename": "TOURS/STSP_75-2over3.2.5.$.tour",
   "candidate_set_type": "POPMUSIC",
   "popmusic_max_neighbors": 10,

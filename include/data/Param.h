@@ -5,9 +5,11 @@
 #pragma once
 #include <cfloat>
 #include <climits>
+#include <ctime>
 #include <limits>
 #include <string>
 
+#include "plog/Log.h"
 #include "type.h"
 
 enum InitialTourAlgorithms { BORUVKA, GREEDY, WALK };
@@ -18,7 +20,7 @@ enum CandidateSetTypes { ALPHA, POPMUSIC };
 
 struct Param {
   // ==== file parameters ====
-  std::string problem_filename;
+  std::string tsplib_filename;
   std::string tour_filename;
 
   // ==== algorithm parameters ====
@@ -45,7 +47,7 @@ struct Param {
 
   // ==== flow control parameters ====
   int runs = 10;                // Total number of runs
-  int max_trials = 0;          // Maximum number of trials in each run
+  int max_trials = 0;           // Maximum number of trials in each run
   bool stop_at_optimum = true;  // Specifies whether a run will be terminated if
                                 // the tour length becomes equal to Optimum
   double time_limit = DBL_MAX;  // Time limit in seconds for each run
@@ -71,9 +73,9 @@ struct Param {
 
   // ==== ascent tuning parameters ====
   double excess = 0;  // Maximum alpha-value allowed for any candidate edge is
-                       // set to Excess times the absolute value of the lower
-                       // bound of a solution tour
-  int initial_period = 0;    // Length of the first period in the ascent
+                      // set to Excess times the absolute value of the lower
+                      // bound of a solution tour
+  int initial_period = 0;     // Length of the first period in the ascent
   int initial_step_size = 1;  // Initial step size used in the ascent
 
   // ==== local search pruning limits ====
@@ -92,7 +94,7 @@ struct Param {
 
   void Patch(const Param& p) {
     const Param d;
-    UPDATE_FIELD(p, d, problem_filename);
+    UPDATE_FIELD(p, d, tsplib_filename);
     UPDATE_FIELD(p, d, tour_filename);
     UPDATE_FIELD(p, d, candidate_set_type);
     UPDATE_FIELD(p, d, initial_tour_algorithm);
@@ -124,6 +126,35 @@ struct Param {
     UPDATE_FIELD(p, d, max_swaps);
     UPDATE_FIELD(p, d, seed);
     UPDATE_FIELD(p, d, salesmen);
+  }
+  void adjust(int dimension) {
+    if (seed == 0) seed = (unsigned)(std::time(0) * (size_t)(&seed));
+    if (max_swaps == 0) max_swaps = dimension;
+    if (max_candidates > dimension - 1)
+      max_candidates = dimension - 1;
+    else {
+      if (ascent_candidates > dimension - 1) ascent_candidates = dimension - 1;
+      if (initial_period == 0) {
+        initial_period = dimension / 2;
+        if (initial_period < 100) initial_period = 100;
+      }
+      if (excess == 0) excess = 1.0 / dimension * salesmen;
+      if (max_trials == 0) max_trials = dimension;
+    }
+    if (popmusic_max_neighbors > dimension - 1)
+      popmusic_max_neighbors = dimension - 1;
+    if (popmusic_sample_size > dimension) popmusic_sample_size = dimension;
+
+    if (salesmen < 1 or salesmen > dimension)
+      throw std::invalid_argument("Too many salesmen/vehicles (>= DIMENSION)");
+
+    if (subsequent_move_type == 0) {
+      subsequent_move_type = move_type;
+    }
+    int K =
+        move_type >= subsequent_move_type ? move_type : subsequent_move_type;
+    if (nonsequential_move_type == -1 || nonsequential_move_type > K)
+      nonsequential_move_type = K;
   }
 };
 

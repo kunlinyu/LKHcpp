@@ -1,5 +1,5 @@
 {
-  "problem_filename": "INSTANCES/gr96.tsp",
+  "tsplib_filename": "INSTANCES/gr96.tsp",
   "tour_filename": "TOURS/gr96_34.$.tour",
   "candidate_set_type": "ALPHA",
   "tree_type": 3,

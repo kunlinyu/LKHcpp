@@ -1,5 +1,5 @@
 {
-  "problem_filename": "INSTANCES/pr2392.tsp",
+  "tsplib_filename": "INSTANCES/pr2392.tsp",
   "tour_filename": "TOURS/pr2392.$.tour",
   "candidate_set_type": "ALPHA",
   "popmusic_max_neighbors": 10,

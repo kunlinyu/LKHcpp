@@ -18,6 +18,8 @@ int Improvement(GainType* Gain, Node* t1, Node* SUCt1);
 void RestoreTour();
 void WriteTour(const std::string& file_path, const Tour& tour,
                GainType Cost);
+TourFile CreateTourFile(const Tour& tour, const std::string& name,
+                        GainType cost);
 Tour ExtractFinalTour(const std::vector<NodeIdType>& ids);
 Tour TourFileSTTSP(const Tour& tour);
 

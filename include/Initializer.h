@@ -26,37 +26,6 @@ class Initializer {
     return nodes;
   }
 
-  static void AdjustParameters(Param& pr, int dimension) {
-    if (pr.seed == 0) pr.seed = (unsigned)(time(0) * (size_t)(&pr.seed));
-    if (pr.max_swaps == 0) pr.max_swaps = dimension;
-    if (pr.max_candidates > dimension - 1)
-      pr.max_candidates = dimension - 1;
-    else {
-      if (pr.ascent_candidates > dimension - 1)
-        pr.ascent_candidates = dimension - 1;
-      if (pr.initial_period == 0) {
-        pr.initial_period = dimension / 2;
-        if (pr.initial_period < 100) pr.initial_period = 100;
-      }
-      if (pr.excess == 0) pr.excess = 1.0 / dimension * pr.salesmen;
-      if (pr.max_trials == 0) pr.max_trials = dimension;
-    }
-    if (pr.popmusic_max_neighbors > dimension - 1)
-      pr.popmusic_max_neighbors = dimension - 1;
-    if (pr.popmusic_sample_size > dimension)
-      pr.popmusic_sample_size = dimension;
-    PLOGF_IF(pr.salesmen > 1 and pr.salesmen < dimension)
-        << "Too many salesmen/vehicles (>= DIMENSION)";
-
-    if (pr.subsequent_move_type == 0) {
-      pr.subsequent_move_type = pr.move_type;
-    }
-    int K = pr.move_type >= pr.subsequent_move_type ? pr.move_type
-                                                    : pr.subsequent_move_type;
-    if (pr.nonsequential_move_type == -1 || pr.nonsequential_move_type > K)
-      pr.nonsequential_move_type = K;
-  }
-
   static void Init(const Param& pr, Context& ctx, const Problem& problem) {
     ctx.dimension = problem.dimension();
     ctx.node_set = CreateNodes(ctx.dimension);

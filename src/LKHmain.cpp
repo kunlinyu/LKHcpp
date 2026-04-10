@@ -87,26 +87,16 @@ Tour Solve(Param& pr, const Problem& problem) {
   return best_tour;
 }
 
-int LKHmain(Param& pr) {
-  std::ifstream fproblem(pr.problem_filename.c_str());
-  if (!fproblem.is_open()) {
-    PLOGE << "Problem file %s not found: " << pr.problem_filename;
-    return EXIT_FAILURE;
-  }
-
-  const TSPLIB tsplib = TSPLIBReader::Read(fproblem);
-  Initializer::AdjustParameters(pr, tsplib.dimension);
+void LKHmain(Param& pr, const TSPLIB& tsplib) {
+  pr.adjust(tsplib.dimension);
 
   std::unique_ptr<VariantBase> variant = VariantFactory::Create(tsplib);
   PLOGI << "Encode problem with variant: " << variant->chain();
   Problem problem = variant->Encode(tsplib);
 
-
   Tour tour = Solve(pr, problem);
 
   tour = variant->Decode(tour);
+
   WriteTour(param.tour_filename, tour, tour.cost);
-
-
-  return 0;
 }

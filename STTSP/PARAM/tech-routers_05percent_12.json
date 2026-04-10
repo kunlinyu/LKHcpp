@@ -1,5 +1,5 @@
 {
-  "problem_filename": "INSTANCES/tech-routers_05percent.sttsp",
+  "tsplib_filename": "INSTANCES/tech-routers_05percent.sttsp",
   "tour_filename": "TOURS/tech-routers_05percent.1.2.$.tour",
   "candidate_set_type": "POPMUSIC",
   "popmusic_max_neighbors": 10,

@@ -1,5 +1,5 @@
 {
-  "problem_filename": "INSTANCES/euroroad_15percent.sttsp",
+  "tsplib_filename": "INSTANCES/euroroad_15percent.sttsp",
   "tour_filename": "TOURS/euroroad_15percent.2.4.$.tour",
   "candidate_set_type": "POPMUSIC",
   "popmusic_max_neighbors": 10,

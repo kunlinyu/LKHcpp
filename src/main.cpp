@@ -9,8 +9,9 @@
 #include "FileLineFormatter.h"
 #include "data/Param.h"
 #include "data/TSPLIB.h"
+#include "data/TSPLIBReader.h"
 
-int LKHmain(Param& pr);
+void LKHmain(Param& pr, const TSPLIB& tsplib);
 Param ReadJsonParameters(const std::string& filename);
 
 int main(int argc, char* argv[]) {
@@ -81,9 +82,18 @@ int main(int argc, char* argv[]) {
   PLOGD << "Command line arguments parsed.";
 
   Param pr = ReadJsonParameters(param_filename);
-  if (not problem_filename.empty()) pr.problem_filename = problem_filename;
+  if (not problem_filename.empty()) pr.tsplib_filename = problem_filename;
 
   pr.Patch(param_cli);
 
-  return LKHmain(pr);
+  std::ifstream fproblem(pr.tsplib_filename.c_str());
+  if (!fproblem.is_open()) {
+    PLOGE << "TSPLIB file " << pr.tsplib_filename << " not found ";
+    return EXIT_FAILURE;
+  }
+  const TSPLIB tsplib = TSPLIBReader::Read(fproblem);
+
+  LKHmain(pr, tsplib);
+
+  return EXIT_SUCCESS;
 }
