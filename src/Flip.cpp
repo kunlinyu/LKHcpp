@@ -44,8 +44,8 @@ void Flip(Node *t1, Node *t2, Node *t3) {
 
   // Find the segment with the smallest number of nodes
   int drank = t2->Rank - t3->Rank;
-  if (drank < 0) drank += problem.dimension;
-  if (2 * drank > problem.dimension) {
+  if (drank < 0) drank += context.dimension;
+  if (2 * drank > context.dimension) {
     std::swap(t2, t3);
     std::swap(t4, t1);
   }

@@ -337,7 +337,7 @@ void POpMUSICCandicateSetCreator::CreateCandidateSet(int K) {
     context.Trial = 1;
     ChooseInitialTour(context.FirstNode);
     param.initial_tour_algorithm = InitialTourAlgorithmSaved;
-    n = problem.dimension;
+    n = context.dimension;
     solution = (int *) malloc((n + 1) * sizeof(int));
     node = (Node **) malloc((n + 1) * sizeof(Node *));
     node_path = (Node **) malloc((n + 1) * sizeof(Node *));

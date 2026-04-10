@@ -59,7 +59,7 @@ GainType FindTour(GainType OrdinalTourCost) {
       break;
     }
     // Choose FirstNode at random
-    context.FirstNode = &context.node_set[Random() % problem.dimension];
+    context.FirstNode = &context.node_set[Random() % context.dimension];
     ChooseInitialTour(context.FirstNode);
     GainType Cost = LinKernighan();
     if (GetTime() - EntryTime < param.time_limit &&

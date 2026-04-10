@@ -111,7 +111,7 @@ Start:
         // If the lower bound becomes greater than twice its initial value
         // it is taken as a sign that the graph might be too sparse
         if (W - W0 > (W0 >= 0 ? W0 : -W0) && param.ascent_candidates > 0 &&
-            param.ascent_candidates < problem.dimension) {
+            param.ascent_candidates < context.dimension) {
           W = Minimum1TreeCost(
               param.candidate_set_type == POPMUSIC || param.max_candidates == 0,
               degree_2);
@@ -119,8 +119,8 @@ Start:
             // Double the number of candidate edges and start all
             // over again
             PLOGD << "Warning: AscentCandidates doubled";
-            if ((param.ascent_candidates *= 2) > problem.dimension)
-              param.ascent_candidates = problem.dimension;
+            if ((param.ascent_candidates *= 2) > context.dimension)
+              param.ascent_candidates = context.dimension;
             goto Start;
           }
           W0 = W;

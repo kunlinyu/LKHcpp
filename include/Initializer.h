@@ -58,6 +58,7 @@ class Initializer {
   }
 
   static void Init(const Param& pr, Context& ctx, const Problem& problem) {
+    ctx.dimension = problem.dimension;
     ctx.node_set = CreateNodes(problem.dimension);
     ctx.FirstNode = &ctx.node_set.front();
 

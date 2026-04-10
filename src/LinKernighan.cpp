@@ -105,7 +105,7 @@ GainType LinKernighan() {
       }
       // t1 is now "passive"
       SUCt1 = SUC(t1);
-      if (++log_counter % (int)pow(10, (int)log10(problem.dimension - 1)) ==
+      if (++log_counter % (int)pow(10, (int)log10(context.dimension - 1)) ==
           0) {
         PLOGD << "#" << log_counter << ": Time = " << GetTime() - EntryTime
               << " sec.";

@@ -43,7 +43,7 @@ GainType BridgeGain(Node* s1, Node* s2, Node* s3, Node* s4, Node* s5, Node* s6,
      as few nodes as possible */
   switch (Case6) {
     case 3:
-      if (2 * SegmentSize(s5, s4) <= problem.dimension) {
+      if (2 * SegmentSize(s5, s4) <= context.dimension) {
         u2 = s5;
         u3 = s4;
       } else {
@@ -52,7 +52,7 @@ GainType BridgeGain(Node* s1, Node* s2, Node* s3, Node* s4, Node* s5, Node* s6,
       }
       break;
     case 4:
-      if (2 * SegmentSize(s2, s5) <= problem.dimension) {
+      if (2 * SegmentSize(s2, s5) <= context.dimension) {
         u2 = s2;
         u3 = s5;
       } else {
@@ -62,7 +62,7 @@ GainType BridgeGain(Node* s1, Node* s2, Node* s3, Node* s4, Node* s5, Node* s6,
       break;
     case 0:
     case 7:
-      if (2 * SegmentSize(s2, s3) <= problem.dimension) {
+      if (2 * SegmentSize(s2, s3) <= context.dimension) {
         u2 = s2;
         u3 = s3;
       } else {

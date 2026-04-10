@@ -66,10 +66,10 @@ Tour TourFileSTTSP(const Tour& tour) {
 
 Tour ExtractFinalTour(const std::vector<NodeIdType>& ids) {
   int i;
-  for (i = 1; i < problem.dimension && ids[i] != DepotIndex; i++);
+  for (i = 1; i < context.dimension && ids[i] != DepotIndex; i++);
   PLOGI << "i value : " << i;
-  bool Forward = ids[i < problem.dimension ? i + 1 : 1] <
-                 ids[i > 1 ? i - 1 : problem.dimension];
+  bool Forward = ids[i < context.dimension ? i + 1 : 1] <
+                 ids[i > 1 ? i - 1 : context.dimension];
   if (Forward) {
     LOGI << "Tour direction: forward";
   } else {
@@ -78,16 +78,16 @@ Tour ExtractFinalTour(const std::vector<NodeIdType>& ids) {
 
   Tour tour;
   i = 1;
-  for (int j = 1; j <= problem.dimension; j++) {
+  for (int j = 1; j <= context.dimension; j++) {
     NodeIdType a = ids[i];
-    if (a <= problem.dimension)
+    if (a <= context.dimension)
       tour.node_ids.push_back(a);
     else
       LOGE << "Warning: Node " << a
            << " is out of range and will be skipped in the tour file.";
     i += Forward ? 1 : -1;
-    if (i > problem.dimension) i = 1;
-    if (i < 1) i = problem.dimension;
+    if (i > context.dimension) i = 1;
+    if (i < 1) i = context.dimension;
   }
   return tour;
 }
@@ -99,7 +99,7 @@ TourFile CreateTourFile(const Tour& tour, const std::string& name,
   tour_file.type = "TOUR";
   tour_file.comments.emplace_back("Length = " + std::to_string(cost));
   tour_file.comments.emplace_back("Found by LKH-3 [Keld Helsgaun]");
-  tour_file.dimension = problem.dimension;
+  tour_file.dimension = context.dimension;
   tour_file.node_ids = tour.node_ids;
   return tour_file;
 }

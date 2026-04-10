@@ -76,6 +76,7 @@ struct Context {
   Node *gain23_s1 = nullptr;
   bool gain23_old_reversed = false;
 
+  size_t dimension;
 };
 
 extern Context context;

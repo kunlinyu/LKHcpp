@@ -71,7 +71,7 @@ GainType Gain23(void) {
           /* Try any gainful nonfeasible 2-opt move
              followed by a 2-, 3- or 4-opt move */
           if (X4 == 1 && s4 != s1 &&
-              2 * SegmentSize(s2, s3) <= problem.dimension &&
+              2 * SegmentSize(s2, s3) <= context.dimension &&
               (G3 = G2 - context.C(s4, s1)) > 0) {
             Gain = BridgeGain(s1, s2, s3, s4, 0, 0, 0, 0, 0, G3);
             if (Gain > 0) return Gain;

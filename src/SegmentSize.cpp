@@ -13,7 +13,7 @@
 
 int SegmentSize1(Node *ta, Node *tb) {
   int n = !context.Reversed ? tb->Rank - ta->Rank : ta->Rank - tb->Rank;
-  return (n < 0 ? n + problem.dimension : n) + 1;
+  return (n < 0 ? n + context.dimension : n) + 1;
 }
 
 int SegmentSize2(Node *ta, Node *tb) {
@@ -25,7 +25,7 @@ int SegmentSize2(Node *ta, Node *tb) {
   if (Pa == Pb) {
     int n = context.Reversed == Pa->Reversed ? tb->Rank - ta->Rank
                                              : ta->Rank - tb->Rank;
-    return (n < 0 ? n + problem.dimension : n) + 1;
+    return (n < 0 ? n + context.dimension : n) + 1;
   }
   nLeft = context.Reversed == Pa->Reversed ? Pa->Last->Rank - ta->Rank
                                            : ta->Rank - Pa->First->Rank;
@@ -53,7 +53,7 @@ int SegmentSize3(Node *ta, Node *tb) {
     n = context.Reversed == (Pa->Reversed != PPa->Reversed)
             ? tb->Rank - ta->Rank
             : ta->Rank - tb->Rank;
-    if (n < 0) n += problem.dimension;
+    if (n < 0) n += context.dimension;
   } else if (PPa == PPb) {
     nLeft = context.Reversed == (Pa->Reversed != PPa->Reversed)
                 ? Pa->Last->Rank - ta->Rank

@@ -28,7 +28,7 @@ int Solve(Param& pr, const TSPLIB& tsplib) {
 
   std::unique_ptr<VariantBase> variant = VariantFactory::Create(tsplib);
   PLOGI << "Encode problem with variant: " << variant->chain();
-  problem = variant->Encode(tsplib);
+  Problem problem = variant->Encode(tsplib);
   problem.type = tsplib.type;
 
   PLOGI << "Initialize context by parameters and problem";
@@ -44,7 +44,7 @@ int Solve(Param& pr, const TSPLIB& tsplib) {
   double LowerBound = CreateCandidateSet(popmusic);
   context.SwitchCostToD();
 
-  std::vector<NodeIdType> BestTour(problem.dimension + 1);
+  std::vector<NodeIdType> BestTour(context.dimension + 1);
 
   GainType BestCost = std::numeric_limits<GainType>::max();
   if (context.Norm != 0) {

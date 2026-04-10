@@ -1,6 +1,7 @@
 #include <limits>
 #include <sstream>
 
+#include "data/Context.h"
 #include "data/Node.h"
 #include "data/Problem.h"
 
@@ -23,7 +24,7 @@ std::string CandidateReport(Node *FirstNode) {
   } while ((N = N->SucNode()) != FirstNode);
   std::stringstream ss;
   ss << "Cand.min = " << Min
-     << ", Cand.avg = " << (double)Sum / problem.dimension
+     << ", Cand.avg = " << (double)Sum / context.dimension
      << ", Cand.max = " << Max;
   return ss.str();
 }

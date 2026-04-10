@@ -21,7 +21,7 @@ void RecordBetterTour(std::vector<NodeIdType> &BetterTour, Node *FirstNode) {
   do BetterTour[i++] = N->Id;
   while ((N = N->SucNode()) != FirstNode);
 
-  BetterTour[0] = BetterTour[problem.dimension];
+  BetterTour[0] = BetterTour[context.dimension];
   N = FirstNode;
   do {
     N->NextBestSuc = N->BestSuc;
