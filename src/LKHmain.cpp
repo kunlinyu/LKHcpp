@@ -29,7 +29,6 @@ int Solve(Param& pr, const TSPLIB& tsplib) {
   std::unique_ptr<VariantBase> variant = VariantFactory::Create(tsplib);
   PLOGI << "Encode problem with variant: " << variant->chain();
   Problem problem = variant->Encode(tsplib);
-  problem.type = tsplib.type;
 
   PLOGI << "Initialize context by parameters and problem";
   Initializer::Init(param, context, problem);

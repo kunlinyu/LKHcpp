@@ -93,6 +93,4 @@ struct TSPLIB {
   std::vector<std::vector<WeightType>> edge_weight_section;
 
   std::set<NodeIdType> required_nodes_section;
-
-  bool IsAsymmetric() const { return type == ATSP; }
 };
