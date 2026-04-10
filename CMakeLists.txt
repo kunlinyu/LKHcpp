@@ -11,26 +11,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 set(SRC
-        src/candidate/AddCandidate.cpp
-        src/candidate/AdjustCandidateSet.cpp
-        src/candidate/CandidateReport.cpp
-        src/candidate/CreateCandidateSet.cpp
-        src/candidate/GenerateCandidates.cpp
-        src/candidate/POpMUSICCandidateSetCreator.cpp
-        src/candidate/ResetCandidateSet.cpp
-        src/candidate/TrimCandidateSet.cpp
-        src/move/Best2OptMove.cpp
-        src/move/Best3OptMove.cpp
-        src/move/Best4OptMove.cpp
-        src/move/Best5OptMove.cpp
-        src/move/Make2OptMove.cpp
-        src/move/Make3OptMove.cpp
-        src/move/Make4OptMove.cpp
-        src/move/Make5OptMove.cpp
-        src/data/Context.cpp
-        src/data/Param.cpp
-        src/data/TSPLIBReader.cpp
-        src/utils/Random.cpp
         src/Ascent.cpp
         src/Between.cpp
         src/Between_SL.cpp
@@ -45,21 +25,41 @@ set(SRC
         src/Flip.cpp
         src/Gain23.cpp
         src/Improvement.cpp
-        src/LinKernighan.cpp
         src/LKHcpp.cpp
+        src/LinKernighan.cpp
         src/MergeWithTourIPT.cpp
         src/Minimum1TreeCost.cpp
         src/MinimumSpanningTree.cpp
         src/NormalizeNodeList.cpp
         src/NormalizeSegmentList.cpp
-        src/OrderCandidateSet.cpp
         src/RecordBetterTour.cpp
         src/RestoreTour.cpp
         src/SegmentSize.cpp
         src/StatusReport.cpp
         src/StoreTour.cpp
-        src/SymmetrizeCandidateSet.cpp
         src/WriteTour.cpp
+        src/candidate/AddCandidate.cpp
+        src/candidate/AdjustCandidateSet.cpp
+        src/candidate/CandidateReport.cpp
+        src/candidate/CreateCandidateSet.cpp
+        src/candidate/GenerateCandidates.cpp
+        src/candidate/OrderCandidateSet.cpp
+        src/candidate/POpMUSICCandidateSetCreator.cpp
+        src/candidate/ResetCandidateSet.cpp
+        src/candidate/SymmetrizeCandidateSet.cpp
+        src/candidate/TrimCandidateSet.cpp
+        src/data/Context.cpp
+        src/data/Param.cpp
+        src/data/TSPLIBReader.cpp
+        src/move/Best2OptMove.cpp
+        src/move/Best3OptMove.cpp
+        src/move/Best4OptMove.cpp
+        src/move/Best5OptMove.cpp
+        src/move/Make2OptMove.cpp
+        src/move/Make3OptMove.cpp
+        src/move/Make4OptMove.cpp
+        src/move/Make5OptMove.cpp
+        src/utils/Random.cpp
 )
 
 add_library(libLKHcpp ${SRC})
