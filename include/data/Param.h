@@ -156,6 +156,20 @@ struct Param {
     if (nonsequential_move_type == -1 || nonsequential_move_type > K)
       nonsequential_move_type = K;
   }
+  /*
+   * The TourFilenameWithCost function returns a copy of the string Name where
+   * all occurrences of the character '$' have been replaced by Cost.
+   */
+  std::string TourFilenameWithCost(GainType Cost) const {
+    std::string result = tour_filename;
+    const std::string cost_str = std::to_string(Cost);
+    size_t pos = 0;
+    while ((pos = result.find('$', pos)) != std::string::npos) {
+      result.replace(pos, 1, cost_str);
+      pos += cost_str.length();
+    }
+    return result;
+  }
 };
 
 extern thread_local Param param;

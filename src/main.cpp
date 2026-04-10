@@ -14,10 +14,6 @@
 #include "data/TSPLIBReader.h"
 #include "data/Tour.h"
 
-Param ReadJsonParameters(const std::string& filename);
-
-std::string ReplaceCost(const char* Name, GainType Cost);
-
 int main(int argc, char* argv[]) {
   CLI::App app{"marieTSP A C++11 implementation of the LKH algorithm"};
   app.name("marieTSP");
@@ -102,8 +98,7 @@ int main(int argc, char* argv[]) {
   TourFile tour_file = LKHcpp::Solve(pr, tsplib);
 
   // ******** write to tour file ********
-  std::string file_path_cost =
-      ReplaceCost(param.tour_filename.c_str(), tour_file.tour.cost);
+  std::string file_path_cost = pr.TourFilenameWithCost(tour_file.tour.cost);
   PLOGI << "Writing: " << file_path_cost;
   std::ofstream ofs(file_path_cost, std::ios::binary);
   if (ofs.is_open()) {
