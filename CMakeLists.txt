@@ -66,26 +66,23 @@ set(SRC
         src/variant/STTSPVariant.cpp
 )
 
-add_library(libLKHcpp ${SRC})
-target_link_libraries(libLKHcpp m)
-target_compile_definitions(libLKHcpp PRIVATE PLOG_CAPTURE_FILE)
-
-add_executable(LKHcpp src/main.cpp)
-target_link_libraries(LKHcpp libLKHcpp)
+add_library(LKHcpp ${SRC})
+target_link_libraries(LKHcpp m)
 target_compile_definitions(LKHcpp PRIVATE PLOG_CAPTURE_FILE)
 
+add_executable(${PROJECT_NAME}_exe src/main.cpp)
+target_link_libraries(${PROJECT_NAME}_exe LKHcpp)
+target_compile_definitions(${PROJECT_NAME}_exe PRIVATE PLOG_CAPTURE_FILE)
+set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
+
 add_custom_command(
-        TARGET ${PROJECT_NAME}
+        TARGET ${PROJECT_NAME}_exe
         POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> $<TARGET_FILE_DIR:${PROJECT_NAME}>/../${PROJECT_NAME}
-)
-set_property(DIRECTORY APPEND PROPERTY
-        ADDITIONAL_MAKE_CLEAN_FILES
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>/../${PROJECT_NAME}
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}_exe> $<TARGET_FILE_DIR:${PROJECT_NAME}_exe>/../
 )
 
 if (MINGW)
-    target_link_options(${PROJECT_NAME} PRIVATE
+    target_link_options(${PROJECT_NAME}_exe PRIVATE
             -static-libgcc
             -static-libstdc++
             -static
