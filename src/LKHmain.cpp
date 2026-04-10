@@ -18,17 +18,12 @@
 #include "utils/GetTime.h"
 #include "variant/VariantFactory.h"
 
-int Solve(Param& pr, const TSPLIB& tsplib) {
-
+Tour Solve(Param& pr, const Problem& problem) {
   // set to global variables
   param = pr;
 
   double LastTime;
   context.StartTime = LastTime = GetTime();
-
-  std::unique_ptr<VariantBase> variant = VariantFactory::Create(tsplib);
-  PLOGI << "Encode problem with variant: " << variant->chain();
-  Problem problem = variant->Encode(tsplib);
 
   PLOGI << "Initialize context by parameters and problem";
   Initializer::Init(param, context, problem);
@@ -53,16 +48,14 @@ int Solve(Param& pr, const TSPLIB& tsplib) {
     context.Optimum = BestCost = (GainType)LowerBound;
     RecordBetterTour(context.BetterTour, context.FirstNode);
     BestTour = context.BetterTour;
-
     Tour tour = ExtractFinalTour(BestTour);
-    tour = variant->Decode(tour);
-    WriteTour(param.tour_filename, tour, BestCost);
-    param.runs = 0;
-    return EXIT_SUCCESS;
+    tour.cost = BestCost;
+    return tour;
   }
 
   GainType OrdinalTourCost = 0;
   OrdinalTourCost = CalcOrdinalTourCost();
+  Tour best_tour;
   for (int Run = 1; Run <= param.runs; Run++) {
     LastTime = GetTime();
     GainType Cost =
@@ -72,8 +65,8 @@ int Solve(Param& pr, const TSPLIB& tsplib) {
       RecordBetterTour(context.BetterTour, context.FirstNode);
       BestTour = context.BetterTour;
       Tour tour = ExtractFinalTour(BestTour);
-      tour = variant->Decode(tour);
-      WriteTour(param.tour_filename, tour, BestCost);
+      tour.cost = BestCost;
+      best_tour = tour;
     }
 
     GainType OldOptimum = context.Optimum;
@@ -91,7 +84,7 @@ int Solve(Param& pr, const TSPLIB& tsplib) {
     }
   }
 
-  return EXIT_SUCCESS;
+  return best_tour;
 }
 
 int LKHmain(Param& pr) {
@@ -104,6 +97,16 @@ int LKHmain(Param& pr) {
   const TSPLIB tsplib = TSPLIBReader::Read(fproblem);
   Initializer::AdjustParameters(pr, tsplib.dimension);
 
+  std::unique_ptr<VariantBase> variant = VariantFactory::Create(tsplib);
+  PLOGI << "Encode problem with variant: " << variant->chain();
+  Problem problem = variant->Encode(tsplib);
 
-  return Solve(pr, tsplib);
+
+  Tour tour = Solve(pr, problem);
+
+  tour = variant->Decode(tour);
+  WriteTour(param.tour_filename, tour, tour.cost);
+
+
+  return 0;
 }

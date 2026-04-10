@@ -94,6 +94,7 @@ class STTSPVariant : public VariantBase {
   }
   Tour Decode(const Tour &tour) override {
     Tour result;
+    result.cost = tour.cost;
     for (size_t i = 0; i < tour.node_ids.size(); i++) {
       size_t next_i = i + 1;
       if (next_i >= tour.node_ids.size()) next_i = 0;

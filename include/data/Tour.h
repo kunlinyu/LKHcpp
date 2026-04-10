@@ -6,13 +6,15 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <limits>
 
 #include "type.h"
 
 struct Tour {
   std::vector<NodeIdType> node_ids;
+  GainType cost = std::numeric_limits<GainType>::max();
   Tour() = default;
-  explicit Tour(const std::vector<NodeIdType>& node_ids) : node_ids(node_ids) {}
+  Tour(const std::vector<NodeIdType>& node_ids, GainType cost) : node_ids(node_ids), cost(cost) {}
 };
 
 struct TourFile {
