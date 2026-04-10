@@ -5,6 +5,8 @@
 
 #include "LKHcpp.h"
 
+#include <thread>
+
 #include "Initializer.h"
 #include "LKH.h"
 #include "data/Context.h"
@@ -21,6 +23,9 @@ Tour LKHcpp::Solve(const Param& pr, const Problem& pb) {
   context.StartTime = LastTime = GetTime();
 
   PLOGI << "Initialize context by parameters and problem";
+
+  if (param.threads > 1)
+    param.seed = std::hash<std::thread::id>{}(std::this_thread::get_id());
   Initializer::Init(param, context, pb);
 
   POpMUSICCandicateSetCreator popmusic;
@@ -31,10 +36,8 @@ Tour LKHcpp::Solve(const Param& pr, const Problem& pb) {
   popmusic.set_trails(param.popmusic_trials);
 
   double LowerBound = CreateCandidateSet(popmusic);
-  context.SwitchCostToD();
 
   std::vector<NodeIdType> BestTour(context.dimension + 1);
-
   GainType BestCost = std::numeric_limits<GainType>::max();
   if (context.Norm != 0) {
     context.Norm = std::numeric_limits<int>::max();
@@ -48,13 +51,15 @@ Tour LKHcpp::Solve(const Param& pr, const Problem& pb) {
     return tour;
   }
 
+  context.SwitchCostToD();
   GainType OrdinalTourCost = 0;
   OrdinalTourCost = CalcOrdinalTourCost();
   Tour best_tour;
   for (int Run = 1; Run <= param.runs; Run++) {
     LastTime = GetTime();
-    GainType Cost =
-        FindTour(OrdinalTourCost);  // using the Lin-Kernighan heuristic
+
+    // using the Lin-Kernighan heuristic
+    GainType Cost = FindTour(OrdinalTourCost);
     if (Cost < BestCost) {
       BestCost = Cost;
       RecordBetterTour(context.BetterTour, context.FirstNode);
@@ -81,6 +86,44 @@ Tour LKHcpp::Solve(const Param& pr, const Problem& pb) {
 
   return best_tour;
 }
+Tour LKHcpp::SolveParallel(const Param& param, const Problem& problem) {
+  std::vector<Tour> results(param.threads);
+  std::vector<std::thread> threads;
+  threads.reserve(param.threads);
+
+  std::vector<std::exception_ptr> exceptions(param.threads);
+
+  for (int i = 0; i < param.threads; ++i) {
+    threads.emplace_back([&, i]() {
+      LOGI << "start thread " << i;
+      try {
+        results[i] = Solve(param, problem);
+      } catch (...) {
+        exceptions[i] = std::current_exception();
+      }
+      LOGI << "finish thread " << i;
+    });
+  }
+
+  for (auto& t : threads)
+    if (t.joinable()) t.join();
+
+  for (const auto& eptr : exceptions) {
+    if (eptr) {
+      std::rethrow_exception(eptr);
+    }
+  }
+
+  for (size_t i = 0; i < results.size(); ++i) {
+    LOGI << "tour " << i << " cost: " << results[i].cost;
+  }
+
+  auto best_it = std::min_element(
+      results.begin(), results.end(),
+      [](const Tour& a, const Tour& b) { return a.cost < b.cost; });
+
+  return *best_it;
+}
 
 TourFile LKHcpp::Solve(const Param& pr, const TSPLIB& tsplib) {
   Param param = pr;
@@ -90,7 +133,11 @@ TourFile LKHcpp::Solve(const Param& pr, const TSPLIB& tsplib) {
   PLOGI << "Encode problem with variant: " << variant->chain();
   Problem problem = variant->Encode(tsplib);
 
-  Tour tour = Solve(param, problem);
+  Tour tour;
+  if (param.threads <= 1)
+    tour = Solve(param, problem);
+  else
+    tour = SolveParallel(param, problem);
 
   tour = variant->Decode(tour);
 

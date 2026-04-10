@@ -25,7 +25,7 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(
     Param, tsplib_filename, tour_filename, candidate_set_type,
     initial_tour_algorithm, tree_type, move_type, subsequent_move_type,
     nonsequential_move_type, gain23_used, gain_criterion_used, runs, max_trials,
-    stop_at_optimum, time_limit, total_time_limit, known_optimum,
+    stop_at_optimum, time_limit, total_time_limit, known_optimum, threads,
     ascent_candidates, max_candidates, candidate_set_symmetric,
     popmusic_initial_tour, popmusic_max_neighbors, popmusic_sample_size,
     popmusic_solutions, popmusic_trials, excess, initial_period,

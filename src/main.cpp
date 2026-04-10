@@ -55,6 +55,10 @@ int main(int argc, char* argv[]) {
                  "sequential move type to be used in local search")
       ->check(CLI::IsMember({"2", "3", "4", "5"}));
 
+  app.add_option("-j, --threads", param_cli.threads,
+                 "number of threads to run in parallel")
+      ->check(CLI::PositiveNumber);
+
   plog::Severity severity_level = plog::info;
   app.add_option(
          "-l, --trace-level", severity_level,

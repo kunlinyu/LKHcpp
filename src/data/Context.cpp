@@ -1,3 +1,3 @@
 #include "data/Context.h"
 
-Context context;
+thread_local Context context;

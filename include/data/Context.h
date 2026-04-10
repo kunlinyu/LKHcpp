@@ -81,4 +81,4 @@ struct Context {
   size_t dimension;
 };
 
-extern Context context;
+extern thread_local Context context;

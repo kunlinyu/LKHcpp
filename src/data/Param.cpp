@@ -23,6 +23,7 @@ void Param::Patch(const Param& p) {
   UPDATE_FIELD(p, d, time_limit);
   UPDATE_FIELD(p, d, total_time_limit);
   UPDATE_FIELD(p, d, known_optimum);
+  UPDATE_FIELD(p, d, threads);
   UPDATE_FIELD(p, d, ascent_candidates);
   UPDATE_FIELD(p, d, max_candidates);
   UPDATE_FIELD(p, d, candidate_set_symmetric);
@@ -43,6 +44,10 @@ void Param::Patch(const Param& p) {
 
 void Param::Adjust(int dimension) {
   if (seed == 0) seed = (unsigned)(std::time(nullptr) * (size_t)(&seed));
+  if (seed != 0 and seed != 1 and threads > 0) {
+    LOGW << "threads == " << threads << ", ignore seed " << seed;
+  }
+
   if (max_swaps == 0) max_swaps = dimension;
   if (max_candidates > dimension - 1)
     max_candidates = dimension - 1;

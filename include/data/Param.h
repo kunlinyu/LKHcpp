@@ -52,6 +52,7 @@ struct Param {
   double total_time_limit = DBL_MAX;  // Total time limit in seconds
   GainType known_optimum =
       std::numeric_limits<GainType>::min();  // Known optimum tour length
+  int threads = 1;                           // Number of parallel jobs to run
 
   // ==== candidate set parameters ====
   int ascent_candidates = 50;  // Number of candidate edges to be associated
