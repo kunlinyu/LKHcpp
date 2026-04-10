@@ -55,11 +55,11 @@ Tour LKHcpp::Solve(const Param& pr, const Problem& pb) {
   GainType OrdinalTourCost = 0;
   OrdinalTourCost = CalcOrdinalTourCost();
   Tour best_tour;
-  for (int Run = 1; Run <= param.runs; Run++) {
+  for (int Run = 1; Run <= param.runs and !stop_; Run++) {
     LastTime = GetTime();
 
     // using the Lin-Kernighan heuristic
-    GainType Cost = FindTour(OrdinalTourCost);
+    GainType Cost = FindTour(OrdinalTourCost, stop_);
     if (Cost < BestCost) {
       BestCost = Cost;
       RecordBetterTour(context.BetterTour, context.FirstNode);

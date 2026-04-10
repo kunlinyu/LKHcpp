@@ -1,5 +1,7 @@
 #pragma once
 
+#include <atomic>
+
 #include "candidate/POpMUSICCandidateSetCreator.h"
 #include "data/Problem.h"
 #include "data/Tour.h"
@@ -7,10 +9,10 @@
 
 GainType Ascent(POpMUSICCandicateSetCreator& popmusic);
 GainType CalcOrdinalTourCost();
-GainType FindTour(GainType);
+GainType FindTour(GainType, const std::atomic<bool>& stop);
 
 void ChooseInitialTour(Node* FirstNode);
-GainType LinKernighan();
+GainType LinKernighan(const std::atomic<bool>& stop);
 void RecordBetterTour(std::vector<NodeIdType>& BetterTour, Node* FirstNode);
 GainType Gain23();
 int Improvement(GainType* Gain, Node* t1, Node* SUCt1);

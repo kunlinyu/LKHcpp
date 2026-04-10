@@ -5,16 +5,23 @@
 
 #pragma once
 
+#include <atomic>
+
 #include "data/Param.h"
 #include "data/Problem.h"
 #include "data/TSPLIB.h"
 #include "data/Tour.h"
 
 class LKHcpp {
+ private:
+  std::atomic<bool> stop_{false};
+
  public:
-  static Tour Solve(const Param& param, const Problem& problem);
-  static Tour SolveParallel(const Param& param, const Problem& problem);
-  static TourFile Solve(const Param& param, const TSPLIB& tsplib);
-  static void Solve(std::istream& param_json, std::istream& tsplib_text,
-                    std::ostream& tour_text);
+  Tour Solve(const Param& param, const Problem& problem);
+  Tour SolveParallel(const Param& param, const Problem& problem);
+  TourFile Solve(const Param& param, const TSPLIB& tsplib);
+  void Solve(std::istream& param_json, std::istream& tsplib_text,
+             std::ostream& tour_text);
+
+  void stop() { stop_.store(true); }
 };
