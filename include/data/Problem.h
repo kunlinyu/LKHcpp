@@ -31,8 +31,8 @@ class Problem {
   const std::vector<std::vector<WeightType>>& costs() const { return costs_; }
 
   WeightType get(size_t i, size_t j) const {
-    assert(i < dimension);
-    assert(j < dimension);
+    assert(i < costs_.size());
+    assert(j < costs_[i].size());
     return costs_[i][j];
   }
 };
