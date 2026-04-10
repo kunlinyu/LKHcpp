@@ -87,7 +87,7 @@ Tour Solve(Param& pr, const Problem& problem) {
   return best_tour;
 }
 
-void LKHmain(Param& pr, const TSPLIB& tsplib) {
+TourFile LKHmain(Param& pr, const TSPLIB& tsplib) {
   pr.adjust(tsplib.dimension);
 
   std::unique_ptr<VariantBase> variant = VariantFactory::Create(tsplib);
@@ -97,6 +97,16 @@ void LKHmain(Param& pr, const TSPLIB& tsplib) {
   Tour tour = Solve(pr, problem);
 
   tour = variant->Decode(tour);
+
+  TourFile tour_file;
+  tour_file.name = tsplib.name;
+  tour_file.type = "TOUR";
+  tour_file.comments.emplace_back("Length = " + std::to_string(tour.cost));
+  tour_file.comments.emplace_back("Found by LKH-3 [Keld Helsgaun]");
+  tour_file.dimension = context.dimension;
+  tour_file.tour = tour;
+
+  return tour_file;
 
   WriteTour(param.tour_filename, tour, tour.cost);
 }

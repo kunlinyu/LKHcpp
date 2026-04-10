@@ -10,9 +10,13 @@
 #include "data/Param.h"
 #include "data/TSPLIB.h"
 #include "data/TSPLIBReader.h"
+#include "data/Tour.h"
 
-void LKHmain(Param& pr, const TSPLIB& tsplib);
+TourFile LKHmain(Param& pr, const TSPLIB& tsplib);
 Param ReadJsonParameters(const std::string& filename);
+void WriteTourFile(std::ostream& os, const TourFile& tour_file);
+
+std::string ReplaceCost(const char* Name, GainType Cost);
 
 int main(int argc, char* argv[]) {
   CLI::App app{"marieTSP A C++11 implementation of the LKH algorithm"};
@@ -93,7 +97,19 @@ int main(int argc, char* argv[]) {
   }
   const TSPLIB tsplib = TSPLIBReader::Read(fproblem);
 
-  LKHmain(pr, tsplib);
+  TourFile tour_file = LKHmain(pr, tsplib);
+
+  std::string file_path_cost =
+      ReplaceCost(param.tour_filename.c_str(), tour_file.tour.cost);
+  PLOGI << "Writing: " << file_path_cost;
+
+  std::ofstream ofs(file_path_cost, std::ios::binary);
+  if (!ofs.is_open()) {
+    PLOGE << "WriteTour: Cannot open " << file_path_cost;
+  } else {
+    WriteTourFile(ofs, tour_file);
+    ofs.close();
+  }
 
   return EXIT_SUCCESS;
 }

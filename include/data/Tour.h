@@ -21,6 +21,6 @@ struct TourFile {
   std::string name;
   std::string type = "TOUR";
   std::vector<std::string> comments;
-  int dimension = 0;
-  std::vector<NodeIdType> node_ids;
+  size_t dimension = 0;
+  Tour tour;
 };

@@ -41,7 +41,7 @@ void WriteTourFile(std::ostream& os, const TourFile& tour_file) {
   os << "TYPE : " << tour_file.type << "\n";
   os << "DIMENSION : " << tour_file.dimension << "\n";
   os << "TOUR_SECTION\n";
-  for (const auto& node : tour_file.node_ids) {
+  for (const auto& node : tour_file.tour.node_ids) {
     os << node << "\n";
   }
   os << "-1\nEOF\n";
@@ -100,7 +100,7 @@ TourFile CreateTourFile(const Tour& tour, const std::string& name,
   tour_file.comments.emplace_back("Length = " + std::to_string(cost));
   tour_file.comments.emplace_back("Found by LKH-3 [Keld Helsgaun]");
   tour_file.dimension = context.dimension;
-  tour_file.node_ids = tour.node_ids;
+  tour_file.tour = tour;
   return tour_file;
 }
 
