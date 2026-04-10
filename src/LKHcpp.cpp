@@ -99,7 +99,7 @@ TourFile LKHcpp::Solve(const Param& pr, const TSPLIB& tsplib) {
   tour_file.type = "TOUR";
   tour_file.comments.emplace_back("Length = " + std::to_string(tour.cost));
   tour_file.comments.emplace_back("Found by LKH-3 [Keld Helsgaun]");
-  tour_file.dimension = context.dimension;
+  tour_file.dimension = tsplib.dimension;
   tour_file.tour = tour;
 
   return tour_file;
