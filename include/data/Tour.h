@@ -25,7 +25,7 @@ struct TourFile {
   size_t dimension = 0;
   Tour tour;
 
-  void write(std::ostream& os) {
+  void write(std::ostream& os) const {
     os << "NAME : " << name << "\n";
     for (const auto& comment : comments) {
       os << "COMMENT : " << comment << "\n";

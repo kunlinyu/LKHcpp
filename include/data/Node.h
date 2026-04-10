@@ -18,8 +18,8 @@ class Node : public TreeNode, public Coordinate {
 
   int Pi;  // Pi-value of the node
 
-  Node *SucNode() const { return static_cast<Node *>(Suc); }
-  Node *PrdNode() const { return static_cast<Node *>(Prd); }
+  Node *SucNode() const { return dynamic_cast<Node *>(Suc); }
+  Node *PrdNode() const { return dynamic_cast<Node *>(Prd); }
   static Node *MoveSuc(Node *&node) {
     node = node->SucNode();
     return node;

@@ -1,7 +1,9 @@
 #pragma once
 
 // for both Segment and Super Segment
-struct TreeNode {
+class TreeNode {
+ public:
+  virtual ~TreeNode() = default;
   bool Reversed = false;       // Reversal bit
   TreeNode *First = nullptr;   // First child node
   TreeNode *Last = nullptr;    // Last child node

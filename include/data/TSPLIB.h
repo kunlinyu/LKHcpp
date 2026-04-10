@@ -68,7 +68,7 @@ enum EdgeDataFormat {
   ADJ_LIST,
 };
 
-const int DepotIndex = 1;
+constexpr int DepotIndex = 1;
 
 struct TSPLIB {
   std::string name;

@@ -11,7 +11,6 @@
 class Node;
 
 typedef Node *(*MoveFunction)(Node *t1, Node *t2, GainType *G0, GainType *Gain);
-typedef int (*CostFunction)(const Node *Na, const Node *Nb);
 
 struct Context {
   GainType BetterCost;  // Cost of the tour stored in BetterTour
@@ -37,8 +36,10 @@ struct Context {
                                              // as a tour length becomes equal
                                              // this value
 
-  std::vector<std::vector<WeightType>> CostMatrix;  // Cost matrix of the problem
-  std::vector<std::vector<WeightType>> DMatrix;     // CostMatrix + Nodes' Pi values
+  std::vector<std::vector<WeightType>>
+      CostMatrix;  // Cost matrix of the problem
+  std::vector<std::vector<WeightType>>
+      DMatrix;  // CostMatrix + Nodes' Pi values
 
   bool Reversed =
       false;  // Boolean used to indicate whether a tour has been reversed
@@ -49,7 +50,8 @@ struct Context {
 
   double StartTime;  // Time when execution starts
 
-  MoveFunction BestMove, BestSubsequentMove;
+  MoveFunction BestMove;
+  MoveFunction BestSubsequentMove;
 
   std::function<int(const Node *, const Node *)> C =
       [this](const Node *Na, const Node *Nb) { return C_EXPLICIT(Na, Nb); };

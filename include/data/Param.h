@@ -129,7 +129,7 @@ struct Param {
     UPDATE_FIELD(p, d, salesmen);
   }
   void adjust(int dimension) {
-    if (seed == 0) seed = (unsigned)(std::time(0) * (size_t)(&seed));
+    if (seed == 0) seed = (unsigned)(std::time(nullptr) * (size_t)(&seed));
     if (max_swaps == 0) max_swaps = dimension;
     if (max_candidates > dimension - 1)
       max_candidates = dimension - 1;
