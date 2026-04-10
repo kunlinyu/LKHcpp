@@ -79,6 +79,12 @@ struct Context {
   bool gain23_old_reversed = false;
 
   size_t dimension;
+  ~Context() {
+    LOGD << "Clear CostMatrix";
+    CostMatrix.clear();
+    LOGD << "Clear DMatrix";
+    DMatrix.clear();
+  }
 };
 
 extern thread_local Context context;
