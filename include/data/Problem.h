@@ -45,4 +45,3 @@ class Problem {
   }
 };
 
-extern thread_local Problem problem;
