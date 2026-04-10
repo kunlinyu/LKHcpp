@@ -84,7 +84,7 @@ Tour LKHcpp::Solve(const Param& pr, const Problem& pb) {
 
 TourFile LKHcpp::Solve(const Param& pr, const TSPLIB& tsplib) {
   Param param = pr;
-  param.adjust(tsplib.dimension);
+  param.Adjust(tsplib.dimension);
 
   std::unique_ptr<VariantBase> variant = VariantFactory::Create(tsplib);
   PLOGI << "Encode problem with variant: " << variant->chain();

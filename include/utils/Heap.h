@@ -8,16 +8,16 @@ template <typename T>
 class Heap {
  private:
   std::vector<T> heap_;
-  std::unordered_map<T, size_t> loc_;
+  std::unordered_map<T, std::size_t> loc_;
   std::function<bool(T, T)> less_than_;
 
  public:
   explicit Heap(const std::function<bool(T, T)>& less_than)
       : less_than_(less_than) {}
 
-  void Reserve(size_t size) { heap_.reserve(size); }
+  void Reserve(std::size_t size) { heap_.reserve(size); }
 
-  size_t size() const { return heap_.size(); }
+  std::size_t size() const { return heap_.size(); }
 
   void Insert(T n) {
     LazyInsert(n);
@@ -51,8 +51,8 @@ class Heap {
   }
 
   void SiftUp(T n) {
-    size_t loc = loc_[n];
-    size_t parent = (loc - 1) / 2;
+    std::size_t loc = loc_[n];
+    std::size_t parent = (loc - 1) / 2;
     while (loc > 0 && less_than_(n, heap_[parent])) {
       heap_[loc] = heap_[parent];
       loc_[heap_[loc]] = loc;
@@ -64,8 +64,8 @@ class Heap {
   }
 
   void SiftDown(T n) {
-    size_t loc = loc_[n];
-    size_t child;
+    std::size_t loc = loc_[n];
+    std::size_t child;
     while ((child = loc * 2 + 1) < heap_.size()) {
       if (child + 1 < heap_.size() &&
           less_than_(heap_[child + 1], heap_[child]))

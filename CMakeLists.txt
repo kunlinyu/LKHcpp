@@ -50,6 +50,7 @@ set(SRC
         src/candidate/TrimCandidateSet.cpp
         src/data/Context.cpp
         src/data/Param.cpp
+        src/data/ParamReader.cpp
         src/data/TSPLIBReader.cpp
         src/move/Best2OptMove.cpp
         src/move/Best3OptMove.cpp
@@ -60,6 +61,9 @@ set(SRC
         src/move/Make4OptMove.cpp
         src/move/Make5OptMove.cpp
         src/utils/Random.cpp
+        src/variant/EdgeDataEncoder.cpp
+        src/variant/NodeCoordEncoder.cpp
+        src/variant/STTSPVariant.cpp
 )
 
 add_library(libLKHcpp ${SRC})

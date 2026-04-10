@@ -34,24 +34,7 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(
 
 class ParamReader {
  private:
-  template <typename ParseFunc>
-  static Param Read(ParseFunc parse) {
-    try {
-      nlohmann::json j = parse();
-      Param p = j;
-      LOGI << "Json parameter read:";
-      LOGI << "\n" << j.dump(2);
-      return p;
-    } catch (const nlohmann::json::parse_error& e) {
-      LOGE << "parse parameter error: " << e.what();
-      throw std::invalid_argument("Error parsing parameter file: " +
-                                  std::string(e.what()));
-    } catch (const nlohmann::json::type_error& e) {
-      LOGE << "parse parameter error: " << e.what();
-      throw std::invalid_argument("Error in parameter types: " +
-                                  std::string(e.what()));
-    }
-  }
+  static Param Read(const std::function<nlohmann::json()>& parse);
 
  public:
   static Param ReadString(const std::string& param_json) {
