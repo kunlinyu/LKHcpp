@@ -1,3 +1,5 @@
+#include <plog/Log.h>
+
 #include <cassert>
 #include <cmath>
 #include <functional>
@@ -9,8 +11,6 @@
 #include "data/Candidate.h"
 #include "data/Context.h"
 #include "data/Param.h"
-#include "data/Problem.h"
-#include "plog/Log.h"
 #include "utils/GetTime.h"
 
 /*

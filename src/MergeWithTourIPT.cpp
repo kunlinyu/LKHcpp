@@ -1,8 +1,9 @@
+#include <plog/Log.h>
+
 #include <functional>
 
 #include "LKH.h"
 #include "data/Context.h"
-#include "plog/Log.h"
 
 /*
  * The MergeWithTourIPT function attempts to find a short tour

@@ -1,19 +1,18 @@
-#include <cstdlib>
+#include <plog/Log.h>
+
 #include <fstream>
 
 #include "data/Context.h"
-#include "data/Problem.h"
 #include "data/TSPLIB.h"
 #include "data/Tour.h"
-#include "plog/Log.h"
 
 Tour ExtractFinalTour(const std::vector<NodeIdType>& ids) {
   size_t dimension = ids.size() - 1;
   int i;
   for (i = 1; i < dimension && ids[i] != DepotIndex; i++);
   PLOGI << "i value : " << i;
-  bool Forward = ids[i < dimension ? i + 1 : 1] <
-                 ids[i > 1 ? i - 1 : dimension];
+  bool Forward =
+      ids[i < dimension ? i + 1 : 1] < ids[i > 1 ? i - 1 : dimension];
   if (Forward) {
     LOGI << "Tour direction: forward";
   } else {

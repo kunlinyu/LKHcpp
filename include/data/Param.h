@@ -3,13 +3,14 @@
 // @author Kunlin Yu
 // @date 2026-04-06
 #pragma once
+#include <plog/Log.h>
+
 #include <cfloat>
 #include <climits>
 #include <ctime>
 #include <limits>
 #include <string>
 
-#include "plog/Log.h"
 #include "type.h"
 
 enum InitialTourAlgorithms { BORUVKA, GREEDY, WALK };

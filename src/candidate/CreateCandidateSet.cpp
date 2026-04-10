@@ -1,3 +1,5 @@
+#include <plog/Log.h>
+
 #include <cmath>
 #include <iomanip>
 #include <sstream>
@@ -6,7 +8,6 @@
 #include "candidate/CandidateFuncs.h"
 #include "data/Context.h"
 #include "data/Param.h"
-#include "plog/Log.h"
 #include "utils/GetTime.h"
 
 /*
