@@ -54,7 +54,6 @@ set(SRC
         src/NormalizeNodeList.cpp
         src/NormalizeSegmentList.cpp
         src/OrderCandidateSet.cpp
-        src/ReadParameters.cpp
         src/RecordBetterTour.cpp
         src/RestoreTour.cpp
         src/SegmentSize.cpp

@@ -22,7 +22,7 @@ NLOHMANN_JSON_SERIALIZE_ENUM(CandidateSetTypes,
                              {{ALPHA, "ALPHA"}, {POPMUSIC, "POPMUSIC"}});
 
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(
-    Param, problem_filename, tour_filename, candidate_set_type,
+    Param, tsplib_filename, tour_filename, candidate_set_type,
     initial_tour_algorithm, tree_type, move_type, subsequent_move_type,
     nonsequential_move_type, gain23_used, gain_criterion_used, runs, max_trials,
     stop_at_optimum, time_limit, total_time_limit, known_optimum,

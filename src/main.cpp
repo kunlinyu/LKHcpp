@@ -9,6 +9,7 @@
 #include "FileLineFormatter.h"
 #include "LKHcpp.h"
 #include "data/Param.h"
+#include "data/ParamReader.h"
 #include "data/TSPLIB.h"
 #include "data/TSPLIBReader.h"
 #include "data/Tour.h"
@@ -85,7 +86,7 @@ int main(int argc, char* argv[]) {
   PLOGD << "Command line arguments parsed.";
 
   // ******** Read parameters ********
-  Param pr = ReadJsonParameters(param_filename);
+  Param pr = ParamReader::Read(param_filename);
   if (not problem_filename.empty()) pr.tsplib_filename = problem_filename;
   pr.Patch(param_cli);
 
