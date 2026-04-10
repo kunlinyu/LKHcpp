@@ -5,6 +5,7 @@
 
 #pragma once
 #include <unordered_map>
+#include <unordered_set>
 
 #include "EdgeDataEncoder.h"
 #include "Initializer.h"
@@ -47,7 +48,7 @@ class STTSPVariant : public VariantBase {
     for (int i = 0; i < NewDimension; i++) Matrix[i].resize(NewDimension);
     do {
       if (required.count(N1->Id)) {
-        std::set<NodeIdType> target = required;
+        std::unordered_set<NodeIdType> target(required.begin(), required.end());
         auto record = Dijkstra<Node *>(
             N1,
             [&node_2_edges, this](Node *node) {

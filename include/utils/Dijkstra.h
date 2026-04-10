@@ -26,12 +26,13 @@ using NeighborFunc =
 template <typename NodeType>
 using Breaker = std::function<bool(NodeType)>;
 
-template <typename NodeType>
-std::unordered_map<NodeType, SearchNode<NodeType>> Dijkstra(
-    NodeType source, const NeighborFunc<NodeType> &neighbors,
+template <typename NodeType,
+          template <typename...> class MapType = std::unordered_map>
+MapType<NodeType, SearchNode<NodeType>> Dijkstra(
+    const NodeType &source, const NeighborFunc<NodeType> &neighbors,
     const Breaker<NodeType> &break_condition) {
-  std::unordered_map<NodeType, SearchNode<NodeType>> record;
-  std::set<NodeType> visited;
+  MapType<NodeType, SearchNode<NodeType>> record;
+  std::unordered_set<NodeType> visited;
 
   Heap<NodeType> heap([&record](NodeType a, NodeType b) {
     return record[a].cost < record[b].cost;
