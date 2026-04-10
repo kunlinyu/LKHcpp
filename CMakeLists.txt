@@ -47,7 +47,6 @@ set(SRC
         src/Improvement.cpp
         src/LinKernighan.cpp
         src/LKHcpp.cpp
-        src/main.cpp
         src/MergeWithTourIPT.cpp
         src/Minimum1TreeCost.cpp
         src/MinimumSpanningTree.cpp
@@ -63,9 +62,13 @@ set(SRC
         src/WriteTour.cpp
 )
 
-add_executable(${PROJECT_NAME} ${SRC})
-target_link_libraries(${PROJECT_NAME} m)
-target_compile_definitions(${PROJECT_NAME} PRIVATE PLOG_CAPTURE_FILE)
+add_library(libLKHcpp ${SRC})
+target_link_libraries(libLKHcpp m)
+target_compile_definitions(libLKHcpp PRIVATE PLOG_CAPTURE_FILE)
+
+add_executable(LKHcpp src/main.cpp)
+target_link_libraries(LKHcpp libLKHcpp)
+target_compile_definitions(LKHcpp PRIVATE PLOG_CAPTURE_FILE)
 
 add_custom_command(
         TARGET ${PROJECT_NAME}
