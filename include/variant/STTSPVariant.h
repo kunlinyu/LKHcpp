@@ -90,7 +90,7 @@ class STTSPVariant : public VariantBase {
 
     RingPair<Node>(node_set, [](Node &a, Node &b) { Link(a, b); });
 
-    return Problem(NewDimension, Matrix);
+    return Problem(Matrix);
   }
   Tour Decode(const Tour &tour) override {
     Tour result;

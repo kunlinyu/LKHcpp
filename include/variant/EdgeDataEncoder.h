@@ -37,6 +37,6 @@ class EdgeDataEncoder : public VariantBase {
       costs[i][j] = edge_data.weight;
       costs[j][i] = edge_data.weight;
     }
-    return Problem(tsplib.dimension, costs);
+    return Problem(costs);
   }
 };

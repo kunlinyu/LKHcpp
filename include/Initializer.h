@@ -58,12 +58,12 @@ class Initializer {
   }
 
   static void Init(const Param& pr, Context& ctx, const Problem& problem) {
-    ctx.dimension = problem.dimension;
-    ctx.node_set = CreateNodes(problem.dimension);
+    ctx.dimension = problem.dimension();
+    ctx.node_set = CreateNodes(ctx.dimension);
     ctx.FirstNode = &ctx.node_set.front();
 
-    ctx.BetterTour.resize(problem.dimension + 1);
-    ctx.hash_table.init_rand(problem.dimension + 1);
+    ctx.BetterTour.resize(ctx.dimension + 1);
+    ctx.hash_table.init_rand(ctx.dimension + 1);
 
     ctx.CostMatrix = problem.costs();
 
@@ -75,7 +75,7 @@ class Initializer {
     ctx.BestSubsequentMove = BestOptMove[pr.subsequent_move_type];
     int K = pr.move_type;
     if (pr.subsequent_move_type > K) K = pr.subsequent_move_type;
-    AllocateSegments(pr.tree_type, problem.dimension, ctx);
+    AllocateSegments(pr.tree_type, ctx.dimension, ctx);
   }
 
   // The AllocateSegments function allocates the segments of the two-level tree.

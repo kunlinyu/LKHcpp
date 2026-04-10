@@ -14,30 +14,21 @@ class Problem {
 
  public:
   ProblemType type = UNKNOW_PROBLEM;
-  size_t dimension = 0;
   const std::vector<std::vector<WeightType>>& costs() const { return costs_; }
 
  public:
   Problem() = default;
-  Problem(int dimension,
-          const std::function<WeightType(size_t, size_t)>& costs) {
-    init(dimension, costs);
-  }
-  Problem(int dimension, const std::vector<std::vector<WeightType>> costs) {
-    init(dimension, costs);
-  }
-  void init(int dim, const std::vector<std::vector<WeightType>>& costs) {
-    dimension = dim;
+  explicit Problem(const std::vector<std::vector<WeightType>>& costs) {
     costs_ = costs;
   }
-  void init(int dim, const std::function<WeightType(size_t, size_t)>& costs) {
-    dimension = dim;
+  Problem(size_t dimension, const std::function<WeightType(size_t, size_t)>& costs) {
     costs_.resize(dimension);
     for (size_t i = 0; i < dimension; i++) {
       costs_[i].resize(dimension);
       for (size_t j = 0; j < i; j++) costs_[i][j] = costs_[j][i] = costs(i, j);
     }
   }
+  size_t dimension() const { return costs_.size(); }
   WeightType get(size_t i, size_t j) const {
     assert(i < dimension);
     assert(j < dimension);
