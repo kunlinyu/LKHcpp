@@ -73,7 +73,7 @@ if(MSVC)
 endif()
 
 add_executable(${PROJECT_NAME}_exe src/main.cpp)
-target_link_libraries(${PROJECT_NAME}_exe LKHcpp)
+target_link_libraries(${PROJECT_NAME}_exe PRIVATE LKHcpp)
 target_compile_definitions(${PROJECT_NAME}_exe PRIVATE PLOG_CAPTURE_FILE)
 set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
 if(UNIX)
