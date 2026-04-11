@@ -42,7 +42,7 @@ void Param::Patch(const Param& p) {
   UPDATE_FIELD(p, d, salesmen);
 }
 
-void Param::Adjust(int dimension) {
+void Param::Adjust(size_t dimension) {
   if (seed == 0) seed = (unsigned)(std::time(nullptr) * (size_t)(&seed));
 
   if (max_swaps == 0) max_swaps = dimension;

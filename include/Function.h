@@ -32,7 +32,7 @@
 #define RGPP(n) (RGP(n) ^ (n)->Parent->Parent->Reversed)
 
 // clang-format off
-static Node* PRD(const Node* n) {
+inline Node* PRD(const Node* n) {
   switch (param.tree_type) {
     case 1: return RG ? n->SucNode() : n->PrdNode();
     default:
@@ -40,7 +40,7 @@ static Node* PRD(const Node* n) {
     case 3: return RGPP(n) ? n->SucNode() : n->PrdNode();
   }
 }
-static Node* SUC(const Node* n) {
+inline Node* SUC(const Node* n) {
   switch (param.tree_type) {
     case 1: return RG ? n->PrdNode() : n->SucNode();
     default:
@@ -56,7 +56,7 @@ bool Between(const Node* ta, const Node* tb, const Node* tc);
 bool Between_SL(const Node* ta, const Node* tb, const Node* tc);
 bool Between_SSL(const Node* ta, const Node* tb, const Node* tc);
 
-static bool BETWEEN(const Node* a, const Node* b, const Node* c) {
+inline bool BETWEEN(const Node* a, const Node* b, const Node* c) {
   switch (param.tree_type) {
     case 1: return Between(a, b, c);
     default:
@@ -69,7 +69,7 @@ void Flip(Node* t1, Node* t2, Node* t3);
 void Flip_SL(Node* t1, Node* t2, Node* t3);
 void Flip_SSL(Node* t1, Node* t2, Node* t3);
 
-static void FLIP(Node* a, Node* b, Node* c, Node*) {
+inline void FLIP(Node* a, Node* b, Node* c, Node*) {
   switch (param.tree_type) {
     case 1: return Flip(a, b, c);
     default:

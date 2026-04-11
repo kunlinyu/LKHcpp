@@ -82,17 +82,26 @@ elseif(MSVC)
     target_compile_options(${PROJECT_NAME}_exe PRIVATE /permissive-)
 endif()
 
+target_compile_options(LKHcpp PRIVATE
+        $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
+        $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
+)
+target_compile_options(${PROJECT_NAME}_exe PRIVATE
+        $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
+        $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
+)
+
 add_custom_command(
-        TARGET ${PROJECT_NAME}_exe
-        POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}_exe> $<TARGET_FILE_DIR:${PROJECT_NAME}_exe>/../
+    TARGET ${PROJECT_NAME}_exe
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}_exe> $<TARGET_FILE_DIR:${PROJECT_NAME}_exe>/../
 )
 
 if (MINGW)
     target_link_options(${PROJECT_NAME}_exe PRIVATE
-            -static-libgcc
-            -static-libstdc++
-            -static
+        -static-libgcc
+        -static-libstdc++
+        -static
     )
 endif ()
 if(MSVC)

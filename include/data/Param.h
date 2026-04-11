@@ -55,20 +55,20 @@ struct Param {
   int threads = 1;                           // Number of parallel jobs to run
 
   // ==== candidate set parameters ====
-  int ascent_candidates = 50;  // Number of candidate edges to be associated
-                               // with each node during the ascent
-  int max_candidates =
+  size_t ascent_candidates = 50;  // Number of candidate edges to be associated
+                                  // with each node during the ascent
+  size_t max_candidates =
       5;  // Maximum number of candidate edges to be associated with each node
   bool candidate_set_symmetric = false;
 
   // ==== popomusic parameters ====
-  int popmusic_initial_tour = 0;   // Specifies whether the first POPMUSIC tour
-                                   // is used as initial tour for LK
-  int popmusic_max_neighbors = 5;  // Maximum number of nearest neighbors used
-                                   // as candidates in iterated 3-opt
-  int popmusic_sample_size = 10;   // The sample size
-  int popmusic_solutions = 50;     // Number of solutions to generate
-  int popmusic_trials = 1;         // Maximum trials used for iterated 3-opt
+  bool popmusic_initial_tour = false;  // Specifies whether the first POPMUSIC
+                                       // tour is used as initial tour for LK
+  size_t popmusic_max_neighbors = 5;  // Maximum number of nearest neighbors
+                                      // used as candidates in iterated 3-opt
+  size_t popmusic_sample_size = 10;  // The sample size
+  size_t popmusic_solutions = 50;    // Number of solutions to generate
+  size_t popmusic_trials = 1;        // Maximum trials used for iterated 3-opt
 
   // ==== ascent tuning parameters ====
   double excess = 0;  // Maximum alpha-value allowed for any candidate edge is
@@ -84,16 +84,16 @@ struct Param {
   int max_breadth =
       INT_MAX;  // The maximum number of candidate edges considered
   // at each level of the search for a move
-  int max_swaps =
+  size_t max_swaps =
       0;  // Maximum number of swaps made during the search for a move
 
   // ==== other parameters ====
   unsigned seed = 1;  // Initial seed for random number generation
-  int salesmen = 1;
+  size_t salesmen = 1;
 
   void Patch(const Param& p);
 
-  void Adjust(int dimension);
+  void Adjust(size_t dimension);
 
   std::string TourFilenameWithCost(GainType Cost) const;
 };

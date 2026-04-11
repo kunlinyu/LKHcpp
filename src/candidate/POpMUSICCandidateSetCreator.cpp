@@ -28,13 +28,14 @@ inline void shuffle(int N, int *path) {
   for (int i = 1; i < N; i++) swap(path + i, path + unif(0, i));
 }
 
-POpMUSICThreeOpt::POpMUSICThreeOpt(Node **&node_path, int &trials,
-                                   int &max_neighbors)
+POpMUSICThreeOpt::POpMUSICThreeOpt(Node **&node_path, size_t &trials,
+                                   size_t &max_neighbors)
     : node_path(node_path), trials(trials), max_neighbors(max_neighbors) {}
 
 void POpMUSICThreeOpt::path_threeOpt(int N, int **D, int *best_sol,
                                      GainType *best_cost) {
-  int i, j, trial;
+  int i, j;
+  size_t trial;
   int *bestTour;
   GainType bestTourLength;
 
@@ -127,7 +128,8 @@ void POpMUSICThreeOpt::flip(int from, int to) {
 }
 
 void POpMUSICThreeOpt::threeOpt(void) {
-  int improved = 1, a, b, c, d, e, f, xa, xc, xe, i, j;
+  int improved = 1, a, b, c, d, e, f, xa, xc, xe;
+  size_t i, j;
   GainType g0, g1, g2, g3, gain;
 
   while (improved) {
@@ -221,7 +223,7 @@ void POpMUSICThreeOpt::createNeighbors(void) {
   neighbor = (int **)malloc(n * sizeof(int *));
   for (i = 0; i < n; i++)
     neighbor[i] = (int *)malloc((max_neighbors + 1) * sizeof(int));
-  neighbors = (int *)calloc(n, sizeof(int));
+  neighbors = (size_t *)calloc(n, sizeof(size_t));
   for (i = 0; i < n; i++) {
     for (j = 0; j < n; j++) {
       if (i == j) continue;
@@ -313,7 +315,8 @@ POpMUSICCandicateSetCreator::POpMUSICCandicateSetCreator()
 
 void POpMUSICCandicateSetCreator::CreateCandidateSet(int K) {
 
-    int n, i, no_res, d;
+    int n, i, d;
+    size_t no_res;
     int *solution;
     GainType cost, costSum = 0;
     GainType costMin = std::numeric_limits<GainType>::max(), costMax = std::numeric_limits<GainType>::min();

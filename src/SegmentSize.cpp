@@ -11,12 +11,12 @@
  * Time complexity: O(1).
  */
 
-int SegmentSize1(Node *ta, Node *tb) {
+size_t SegmentSize1(Node *ta, Node *tb) {
   int n = !context.Reversed ? tb->Rank - ta->Rank : ta->Rank - tb->Rank;
   return (n < 0 ? n + context.dimension : n) + 1;
 }
 
-int SegmentSize2(Node *ta, Node *tb) {
+size_t SegmentSize2(Node *ta, Node *tb) {
   TreeNode *Pa, *Pb;
   int nLeft, nMid, nRight;
 
@@ -40,7 +40,7 @@ int SegmentSize2(Node *ta, Node *tb) {
   return nLeft + nMid + nRight + 2;
 }
 
-int SegmentSize3(Node *ta, Node *tb) {
+size_t SegmentSize3(Node *ta, Node *tb) {
   TreeNode *Pa, *Pb;
   TreeNode *PPa, *PPb;
   int n, nLeft, nMid, nRight;
@@ -105,7 +105,7 @@ int SegmentSize3(Node *ta, Node *tb) {
   return n + 1;
 }
 
-int SegmentSize(Node *ta, Node *tb) {
+size_t SegmentSize(Node *ta, Node *tb) {
   switch (param.tree_type) {
     case 1:
       return SegmentSize1(ta, tb);

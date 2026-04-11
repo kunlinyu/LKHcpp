@@ -34,7 +34,6 @@ struct AlphaContext {
 
 static int BetaValue(std::unordered_map<Node *, AlphaContext> &ctx, Node *From,
                      Node *To);
-static Candidate *FindCandidate(Node *From, Node *To);
 
 void OrderCandidateSet(int MaxCandidates, GainType MaxAlpha, int Symmetric) {
   Node *From;

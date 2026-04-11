@@ -17,7 +17,7 @@
 #include "data/Tour.h"
 
 std::atomic<bool> g_stop{false};
-void HandleSigInt(int signum) { g_stop.store(true, std::memory_order_relaxed); }
+void HandleSigInt(int) { g_stop.store(true, std::memory_order_relaxed); }
 
 int main(int argc, char* argv[]) {
   g_stop.store(false, std::memory_order_relaxed);

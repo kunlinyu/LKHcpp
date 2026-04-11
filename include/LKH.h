@@ -33,4 +33,4 @@ std::string StatusReport(GainType Cost, double EntryTime, const char* Suffix);
 void NormalizeNodeList();
 void NormalizeSegmentList();
 
-int SegmentSize(Node* ta, Node* tb);
+size_t SegmentSize(Node* ta, Node* tb);

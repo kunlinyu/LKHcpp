@@ -67,8 +67,8 @@ struct Context {
 
   void SwitchCostToD() {
     DMatrix = CostMatrix;
-    for (int i = 0; i < node_set.size(); i++)
-      for (int j = 0; j < node_set.size(); j++)
+    for (size_t i = 0; i < node_set.size(); i++)
+      for (size_t j = 0; j < node_set.size(); j++)
         DMatrix[i][j] += node_set[i].Pi + node_set[j].Pi;
     C = [this](const Node *Na, const Node *Nb) {
       return DMatrix[Na->index][Nb->index];

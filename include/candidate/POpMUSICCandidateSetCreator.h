@@ -10,18 +10,18 @@ class POpMUSICThreeOpt {
   int *tour = nullptr;
   int *pos = nullptr;
   int **neighbor = nullptr;
-  int *neighbors = nullptr;
+  size_t *neighbors = nullptr;
   int reversed = 0;
   char *dontLook = nullptr;
   GainType tourLength = 0;
 
   Node **&node_path;
 
-  int &trials;
-  int &max_neighbors;
+  size_t &trials;
+  size_t &max_neighbors;
 
  public:
-  POpMUSICThreeOpt(Node **&node_path, int &trials, int &max_neighbors);
+  POpMUSICThreeOpt(Node **&node_path, size_t &trials, size_t &max_neighbors);
 
   void path_threeOpt(int N, int **D, int *best_sol, GainType *best_cost);
 
@@ -68,24 +68,24 @@ class POpMUSICCandicateSetCreator {
 
   bool initial_tour_ = false;  // Specifies whether the first POPMUSIC tour is
                                // used as initial tour for LK
-  int max_neighbors_ = 5;  // Maximum number of nearest neighbors used as
+  size_t max_neighbors_ = 5;  // Maximum number of nearest neighbors used as
                            // candidates in iterated 3-opt
-  int sample_size_ = 10;   // The sample size
-  int solutions_ = 50;     // Number of solutions to generate
-  int trials_ = 1;         // Maximum trials used for iterated 3-opt
+  size_t sample_size_ = 10;   // The sample size
+  size_t solutions_ = 50;     // Number of solutions to generate
+  size_t trials_ = 1;         // Maximum trials used for iterated 3-opt
  public:
   POpMUSICCandicateSetCreator();
 
   bool initial_tour() const { return initial_tour_; }
-  int max_neighbors() const { return max_neighbors_; }
-  int sample_size() const { return sample_size_; }
-  int solutions() const { return solutions_; }
-  int trials() const { return trials_; }
+  size_t max_neighbors() const { return max_neighbors_; }
+  size_t sample_size() const { return sample_size_; }
+  size_t solutions() const { return solutions_; }
+  size_t trials() const { return trials_; }
 
-  void set_initial_tour(int initial_tour) { initial_tour_ = initial_tour; }
-  void set_sample_size(int sample_size) { sample_size_ = sample_size; }
-  void set_solutions(int solutions) { solutions_ = solutions; }
-  void set_trails(int trials) { trials_ = trials; }
+  void set_initial_tour(bool initial_tour) { initial_tour_ = initial_tour; }
+  void set_sample_size(size_t sample_size) { sample_size_ = sample_size; }
+  void set_solutions(size_t solutions) { solutions_ = solutions; }
+  void set_trails(size_t trials) { trials_ = trials; }
   void set_max_neighbors(int max_neighbors) { max_neighbors_ = max_neighbors; }
 
   void CreateCandidateSet(int K);

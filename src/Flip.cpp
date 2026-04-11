@@ -43,9 +43,9 @@ void Flip(Node *t1, Node *t2, Node *t3) {
   }
 
   // Find the segment with the smallest number of nodes
-  int drank = t2->Rank - t3->Rank;
+  int64_t drank = t2->Rank - t3->Rank;
   if (drank < 0) drank += context.dimension;
-  if (2 * drank > context.dimension) {
+  if (2 * drank > (int64_t)context.dimension) {
     std::swap(t2, t3);
     std::swap(t4, t1);
   }
@@ -290,9 +290,9 @@ void Flip_SL(Node *t1, Node *t2, Node *t3) {
       std::swap(P3, P4);
     }
     // Find the sequence with the smallest number of segments
-    int drank;
+    int64_t drank;
     if ((drank = P2->Rank - P3->Rank) < 0) drank += context.segments.size();
-    if (2 * drank > context.segments.size()) {
+    if (2 * drank > (int64_t)context.segments.size()) {
       std::swap(t3, t2);
       std::swap(t1, t4);
       std::swap(P3, P2);
@@ -433,7 +433,7 @@ void Flip_SSL(Node *t1, Node *t2, Node *t3) {
           abcd(t2, t1, t4, t3);
       } else {
         if (P1 == P2 && P1 == P4 && t2->Rank < t1->Rank &&
-            t1->Rank - t2->Rank + 1 < context.segments.size())
+            t1->Rank - t2->Rank + 1 < (int64_t)context.segments.size())
           abcd(t3, t4, t1, t2);
         else
           abcd(t4, t3, t2, t1);
@@ -457,7 +457,7 @@ void Flip_SSL(Node *t1, Node *t2, Node *t3) {
       // Find the sequence with the fewest segments
       int count = P2->Rank - P3->Rank;
       if (count <= 0) count += context.super_segments.size();
-      if (2 * count > context.super_segments.size()) {
+      if (2 * count > (int64_t)context.super_segments.size()) {
         std::swap(t3, t2);
         std::swap(t1, t4);
         std::swap(P3, P2);

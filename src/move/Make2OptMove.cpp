@@ -8,7 +8,7 @@
  * orientation of (t1,t2).
  */
 
-void Make2OptMove(Node * t1, Node * t2, Node * t3, Node * t4)
+void Make2OptMove(Node * t1, Node * t2, Node * t3, Node *)
 {
     Swap1(t1, t2, t3);
 }

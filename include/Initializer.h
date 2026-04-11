@@ -66,7 +66,7 @@ class Initializer {
       ctx.segments.emplace_back(s);
     }
 
-    for (int i = 0; i < ctx.segments.size() - 1; i++)
+    for (size_t i = 0; i < ctx.segments.size() - 1; i++)
       SLink(ctx.segments[i], ctx.segments[i + 1]);
     SLink(ctx.segments.back(), ctx.segments.front());
 
@@ -82,7 +82,7 @@ class Initializer {
       ctx.super_segments.emplace_back(ss);
     }
 
-    for (int i = 0; i < ctx.super_segments.size() - 1; i++)
+    for (size_t i = 0; i < ctx.super_segments.size() - 1; i++)
       SLink(ctx.super_segments[i], ctx.super_segments[i + 1]);
     SLink(ctx.super_segments.back(), ctx.super_segments.front());
   }

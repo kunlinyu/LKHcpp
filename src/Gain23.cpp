@@ -41,7 +41,7 @@
 GainType BridgeGain(Node* s1, Node* s2, Node* s3, Node* s4, Node* s5, Node* s6,
                     Node* s7, Node* s8, int Case6, GainType G);
 GainType Gain23(void) {
-  Node *s2, *s3, *s4, *s5, *s6 = 0, *s7, *s8 = 0, *s1Stop, *SUCs1;
+  Node *s2, *s3, *s4, *s5, *s6 = 0, *s7, *s8 = 0, *s1Stop;
   Candidate *Ns2, *Ns4, *Ns6;
   GainType G0, G1, G2, G3, G4, G5, G6, Gain, Gain6;
   int X2, X4, X6, X8, Case6 = 0, Case8 = 0;
@@ -50,7 +50,6 @@ GainType Gain23(void) {
   if (!context.gain23_s1) context.gain23_s1 = context.FirstNode;
   Node*& s1 = context.gain23_s1;
   bool& OldReversed = context.gain23_old_reversed;
-  SUCs1 = SUC(s1);
   s1Stop = s1;
   for (X2 = 1; X2 <= 2; X2++) {
     context.Reversed = X2 == 1 ? OldReversed : (OldReversed ^= 1);

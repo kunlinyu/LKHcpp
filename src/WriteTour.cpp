@@ -8,11 +8,11 @@
 
 Tour ExtractFinalTour(const std::vector<NodeIdType>& ids) {
   size_t dimension = ids.size() - 1;
-  int i;
-  for (i = 1; i < dimension && ids[i] != DepotIndex; i++);
+  int64_t i;
+  for (i = 1; i <= (int64_t)dimension && ids[i] != DepotIndex; i++);
   PLOGI << "i value : " << i;
-  bool Forward =
-      ids[i < dimension ? i + 1 : 1] < ids[i > 1 ? i - 1 : dimension];
+  bool Forward = ids[i < (int64_t)dimension ? i + 1 : 1] <
+                 ids[i > 1 ? i - 1 : (int64_t)dimension];
   if (Forward) {
     LOGI << "Tour direction: forward";
   } else {
@@ -21,7 +21,7 @@ Tour ExtractFinalTour(const std::vector<NodeIdType>& ids) {
 
   Tour tour;
   i = 1;
-  for (int j = 1; j <= dimension; j++) {
+  for (size_t j = 1; j <= dimension; j++) {
     NodeIdType a = ids[i];
     if (a <= dimension)
       tour.node_ids.push_back(a);
@@ -29,7 +29,7 @@ Tour ExtractFinalTour(const std::vector<NodeIdType>& ids) {
       LOGE << "Warning: Node " << a
            << " is out of range and will be skipped in the tour file.";
     i += Forward ? 1 : -1;
-    if (i > dimension) i = 1;
+    if (i > (int64_t)dimension) i = 1;
     if (i < 1) i = dimension;
   }
   return tour;

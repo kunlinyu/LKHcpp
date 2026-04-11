@@ -26,8 +26,9 @@ Tour LKHcpp::Solve(const Param& pr, const Problem& pb) {
 
   if (param.threads > 1) {
     param.seed = std::hash<std::thread::id>{}(std::this_thread::get_id());
-    if (param.seed != 0 and param.seed != 1)
+    if (param.seed != 0 and param.seed != 1) {
       LOGW << "threads == " << param.threads << ", ignore seed " << param.seed;
+    }
   }
   Initializer::Init(param, context, pb);
 
