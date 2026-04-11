@@ -11,7 +11,7 @@ class TreeNode {
   TreeNode *Suc = nullptr;     // Successor in the two-way list
   TreeNode *Parent = nullptr;  // The parent node
   int64_t Rank = 0;                // Ordinal number of the node in the list
-  int64_t Size = 0;                // Number of children
+  size_t Size = 0;                // Number of children
 };
 
 inline void SLink(TreeNode *a, TreeNode *b) {

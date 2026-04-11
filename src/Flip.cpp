@@ -82,7 +82,7 @@ void SplitSegment(TreeNode *t1, TreeNode *t2) {
 
   if (t2->Rank < t1->Rank) std::swap(t1, t2);
   int64_t Count = t1->Rank - P->First->Rank + 1;
-  if (2 * Count < P->Size) {
+  if (2 * Count < (int64_t)P->Size) {
     // The left part of P is merged with its neighbouring segment, Q
     Q = P->Reversed ? P->Suc : P->Prd;
     TreeNode *t = P->First->Prd;
