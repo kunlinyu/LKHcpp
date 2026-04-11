@@ -28,9 +28,9 @@ inline void shuffle(int N, int *path) {
   for (int i = 1; i < N; i++) swap(path + i, path + unif(0, i));
 }
 
-POpMUSICThreeOpt::POpMUSICThreeOpt(Node **&node_path, size_t &trials,
+POpMUSICThreeOpt::POpMUSICThreeOpt(size_t &trials,
                                    size_t &max_neighbors)
-    : node_path(node_path), trials(trials), max_neighbors(max_neighbors) {}
+    : trials(trials), max_neighbors(max_neighbors) {}
 
 void POpMUSICThreeOpt::path_threeOpt(int N, int **D, int *best_sol,
                                      GainType *best_cost) {
@@ -311,7 +311,7 @@ void POpMUSICThreeOpt::doubleBridgeKick(void) {
  */
 
 POpMUSICCandicateSetCreator::POpMUSICCandicateSetCreator()
-    : three_opt(node_path, trials_, max_neighbors_) {}
+    : three_opt(trials_, max_neighbors_) {}
 
 void POpMUSICCandicateSetCreator::CreateCandidateSet(int K) {
 

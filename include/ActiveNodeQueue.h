@@ -3,7 +3,7 @@
 #include <set>
 #include <queue>
 
-struct Node;
+class Node;
 
 class ActiveQueue {
 private:

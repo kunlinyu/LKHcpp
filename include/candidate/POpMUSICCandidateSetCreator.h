@@ -15,13 +15,11 @@ class POpMUSICThreeOpt {
   char *dontLook = nullptr;
   GainType tourLength = 0;
 
-  Node **&node_path;
-
   size_t &trials;
   size_t &max_neighbors;
 
  public:
-  POpMUSICThreeOpt(Node **&node_path, size_t &trials, size_t &max_neighbors);
+  POpMUSICThreeOpt(size_t &trials, size_t &max_neighbors);
 
   void path_threeOpt(int N, int **D, int *best_sol, GainType *best_cost);
 
