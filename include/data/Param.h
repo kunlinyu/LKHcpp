@@ -44,8 +44,8 @@ struct Param {
       true;  // Specifies whether L&K's gain criterion is used
 
   // ==== flow control parameters ====
-  int runs = 10;                // Total number of runs
-  int max_trials = 0;           // Maximum number of trials in each run
+  size_t runs = 10;                // Total number of runs
+  size_t max_trials = 0;           // Maximum number of trials in each run
   bool stop_at_optimum = true;  // Specifies whether a run will be terminated if
                                 // the tour length becomes equal to Optimum
   double time_limit = DBL_MAX;  // Time limit in seconds for each run
@@ -74,7 +74,7 @@ struct Param {
   double excess = 0;  // Maximum alpha-value allowed for any candidate edge is
                       // set to Excess times the absolute value of the lower
                       // bound of a solution tour
-  int initial_period = 0;     // Length of the first period in the ascent
+  size_t initial_period = 0;     // Length of the first period in the ascent
   int initial_step_size = 1;  // Initial step size used in the ascent
 
   // ==== local search pruning limits ====

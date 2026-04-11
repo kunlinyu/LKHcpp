@@ -24,7 +24,7 @@ std::string CandidateReport(Node *FirstNode) {
   } while ((N = N->SucNode()) != FirstNode);
   std::stringstream ss;
   ss << "Cand.min = " << Min
-     << ", Cand.avg = " << (double)Sum / context.dimension
+     << ", Cand.avg = " << (double)Sum / (double)context.dimension
      << ", Cand.max = " << Max;
   return ss.str();
 }

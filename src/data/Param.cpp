@@ -54,7 +54,7 @@ void Param::Adjust(size_t dimension) {
       initial_period = dimension / 2;
       if (initial_period < 100) initial_period = 100;
     }
-    if (excess == 0) excess = 1.0 / dimension * salesmen;
+    if (excess == 0) excess = 1.0 / (double)dimension * (double)salesmen;
     if (max_trials == 0) max_trials = dimension;
   }
   if (popmusic_max_neighbors > dimension - 1)

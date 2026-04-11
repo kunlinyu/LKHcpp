@@ -34,7 +34,8 @@
 GainType Ascent(POpMUSICCandicateSetCreator& popmusic) {
   Node* t;
   GainType BestW, W, W0, Alpha, MaxAlpha;
-  int T, Period, P, InitialPhase, BestNorm;
+  int T, InitialPhase, BestNorm;
+  size_t P, Period;
 
 Start:
   // Initialize Pi

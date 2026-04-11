@@ -23,7 +23,7 @@ size_t SegmentSize2(Node *ta, Node *tb) {
   Pa = ta->Parent;
   Pb = tb->Parent;
   if (Pa == Pb) {
-    int n = context.Reversed == Pa->Reversed ? tb->Rank - ta->Rank
+    int64_t n = context.Reversed == Pa->Reversed ? tb->Rank - ta->Rank
                                              : ta->Rank - tb->Rank;
     return (n < 0 ? n + context.dimension : n) + 1;
   }

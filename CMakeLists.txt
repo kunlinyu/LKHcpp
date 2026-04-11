@@ -91,6 +91,12 @@ target_compile_options(${PROJECT_NAME}_exe PRIVATE
         $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
 )
 
+#set_source_files_properties(${SRC}
+#        PROPERTIES
+#        COMPILE_OPTIONS "-Wall;-Wextra;-Wpedantic;-Werror;-Wconversion;"
+##        COMPILE_OPTIONS "-Wall;-Wextra;-Wpedantic;-Werror;-Wconversion;-Wsign-conversion;-Wshadow;-Warith-conversion"
+#)
+
 add_custom_command(
     TARGET ${PROJECT_NAME}_exe
     POST_BUILD

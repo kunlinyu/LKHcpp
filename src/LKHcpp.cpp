@@ -59,8 +59,8 @@ Tour LKHcpp::Solve(const Param& pr, const Problem& pb) {
   GainType OrdinalTourCost = 0;
   OrdinalTourCost = CalcOrdinalTourCost();
   Tour best_tour;
-  for (int Run = 1;
-       Run <= param.runs and !stop_.load(std::memory_order_acquire); Run++) {
+  for (size_t Run = 0;
+       Run < param.runs and !stop_.load(std::memory_order_acquire); Run++) {
     LastTime = GetTime();
 
     // using the Lin-Kernighan heuristic

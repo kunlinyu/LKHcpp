@@ -140,7 +140,7 @@ void SplitSegment(TreeNode *t1, TreeNode *t2) {
   Q->Size += Count;
 }
 
-#define SPLIT_CUTOFF 0.75
+#define SPLIT_CUTOFF 0.75f
 
 class ABCD {
  private:
@@ -242,10 +242,10 @@ void Flip_SL(Node *t1, Node *t2, Node *t3) {
       SplitSegment(t3, t4);
       PPPP(t1->Parent, t2->Parent, t3->Parent, t4->Parent);
     }
-  } else if ((P1 == P3 &&
-              abs(t3->Rank - t1->Rank) > SPLIT_CUTOFF * context.SegmentSize) ||
-             (P2 == P4 &&
-              abs(t4->Rank - t2->Rank) > SPLIT_CUTOFF * context.SegmentSize)) {
+  } else if ((P1 == P3 && abs(t3->Rank - t1->Rank) >
+                              SPLIT_CUTOFF * (double)context.SegmentSize) ||
+             (P2 == P4 && abs(t4->Rank - t2->Rank) >
+                              SPLIT_CUTOFF * (double)context.SegmentSize)) {
     if (P1 == P2) {
       SplitSegment(t1, t2);
       PPPP(t1->Parent, t2->Parent, t3->Parent, t4->Parent);

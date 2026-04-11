@@ -46,7 +46,7 @@ struct Context {
 
   SwapStack swap_stack;
 
-  int Trial;  // Ordinal number of the current trial
+  size_t Trial;  // Ordinal number of the current trial
 
   double StartTime;  // Time when execution starts
 
