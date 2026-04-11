@@ -67,13 +67,20 @@ set(SRC
 )
 
 add_library(LKHcpp ${SRC})
-target_link_libraries(LKHcpp m)
 target_compile_definitions(LKHcpp PRIVATE PLOG_CAPTURE_FILE)
+if(MSVC)
+    target_compile_options(LKHcpp PRIVATE /permissive-)
+endif()
 
 add_executable(${PROJECT_NAME}_exe src/main.cpp)
 target_link_libraries(${PROJECT_NAME}_exe LKHcpp)
 target_compile_definitions(${PROJECT_NAME}_exe PRIVATE PLOG_CAPTURE_FILE)
 set_target_properties(${PROJECT_NAME}_exe PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
+if(UNIX)
+    target_link_libraries(${PROJECT_NAME}_exe PRIVATE m)
+elseif(MSVC)
+    target_compile_options(${PROJECT_NAME}_exe PRIVATE /permissive-)
+endif()
 
 add_custom_command(
         TARGET ${PROJECT_NAME}_exe
@@ -88,3 +95,6 @@ if (MINGW)
             -static
     )
 endif ()
+if(MSVC)
+    add_compile_options(/permissive-)
+endif()

@@ -8,7 +8,7 @@
 
 #include <unordered_map>
 
-inline Problem EdgeDataEncoder::Encode(const TSPLIB& tsplib) {
+Problem EdgeDataEncoder::Encode(const TSPLIB& tsplib) {
   std::set<NodeIdType> id_set;
   for (const auto& edge_data : tsplib.edge_data_section) {
     id_set.insert(edge_data.from);
