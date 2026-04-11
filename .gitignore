@@ -48,3 +48,7 @@ build/
 
 # idea
 .idea/
+
+# vs
+.vs/
+CMakeSettings.json
