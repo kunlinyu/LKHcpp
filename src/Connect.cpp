@@ -12,10 +12,10 @@
  * than a specified threshold (Max) is found.
  */
 
-void Connect(Node *N1, int Max, bool Sparse) {
+void Connect(Node *N1, WeightType Max, bool Sparse) {
   Node *N;
   Candidate *NN1;
-  int d;
+  WeightType d;
 
   N1->Next = nullptr;
   N1->NextCost = INT_MAX;

@@ -6,4 +6,4 @@
 
 GainType Minimum1TreeCost(bool Sparse, std::map<Node *, int> & degree_2);
 void MinimumSpanningTree(bool Sparse);
-void Connect(Node *N1, int Max, bool Sparse);
+void Connect(Node *N1, WeightType Max, bool Sparse);

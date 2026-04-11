@@ -22,7 +22,7 @@
 GainType Minimum1TreeCost(bool Sparse, std::map<Node *, int> &degree_2) {
   Node *N1 = nullptr;
   GainType Sum = 0;
-  int Max = INT_MIN;
+  WeightType Max = INT_MIN;
 
   MinimumSpanningTree(Sparse);
   Node *N = context.FirstNode;

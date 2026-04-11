@@ -37,8 +37,10 @@ GainType MergeWithTourIPT() {
   int Rank = 0, Improved1 = 0, Improved2 = 0;
   size_t SubSize1, SubSize2;
   size_t NewDimension = 0;
-  int MaxSubSize1, Forward;
-  int MinSubSize, BestMinSubSize = 3, MinForward = 0;
+  size_t MaxSubSize1;
+  int Forward;
+  size_t MinSubSize;
+  int BestMinSubSize = 3, MinForward = 0;
   GainType Cost1 = 0, Cost2 = 0, Gain, OldCost1, MinGain = 0;
   Node *N, *NNext = nullptr, *N1, *N2, *MinN1, *MinN2, *First = 0, *Last;
 

@@ -14,7 +14,7 @@ class CandidateSet {
   std::vector<Candidate> data_;
 
  public:
-  void push_back(Node* to, WeightType cost, int alpha = INT_MAX) {
+  void push_back(Node* to, WeightType cost, WeightType alpha = INT_MAX) {
     if (to == nullptr) return;
     for (auto& c : data_)
       if (c.To == to) {

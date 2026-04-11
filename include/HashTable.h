@@ -23,9 +23,9 @@ struct HashTable {
   std::vector<unsigned> rand_;
 
  public:
-  void init_rand(int size) {
+  void init_rand(size_t size) {
       rand_.resize(size);
-      for (int i = 0; i < size; i++) rand_[i] = Random();
+      for (size_t i = 0; i < size; i++) rand_[i] = Random();
   }
 
   void reset_hash() { hash_ = 0; }

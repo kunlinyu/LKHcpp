@@ -42,7 +42,7 @@ Start:
   do t->Pi = 0;
   while (Node::MoveSuc(t) != context.FirstNode);
 
-  std::map<Node*, int> best_pi;
+  std::map<Node*, WeightType> best_pi;
 
   if (param.candidate_set_type == POPMUSIC &&
       context.FirstNode->candidates.empty())

@@ -1,7 +1,7 @@
 #pragma once
 #include "POpMUSICCandidateSetCreator.h"
 
-int AddCandidate(Node * From, Node * To, int Cost, int Alpha);
+int AddCandidate(Node* From, Node* To, WeightType Cost, int Alpha);
 void AddExtraDepotCandidates();
 void AdjustCandidateSet(Node* FirstNode);
 void GenerateCandidates(size_t MaxCandidates, GainType MaxAlpha, int Symmetric);

@@ -48,7 +48,7 @@ class Initializer {
   }
 
   // The AllocateSegments function allocates the segments of the two-level tree.
-  static void AllocateSegments(short tree_type, int dimension, Context& ctx) {
+  static void AllocateSegments(short tree_type, size_t dimension, Context& ctx) {
     ctx.segments.clear();
     ctx.super_segments.clear();
 
@@ -60,7 +60,7 @@ class Initializer {
       ctx.SegmentSize = dimension;
 
     int SegmentCount = 0;
-    for (int i = dimension; i > 0; i -= ctx.SegmentSize) {
+    for (int64_t i = dimension; i > 0; i -= ctx.SegmentSize) {
       TreeNode s{};
       s.Rank = ++SegmentCount;
       ctx.segments.emplace_back(s);

@@ -14,10 +14,11 @@ class Node : public TreeNode, public Coordinate {
       OriginalId;  // The original Id in a SDVRP or STTSPinstance (REMOVE)
 
   WeightType Cost;      // "Best" cost of an edge emanating from the node
-  int NextCost;  // During the ascent, the next best cost of an edge emanating
+  WeightType NextCost;  // During the ascent, the next best cost of an edge
+                        // emanating
                  // from the node
 
-  int Pi;  // Pi-value of the node
+  WeightType Pi;  // Pi-value of the node
 
   Node *SucNode() const { return dynamic_cast<Node *>(Suc); }
   Node *PrdNode() const { return dynamic_cast<Node *>(Prd); }

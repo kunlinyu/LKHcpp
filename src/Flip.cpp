@@ -158,7 +158,7 @@ class ABCD {
   }
 };
 static void FlipNodes(TreeNode *t1, TreeNode *t2, TreeNode *t3, TreeNode *t4) {
-  int new_rank = t4->Rank;
+  int64_t new_rank = t4->Rank;
   t4->Suc = nullptr;
   for (TreeNode *s1 = t2; s1; s1 = s1->Prd) {
     std::swap(s1->Suc, s1->Prd);
@@ -300,7 +300,7 @@ void Flip_SL(Node *t1, Node *t2, Node *t3) {
     }
     // Reverse the sequence of segments (P3 --> P1).  Mirrors the corresponding
     // code in the Flip function
-    int new_rank = P1->Rank;
+    int64_t new_rank = P1->Rank;
     P1->Suc = nullptr;
     for (TreeNode *Q1 = P3; Q1; Q1 = Q1->Prd) {
       std::swap(Q1->Suc, Q1->Prd);

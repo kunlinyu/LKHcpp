@@ -14,7 +14,7 @@
  * OrderCandidateSet.
  */
 
-int AddCandidate(Node* From, Node* To, int Cost, int Alpha) {
+int AddCandidate(Node* From, Node* To, WeightType Cost, int Alpha) {
   if (From == To) return 0;
   From->candidates.push_back(To, Cost, Alpha);
   return 1;

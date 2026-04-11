@@ -33,7 +33,7 @@ void MinimumSpanningTree(bool Sparse) {
 
   Blue = N = context.FirstNode;
   Blue->Dad = nullptr;  // The root of the tree has no father
-  std::unordered_map<Node *, int> rank;
+  std::unordered_map<Node *, WeightType> rank;
   Heap<Node*> heap([&rank](Node *a, Node *b) { return rank[a] < rank[b]; });
   if (Sparse && not Blue->candidates.empty()) {
     // The graph is sparse
@@ -75,7 +75,7 @@ void MinimumSpanningTree(bool Sparse) {
     while ((N = N->SucNode()) != context.FirstNode) N->Cost = INT_MAX;
     // Loop as long as there a more nodes to include in the tree
     while ((N = Blue->SucNode()) != context.FirstNode) {
-      int Min = INT_MAX;
+      WeightType Min = INT_MAX;
       // Update all non-blue nodes (the successors of Blue in the list)
       do {
         if (Blue != N && (d = context.D(Blue, N)) < N->Cost) {

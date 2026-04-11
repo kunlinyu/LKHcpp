@@ -87,9 +87,9 @@ void OrderCandidateSet(size_t MaxCandidates, GainType MaxAlpha, int Symmetric) {
       else if (ctx[To].computed && (NN = To->candidates.find(From)))
         NFrom->Alpha = NN->Alpha;
       else {
-        int Beta = BetaValue(ctx, From, To);
+        WeightType Beta = BetaValue(ctx, From, To);
         NFrom->Alpha =
-            Beta != INT_MIN ? std::max(NFrom->Cost - Beta, 0) : INT_MAX;
+            Beta != INT_MIN ? std::max((int64_t)(NFrom->Cost) - Beta, 0LL) : INT_MAX;
       }
     }
     ctx[From].computed = true;

@@ -22,8 +22,8 @@ struct Context {
   std::vector<TreeNode> segments;  // Array of all segments
   std::vector<TreeNode> super_segments;
 
-  int SegmentSize;       // Desired not count of each segment
-  int SuperSegmentSize;  // Desired segment count of each super segment
+  size_t SegmentSize;       // Desired not count of each segment
+  size_t SuperSegmentSize;  // Desired segment count of each super segment
 
   HashTable hash_table;  // Hash table used for storing tours
 
