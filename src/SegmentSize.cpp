@@ -12,7 +12,7 @@
  */
 
 size_t SegmentSize1(Node *ta, Node *tb) {
-  int n = !context.Reversed ? tb->Rank - ta->Rank : ta->Rank - tb->Rank;
+  int64_t n = !context.Reversed ? tb->Rank - ta->Rank : ta->Rank - tb->Rank;
   return (n < 0 ? n + context.dimension : n) + 1;
 }
 

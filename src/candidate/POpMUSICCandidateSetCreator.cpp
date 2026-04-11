@@ -313,7 +313,7 @@ void POpMUSICThreeOpt::doubleBridgeKick(void) {
 POpMUSICCandicateSetCreator::POpMUSICCandicateSetCreator()
     : three_opt(trials_, max_neighbors_) {}
 
-void POpMUSICCandicateSetCreator::CreateCandidateSet(int K) {
+void POpMUSICCandicateSetCreator::CreateCandidateSet(size_t K) {
 
     int n, i, d;
     size_t no_res;

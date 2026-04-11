@@ -35,14 +35,14 @@ struct AlphaContext {
 static int BetaValue(std::unordered_map<Node *, AlphaContext> &ctx, Node *From,
                      Node *To);
 
-void OrderCandidateSet(int MaxCandidates, GainType MaxAlpha, int Symmetric) {
+void OrderCandidateSet(size_t MaxCandidates, GainType MaxAlpha, int Symmetric) {
   Node *From;
   Node *To;
   Candidate *NFrom;
   Candidate *NN;
 
   PLOGD << "Ordering candidates ...";
-  if (MaxAlpha < 0 || MaxAlpha > INT_MAX) MaxAlpha = INT_MAX;
+  if (MaxAlpha > INT_MAX) MaxAlpha = INT_MAX;
   // Add edges from the 1-tree to the candidate set
   if (MaxCandidates > 0) {
     From = context.FirstNode;

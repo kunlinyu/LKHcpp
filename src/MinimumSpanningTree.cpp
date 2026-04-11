@@ -29,7 +29,7 @@ void MinimumSpanningTree(bool Sparse) {
       nullptr;  // Points to the provisional next node to be included
   Node *N;
   Candidate *NBlue;
-  int d;
+  WeightType d;
 
   Blue = N = context.FirstNode;
   Blue->Dad = nullptr;  // The root of the tree has no father

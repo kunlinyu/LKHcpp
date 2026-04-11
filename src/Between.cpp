@@ -16,9 +16,9 @@
  */
 
 bool Between(const Node* ta, const Node* tb, const Node* tc) {
-  int a = ta->Rank;
-  int b = tb->Rank;
-  int c = tc->Rank;
+  int64_t a = ta->Rank;
+  int64_t b = tb->Rank;
+  int64_t c = tc->Rank;
   if (context.Reversed) {
     a = tc->Rank;
     c = ta->Rank;

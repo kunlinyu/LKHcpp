@@ -14,7 +14,7 @@
 
 class Initializer {
  public:
-  static std::vector<Node> CreateNodes(int Dimension) {
+  static std::vector<Node> CreateNodes(size_t Dimension) {
     PLOGF_IF(Dimension <= 0) << "DIMENSION is not positive (or not specified)";
     std::vector<Node> nodes;
     nodes.resize(Dimension);

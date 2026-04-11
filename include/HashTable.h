@@ -32,9 +32,9 @@ struct HashTable {
 
   void clear() { hash_cost.clear(); }
 
-  void update_hash(int id1, int id2) { hash_ ^= rand_[id1] * rand_[id2]; }
+  void update_hash(size_t id1, size_t id2) { hash_ ^= rand_[id1] * rand_[id2]; }
 
-  void update_hash(int id1, int id2, int id3, int id4) {
+  void update_hash(size_t id1, size_t id2, size_t id3, size_t id4) {
     hash_ ^= (rand_[id1] * rand_[id2]) ^ (rand_[id3] * rand_[id4]) ^
              (rand_[id2] * rand_[id3]) ^ (rand_[id4] * rand_[id1]);
   }

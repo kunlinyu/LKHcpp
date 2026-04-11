@@ -86,7 +86,7 @@ class POpMUSICCandicateSetCreator {
   void set_trails(size_t trials) { trials_ = trials; }
   void set_max_neighbors(int max_neighbors) { max_neighbors_ = max_neighbors; }
 
-  void CreateCandidateSet(int K);
+  void CreateCandidateSet(size_t K);
 
  private:
   GainType length_path(int n, int *path);

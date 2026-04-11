@@ -35,10 +35,12 @@
 
 GainType MergeWithTourIPT() {
   int Rank = 0, Improved1 = 0, Improved2 = 0;
-  int SubSize1, SubSize2, MaxSubSize1, NewDimension = 0, Forward;
+  size_t SubSize1, SubSize2;
+  size_t NewDimension = 0;
+  int MaxSubSize1, Forward;
   int MinSubSize, BestMinSubSize = 3, MinForward = 0;
   GainType Cost1 = 0, Cost2 = 0, Gain, OldCost1, MinGain = 0;
-  Node *N, *NNext, *N1, *N2, *MinN1, *MinN2, *First = 0, *Last;
+  Node *N, *NNext = nullptr, *N1, *N2, *MinN1, *MinN2, *First = 0, *Last;
 
   std::set<Node*> active;
 

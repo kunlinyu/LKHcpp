@@ -4,10 +4,10 @@
 int AddCandidate(Node * From, Node * To, int Cost, int Alpha);
 void AddExtraDepotCandidates();
 void AdjustCandidateSet(Node* FirstNode);
-void GenerateCandidates(int MaxCandidates, GainType MaxAlpha, int Symmetric);
+void GenerateCandidates(size_t MaxCandidates, GainType MaxAlpha, int Symmetric);
 std::string CandidateReport(Node* FirstNode);
 int NotEqual(Node * From, Node * To);
-void OrderCandidateSet(int MaxCandidates,
+void OrderCandidateSet(size_t MaxCandidates,
                        GainType MaxAlpha, int Symmetric);
 void ResetCandidateSet();
 void SymmetrizeCandidateSet();

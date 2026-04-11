@@ -2,6 +2,7 @@
 
 #include <climits>
 #include <unordered_map>
+#include <algorithm>
 
 #include "candidate/CandidateFuncs.h"
 #include "data/Candidate.h"
@@ -36,7 +37,7 @@
  *      Report, RUC, 1998.
  */
 
-void GenerateCandidates(int MaxCandidates, GainType MaxAlpha, int Symmetric) {
+void GenerateCandidates(size_t MaxCandidates, GainType MaxAlpha, int Symmetric) {
   PLOGD << "Generating candidates ... ";
   if (MaxAlpha < 0 || MaxAlpha > INT_MAX) MaxAlpha = INT_MAX;
   // Initialize CandidateSet for each node
@@ -50,7 +51,7 @@ void GenerateCandidates(int MaxCandidates, GainType MaxAlpha, int Symmetric) {
   // For node from common ancestor of "From" and "To" to "To",
   // beta[N] is the maximum cost of an edge on the path from "From" to "N".
   // So the beta[To] is the final "Beta" for the path from "From" to "To".
-  std::unordered_map<Node *, int> beta;
+  std::unordered_map<Node *, WeightType> beta;
 
   // mark[To] = From means that node "To" is on the path from "From" to root
   // of MST
@@ -58,7 +59,7 @@ void GenerateCandidates(int MaxCandidates, GainType MaxAlpha, int Symmetric) {
   do on_path_from[From] = nullptr;
   while ((From = From->SucNode()) != context.FirstNode);
 
-  if (MaxCandidates <= 0) {
+  if (MaxCandidates == 0) {
     do {
       PLOGF_IF(From->candidates.empty()) << "MAX_CANDIDATES = 0: No candidates";
     } while ((From = From->SucNode()) != context.FirstNode);
@@ -79,7 +80,7 @@ void GenerateCandidates(int MaxCandidates, GainType MaxAlpha, int Symmetric) {
     // Loop for each node "To"
     do {
       if (To == From) continue;
-      int d = context.D(From, To);
+      WeightType d = context.D(From, To);
       GainType a;
       if (From == context.FirstNode)
         a = To == From->Dad ? 0 : d - From->NextCost;

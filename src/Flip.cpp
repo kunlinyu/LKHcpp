@@ -51,7 +51,7 @@ void Flip(Node *t1, Node *t2, Node *t3) {
   }
 
   // Swap segment (t3 --> t1)
-  int new_rank = t1->Rank;
+  int64_t new_rank = t1->Rank;
   t1->Suc = nullptr;
   for (Node *s1 = t3; s1; s1 = s1->PrdNode()) {
     std::swap(s1->Suc, s1->Prd);
@@ -81,12 +81,12 @@ void SplitSegment(TreeNode *t1, TreeNode *t2) {
   TreeNode *P = t1->Parent, *Q;
 
   if (t2->Rank < t1->Rank) std::swap(t1, t2);
-  int Count = t1->Rank - P->First->Rank + 1;
+  int64_t Count = t1->Rank - P->First->Rank + 1;
   if (2 * Count < P->Size) {
     // The left part of P is merged with its neighbouring segment, Q
     Q = P->Reversed ? P->Suc : P->Prd;
     TreeNode *t = P->First->Prd;
-    int new_rank = t->Rank;
+    int64_t new_rank = t->Rank;
     if (t == Q->Last) {
       if (t == Q->First && t->Suc != P->First) {
         std::swap(t->Suc, t->Prd);
@@ -112,7 +112,7 @@ void SplitSegment(TreeNode *t1, TreeNode *t2) {
     // The right part of P is merged with its neighbouring segment, Q
     Q = P->Reversed ? P->Prd : P->Suc;
     TreeNode *t = P->Last->Suc;
-    int new_rank = t->Rank;
+    int64_t new_rank = t->Rank;
     if (t == Q->First) {
       if (t == Q->Last && t->Prd != P->Last) {
         std::swap(t->Suc, t->Prd);
@@ -229,7 +229,7 @@ void Flip_SL(Node *t1, Node *t2, Node *t3) {
   }
 
   Node *t4 = t2 == SUC(t1) ? PRD(t3) : SUC(t3);
-  TreeNode *P1, *P2, *P3, *P4;
+  TreeNode *P1 = nullptr, *P2 = nullptr, *P3 = nullptr, *P4 = nullptr;
   ABCD PPPP(P1, P2, P3, P4);
   PPPP(t1->Parent, t2->Parent, t3->Parent, t4->Parent);
   // Split segments if needed
@@ -335,7 +335,7 @@ void Flip_SL(Node *t1, Node *t2, Node *t3) {
  */
 
 void Flip_SSL(Node *t1, Node *t2, Node *t3) {
-  TreeNode *P1, *P2, *P3, *P4;
+  TreeNode *P1 = nullptr, *P2 = nullptr, *P3 = nullptr, *P4 = nullptr;
   ABCD PPPP(P1, P2, P3, P4);
 
   assert(t1->Prd == t2 || t1->Suc == t2);
@@ -396,9 +396,9 @@ void Flip_SSL(Node *t1, Node *t2, Node *t3) {
     // Flip locally (b --> d) within a segment
     FlipNodes(a, b, c, d);
   else {
-    TreeNode *a, *b, *c, *d;
+    TreeNode *a = nullptr, *b = nullptr, *c = nullptr, *d = nullptr;
     TreeNode *t1 = P1, *t2 = P2, *t3 = P3, *t4 = P4;
-    TreeNode *P1, *P2, *P3, *P4;
+    TreeNode *P1 = nullptr, *P2 = nullptr, *P3 = nullptr, *P4 = nullptr;
     ABCD abcd(a, b, c, d);
     ABCD PPPP(P1, P2, P3, P4);
     PPPP(t1->Parent, t2->Parent, t3->Parent, t4->Parent);

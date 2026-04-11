@@ -53,9 +53,9 @@ struct Context {
   MoveFunction BestMove;
   MoveFunction BestSubsequentMove;
 
-  std::function<int(const Node *, const Node *)> C =
+  std::function<WeightType(const Node *, const Node *)> C =
       [this](const Node *Na, const Node *Nb) { return C_EXPLICIT(Na, Nb); };
-  std::function<int(const Node *, const Node *)> D =
+  std::function<WeightType(const Node *, const Node *)> D =
       [this](const Node *Na, const Node *Nb) { return D_EXPLICIT(Na, Nb); };
 
   WeightType C_EXPLICIT(const Node *Na, const Node *Nb) {
