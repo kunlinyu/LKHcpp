@@ -10,7 +10,7 @@ LKH3: http://webhotel4.ruc.dk/~keld/research/LKH-3/
 - Local search moves from 2-opt up to 5-opt.
 - Minimum 1-tree construction and handling.
 - Subgradient optimization for candidate set and bound improvements.
-- PopMUSIC population-based multi-start optimization.
+- PopMUSIC for accelerated local search and candidate set generation.
 - Multi-threaded parallel solving.
 - Reentrant solving methods.
 - Can be built as an independent library.
@@ -102,7 +102,7 @@ int main() {
 | Multi-threaded parallel solving | &check;    | &#10008;   |
 | Reentrant solving API | &check;    | &#10008;   |
 | Build as independent static library | &check;    | &#10008;   |
-| C++-style library interface | &#10008;     | &check;  |
+| C-style library interface | &#10008;     | &check;  |
 | Subproblem decomposition | &#10008;     | &check;  |
 | Delaunay candidate algorithm | &#10008;     | &check;  |
 | Genetic algorithm | &#10008;     | &check;  |
