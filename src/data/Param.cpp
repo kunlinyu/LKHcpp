@@ -44,9 +44,6 @@ void Param::Patch(const Param& p) {
 
 void Param::Adjust(int dimension) {
   if (seed == 0) seed = (unsigned)(std::time(nullptr) * (size_t)(&seed));
-  if (seed != 0 and seed != 1 and threads > 0) {
-    LOGW << "threads == " << threads << ", ignore seed " << seed;
-  }
 
   if (max_swaps == 0) max_swaps = dimension;
   if (max_candidates > dimension - 1)
