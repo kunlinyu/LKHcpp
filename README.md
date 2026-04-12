@@ -10,12 +10,12 @@ LKH3: http://webhotel4.ruc.dk/~keld/research/LKH-3/
 - Local search moves from 2-opt up to 5-opt.
 - Minimum 1-tree construction and handling.
 - Subgradient optimization for candidate set and bound improvements.
-- PopMUSIC for accelerated local search and candidate set generation.
+- PopMUSIC candidate set generation.
 - Multi-threaded parallel solving.
 - Reentrant solving methods.
 - Can be built as an independent library.
 
-## Building and usage
+## Building
 - Requires a C++11-compatible compiler and CMake.
 - Typical build:
   ```
@@ -24,7 +24,7 @@ LKH3: http://webhotel4.ruc.dk/~keld/research/LKH-3/
   cmake ..
   cmake --build .
   ```
-- After building, run the solver with an instance file (TSP / TSPLIB format) and optional configuration flags. See source for CLI options and configuration examples.
+- After building, run the solver with the command-line options.
 
 ## Command-line usage
 ```text
@@ -90,23 +90,33 @@ int main() {
 }
 ```
 
-## Feature comparison: LKHcpp vs LKH3
+## Feature comparison: LKH3 vs LKHcpp
 
-| Feature | LKHcpp | LKH3 |
-|---|--------|------|
-| Lin-Kernighan core heuristic | &check;    | &check;  |
-| 2-opt to 5-opt local search moves | &check;    | &check;  |
-| Minimum 1-tree construction | &check;    | &check;  |
-| Subgradient optimization | &check;    | &check;  |
-| PopMUSIC-based optimization | &check;    | &check;  |
-| Multi-threaded parallel solving | &check;    | &#10008;   |
-| Reentrant solving API | &check;    | &#10008;   |
-| Build as independent static library | &check;    | &#10008;   |
-| C-style library interface | &#10008;     | &check;  |
-| Subproblem decomposition | &#10008;     | &check;  |
-| Delaunay candidate algorithm | &#10008;     | &check;  |
-| Genetic algorithm | &#10008;     | &check;  |
-| 40+ constrained problem variants | &#10008;     | &check;  |
+| Feature                             | LKH3     | LKHcpp            |
+|-------------------------------------|----------|-------------------|
+| Lin-Kernighan core heuristic        | &check;  | &check;           |
+| 2-opt to 5-opt local search moves   | &check;  | &check;           |
+| Minimum 1-tree construction         | &check;  | &check;           |
+| Subgradient optimization            | &check;  | &check;           |
+| PopMUSIC-based optimization         | &check;  | &check;           |
+| Multi-threaded parallel solving     | &#10008; | &check;           |
+| Reentrant solving API               | &#10008; | &check;           |
+| Build as independent static library | &#10008; | &check;           |
+| run time tree type selection        | &#10008; | &check;           |
+| TSP Variant encoder and decoder     | &#10008; | &check;           |
+| constrained problem variants        | 49       | 1(STTSP)          |
+| C-style library interface           | &check;  | &#10008;          |
+| Subproblem decomposition            | &check;  | &#10008;          |
+| Genetic algorithm                   | &check;  | &#10008;          |
+| k-swap kick move                    | &check;  | &#10008;          |
+| K-Opt Move                          | &check;  | &#10008;          |
+| Special-Opt Move                    | &check;  | &#10008;          |
+| back tracking in local search       | &check;  | &#10008;          |
+| backbone candidate set              | &check;  | &#10008;          |
+| candidate set algorithm             | 5        | 2(alpha,popmusic) |
+| tour recombination algorithm        | 3        | 1(IPT)            |
+| initial tour construction algorithm | 14       | 1(WALK)           |
+
 
 ## Dependencies
 
