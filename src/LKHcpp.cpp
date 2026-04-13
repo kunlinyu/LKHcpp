@@ -189,6 +189,3 @@ const char* LKHcpp::CSolve(const char* param_json, const char* tsplib_text,
   if (heap_str) memcpy(heap_str, result.c_str(), *tour_len);
   return heap_str;
 }
-void LKHcpp::FreeTour(char* tour) const {
-  free(tour);
-}

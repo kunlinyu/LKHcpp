@@ -28,7 +28,6 @@ class LKHcpp {
 
   const char* CSolve(const char* param_json, const char* tsplib_text,
                      size_t* tour_len);
-  void FreeTour(char* tour) const;
 
   void stop() { stop_.store(true, std::memory_order_release); }
 };

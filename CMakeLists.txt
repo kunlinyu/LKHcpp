@@ -64,6 +64,7 @@ set(SRC
         src/variant/EdgeDataEncoder.cpp
         src/variant/NodeCoordEncoder.cpp
         src/variant/STTSPVariant.cpp
+        src/LKH.cpp
 )
 
 add_library(LKHcpp ${SRC})
