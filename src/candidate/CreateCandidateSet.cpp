@@ -48,7 +48,7 @@ double CreateCandidateSet(POpMUSICCandicateSetCreator &popmusic) {
        << 100.0 * (Cost - context.Optimum) / context.Optimum << "%";
   ss << ", Ascent time = " << std::fixed << std::setprecision(2)
      << fabs(GetTime() - EntryTime) << " sec.";
-  PLOGI << ss.str();
+  LOGI << ss.str();
 
   GainType MaxAlpha = (GainType)fabs(param.excess * Cost);
   GainType A = context.Optimum - Cost;
@@ -76,8 +76,8 @@ double CreateCandidateSet(POpMUSICCandicateSetCreator &popmusic) {
       }
     } while ((Na = Na->SucNode()) != context.FirstNode);
   }
-  PLOGI << CandidateReport(context.FirstNode);
-  PLOGI << "Preprocessing time = " << std::fixed << std::setprecision(2)
+  LOGI << CandidateReport(context.FirstNode);
+  LOGI << "Preprocessing time = " << std::fixed << std::setprecision(2)
         << fabs(GetTime() - EntryTime) << " sec.";
 
   return LowerBound;

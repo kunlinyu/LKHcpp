@@ -61,7 +61,7 @@ GainType FindTour(GainType OrdinalTourCost, const std::atomic<bool> &stop) {
        context.Trial++) {
     if (GetTime() - EntryTime >= param.time_limit ||
         GetTime() - context.StartTime >= param.total_time_limit) {
-      PLOGI << "*** Time limit exceeded ***";
+      LOGI << "*** Time limit exceeded ***";
       context.Trial--;
       break;
     }
@@ -84,7 +84,7 @@ GainType FindTour(GainType OrdinalTourCost, const std::atomic<bool> &stop) {
       }
     }
     if (Cost < context.BetterCost) {
-      PLOGI << "* " << context.Trial << ": "
+      LOGI << "* " << context.Trial << ": "
             << StatusReport(Cost, EntryTime, " ");
       context.BetterCost = Cost;
       RecordBetterTour(context.BetterTour, context.FirstNode);

@@ -27,7 +27,7 @@ class VariantFactory {
     } else
       throw std::invalid_argument("unknown variant");
 
-    PLOGI << "create variant with inherit chain: " << result->chain();
+    LOGI << "create variant with inherit chain: " << result->chain();
     return result;
   }
 };

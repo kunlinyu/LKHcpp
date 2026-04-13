@@ -10,7 +10,7 @@ Tour ExtractFinalTour(const std::vector<NodeIdType>& ids) {
   size_t dimension = ids.size() - 1;
   int64_t i;
   for (i = 1; i <= (int64_t)dimension && ids[i] != DepotIndex; i++);
-  PLOGI << "i value : " << i;
+  LOGI << "i value : " << i;
   bool Forward = ids[i < (int64_t)dimension ? i + 1 : 1] <
                  ids[i > 1 ? i - 1 : (int64_t)dimension];
   if (Forward) {

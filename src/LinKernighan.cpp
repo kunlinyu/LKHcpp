@@ -106,7 +106,7 @@ GainType LinKernighan(const std::atomic<bool> &stop) {
     while ((t1 = active_queue.pop())) {
       if (GetTime() - EntryTime >= param.time_limit ||
           GetTime() - context.StartTime >= param.total_time_limit) {
-        PLOGI << "*** Time limit exceeded";
+        LOGI << "*** Time limit exceeded";
         goto End_LinKernighan;
       }
       // t1 is now "passive"
@@ -115,7 +115,7 @@ GainType LinKernighan(const std::atomic<bool> &stop) {
           0) {
         LOGD << "#" << log_counter << ": Time = " << GetTime() - EntryTime
               << " sec.";
-        PLOGI_IF(context.Trial == 1)
+        LOGI_IF(context.Trial == 1)
             << "#" << log_counter << ": Time = " << GetTime() - EntryTime
             << " sec.";
       }

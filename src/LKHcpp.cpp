@@ -27,7 +27,7 @@ Tour LKHcpp::Solve(const Param& pr, const Problem& pb) {
   double LastTime;
   context.StartTime = LastTime = GetTime();
 
-  PLOGI << "Initialize context by parameters and problem";
+  LOGI << "Initialize context by parameters and problem";
 
   if (param.threads > 1) {
     param.seed = std::hash<std::thread::id>{}(std::this_thread::get_id());
@@ -82,10 +82,10 @@ Tour LKHcpp::Solve(const Param& pr, const Problem& pb) {
     GainType OldOptimum = context.Optimum;
     if (Cost < context.Optimum) context.Optimum = Cost;
     if (context.Optimum < OldOptimum) {
-      PLOGI << "*** New OPTIMUM = " << context.Optimum << " ***";
+      LOGI << "*** New OPTIMUM = " << context.Optimum << " ***";
     }
 
-    PLOGI_IF(Cost != std::numeric_limits<GainType>::max())
+    LOGI_IF(Cost != std::numeric_limits<GainType>::max())
         << "Run " << Run << ": " << StatusReport(Cost, LastTime, "");
 
     if (param.stop_at_optimum and Cost == context.Optimum) {
@@ -140,7 +140,7 @@ TourFile LKHcpp::Solve(const Param& pr, const TSPLIB& tsplib) {
   param.Adjust(tsplib.dimension);
 
   std::unique_ptr<VariantBase> variant = VariantFactory::Create(tsplib);
-  PLOGI << "Encode problem with variant: " << variant->chain();
+  LOGI << "Encode problem with variant: " << variant->chain();
   Problem problem = variant->Encode(tsplib);
   if (stop_.load(std::memory_order_acquire)) return TourFile();
 
