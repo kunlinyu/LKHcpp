@@ -1,5 +1,6 @@
-#include "Function.h"
 #include "LKH.h"
+#include "Tour.h"
+#include "Tree.h"
 
 /* The Improvement function is used to check whether a done move
  * has improved the current best tour.

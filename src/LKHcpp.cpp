@@ -9,6 +9,7 @@
 
 #include "Initializer.h"
 #include "LKH.h"
+#include "Tour.h"
 #include "data/Context.h"
 #include "data/ParamReader.h"
 #include "data/TSPLIBReader.h"
@@ -64,8 +65,7 @@ Tour LKHcpp::Solve(const Param& pr, const Problem& pb) {
     LastTime = GetTime();
 
     // using the Lin-Kernighan heuristic
-    GainType Cost =
-        FindTour(OrdinalTourCost, stop_);
+    GainType Cost = FindTour(OrdinalTourCost, stop_);
     if (Cost < BestCost) {
       BestCost = Cost;
       RecordBetterTour(context.BetterTour, context.FirstNode);
@@ -165,4 +165,26 @@ void LKHcpp::Solve(std::istream& param_json, std::istream& tsplib_text,
   TSPLIB tsplib = TSPLIBReader::Read(tsplib_text);
   TourFile tour_file = Solve(pr, tsplib);
   tour_file.write(tour_text);
+}
+
+const char* LKHcpp::CSolve(const char* param_json, const char* tsplib_text,
+                           size_t* tour_len) {
+  std::stringstream param_json_str(param_json);
+  std::stringstream tsplib_text_str(tsplib_text);
+
+  Param pr = ParamReader::ReadStream(param_json_str);
+  TSPLIB tsplib = TSPLIBReader::Read(tsplib_text_str);
+  TourFile tour_file = Solve(pr, tsplib);
+
+  std::stringstream ss;
+  tour_file.write(ss);
+  std::string result = ss.str();
+
+  *tour_len = result.size();
+  char* heap_str = (char*)malloc(*tour_len);
+  if (heap_str) memcpy(heap_str, result.c_str(), *tour_len);
+  return heap_str;
+}
+void LKHcpp::FreeTour(char* tour) const {
+  free(tour);
 }

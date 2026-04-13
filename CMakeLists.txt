@@ -37,7 +37,7 @@ set(SRC
         src/SegmentSize.cpp
         src/StatusReport.cpp
         src/StoreTour.cpp
-        src/WriteTour.cpp
+        src/ExtractFinalTour.cpp
         src/candidate/AddCandidate.cpp
         src/candidate/AdjustCandidateSet.cpp
         src/candidate/CandidateReport.cpp

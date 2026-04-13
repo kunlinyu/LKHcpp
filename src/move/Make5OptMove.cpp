@@ -1,5 +1,6 @@
 #include <plog/Log.h>
-#include "Function.h"
+
+#include "Tree.h"
 
 /*
  * The Make5OptMove function makes a 5-opt move by calling the macro Swap4

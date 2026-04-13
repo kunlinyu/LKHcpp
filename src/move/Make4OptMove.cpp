@@ -1,5 +1,6 @@
 #include <plog/Log.h>
-#include "Function.h"
+
+#include "Tree.h"
 
 /*
  * The Make4OptMove function makes a 4-opt move by calling the macro Swap3.

@@ -3,34 +3,20 @@
 #include <atomic>
 
 #include "candidate/POpMUSICCandidateSetCreator.h"
-#include "data/Problem.h"
-#include "data/Tour.h"
 #include "type.h"
 
 GainType Ascent(POpMUSICCandicateSetCreator& popmusic);
+
 GainType CalcOrdinalTourCost();
+
 GainType FindTour(GainType, const std::atomic<bool>& stop);
 
-void ChooseInitialTour(Node* FirstNode);
 GainType LinKernighan(const std::atomic<bool>& stop);
-void RecordBetterTour(std::vector<NodeIdType>& BetterTour, Node* FirstNode);
+
+void ChooseInitialTour(Node* FirstNode);
+
 GainType Gain23();
+
 int Improvement(GainType* Gain, Node* t1, Node* SUCt1);
 
-void RestoreTour();
-void WriteTour(const std::string& file_path, const Tour& tour,
-               GainType Cost);
-TourFile CreateTourFile(const Tour& tour, const std::string& name,
-                        GainType cost);
-Tour ExtractFinalTour(const std::vector<NodeIdType>& ids);
-Tour TourFileSTTSP(const Tour& tour);
-
-bool Excludable(Node* ta, Node* tb);
-void Exclude(Node* ta, Node* tb);
-
 std::string StatusReport(GainType Cost, double EntryTime, const char* Suffix);
-
-void NormalizeNodeList();
-void NormalizeSegmentList();
-
-size_t SegmentSize(Node* ta, Node* tb);

@@ -3,6 +3,7 @@
 #include <limits>
 
 #include "LKH.h"
+#include "Tour.h"
 #include "candidate/CandidateFuncs.h"
 #include "data/Context.h"
 #include "data/Param.h"

@@ -100,3 +100,5 @@ inline void Swap5(Node* a1, Node* a2, Node* a3, Node* b1, Node* b2, Node* b3,
   Swap4(a1, a2, a3, b1, b2, b3, c1, c2, c3, d1, d2, d3);
   Swap1(e1, e2, e3);
 }
+
+size_t SegmentSize(Node* ta, Node* tb);

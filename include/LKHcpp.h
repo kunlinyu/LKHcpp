@@ -18,12 +18,17 @@ class LKHcpp {
 
  public:
   Tour Solve(const Param& param, const Problem& problem);
+
   Tour SolveParallel(const Param& param, const Problem& problem);
+
   TourFile Solve(const Param& param, const TSPLIB& tsplib);
+
   void Solve(std::istream& param_json, std::istream& tsplib_text,
              std::ostream& tour_text);
 
-  void stop() {
-    stop_.store(true, std::memory_order_release);
-  }
+  const char* CSolve(const char* param_json, const char* tsplib_text,
+                     size_t* tour_len);
+  void FreeTour(char* tour) const;
+
+  void stop() { stop_.store(true, std::memory_order_release); }
 };

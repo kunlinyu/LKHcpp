@@ -1,6 +1,6 @@
 #include <cassert>
 
-#include "Function.h"
+#include "Tree.h"
 #include "data/Context.h"
 #include "data/Problem.h"
 

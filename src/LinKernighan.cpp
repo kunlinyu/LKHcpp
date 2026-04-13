@@ -5,9 +5,11 @@
 #include <functional>
 
 #include "ActiveNodeQueue.h"
-#include "Function.h"
 #include "HashTable.h"
 #include "LKH.h"
+#include "Normalize.h"
+#include "Tour.h"
+#include "Tree.h"
 #include "data/Candidate.h"
 #include "data/Context.h"
 #include "data/Param.h"

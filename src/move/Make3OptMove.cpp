@@ -1,5 +1,6 @@
 #include <plog/Log.h>
-#include "Function.h"
+
+#include "Tree.h"
 
 /*
  * The Make3OptMove function makes a 3-opt move by calling the macro Swap2

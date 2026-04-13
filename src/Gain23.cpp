@@ -1,4 +1,4 @@
-#include "Function.h"
+#include "Tree.h"
 #include "LKH.h"
 #include "Move.h"
 #include "data/Candidate.h"
@@ -40,7 +40,7 @@
  */
 GainType BridgeGain(Node* s1, Node* s2, Node* s3, Node* s4, Node* s5, Node* s6,
                     Node* s7, Node* s8, int Case6, GainType G);
-GainType Gain23(void) {
+GainType Gain23() {
   Node *s2, *s3, *s4, *s5, *s6 = 0, *s7, *s8 = 0, *s1Stop;
   Candidate *Ns2, *Ns4, *Ns6;
   GainType G0, G1, G2, G3, G4, G5, G6, Gain, Gain6;
