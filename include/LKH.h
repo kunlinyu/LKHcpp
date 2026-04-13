@@ -11,6 +11,8 @@ typedef void* LKH_Handle;
 
 LKH_Handle LKH_Create();
 
+void LKH_Enable_LOG();
+
 void LKH_Destroy(LKH_Handle hdl);
 
 const char* LKH_Solve(LKH_Handle hdl, const char* param_json,

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 project(LKHcpp
         VERSION 0.1.0
-        LANGUAGES CXX
+        LANGUAGES CXX C
 )
 
 set(CMAKE_CXX_STANDARD 11)
@@ -83,6 +83,15 @@ elseif(MSVC)
     target_compile_options(${PROJECT_NAME}_exe PRIVATE /permissive-)
 endif()
 
+add_executable(${PROJECT_NAME}_c src/main.c)
+target_link_libraries(${PROJECT_NAME}_c PRIVATE LKHcpp)
+target_compile_definitions(${PROJECT_NAME}_c PRIVATE PLOG_CAPTURE_FILE)
+if(UNIX)
+    target_link_libraries(${PROJECT_NAME}_c PRIVATE m)
+elseif(MSVC)
+    target_compile_options(${PROJECT_NAME}_c PRIVATE /permissive-)
+endif()
+
 target_compile_options(LKHcpp PRIVATE
         $<$<CXX_COMPILER_ID:MSVC>:/W4 /WX>
         $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic -Werror>
@@ -109,6 +118,11 @@ if (MINGW)
         -static-libgcc
         -static-libstdc++
         -static
+    )
+    target_link_options(${PROJECT_NAME}_c PRIVATE
+            -static-libgcc
+            -static-libstdc++
+            -static
     )
 endif ()
 if(MSVC)

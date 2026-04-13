@@ -5,7 +5,10 @@
 
 #include "LKH.h"
 
+#include "FileLineFormatter.h"
 #include "LKHcpp.h"
+#include "plog/Appenders/ConsoleAppender.h"
+#include "plog/Init.h"
 
 extern "C" {
 
@@ -16,6 +19,10 @@ LKH_Handle LKH_Create() {
     LOGE << "Create LKH library failed.";
     return nullptr;
   }
+}
+void LKH_Enable_LOG() {
+  static plog::ConsoleAppender<FileLineFormatter<true, true>> appender;
+  plog::init(plog::info, &appender);
 }
 
 void LKH_Destroy(LKH_Handle hdl) {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iomanip>
+#include <plog/Record.h>
 
 template<bool date_time, bool tid>
 class FileLineFormatter {
