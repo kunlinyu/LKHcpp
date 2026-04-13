@@ -9,12 +9,16 @@
 
 #include "Initializer.h"
 #include "LKH.h"
+#include "StatusReport.h"
 #include "Tour.h"
 #include "data/Context.h"
 #include "data/ParamReader.h"
 #include "data/TSPLIBReader.h"
 #include "utils/GetTime.h"
 #include "variant/VariantFactory.h"
+
+GainType CalcOrdinalTourCost();
+GainType FindTour(GainType, const std::atomic<bool>& stop);
 
 Tour LKHcpp::Solve(const Param& pr, const Problem& pb) {
   // set to global variables

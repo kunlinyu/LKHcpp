@@ -1,8 +1,10 @@
 #include <plog/Log.h>
 
+#include <atomic>
 #include <limits>
 
 #include "LKH.h"
+#include "StatusReport.h"
 #include "Tour.h"
 #include "candidate/CandidateFuncs.h"
 #include "data/Context.h"
@@ -35,6 +37,8 @@ GainType CalcOrdinalTourCost() {
 }
 
 GainType MergeWithTourIPT();
+void ChooseInitialTour(Node* FirstNode);
+GainType LinKernighan(const std::atomic<bool> & stop);
 
 GainType FindTour(GainType OrdinalTourCost, const std::atomic<bool> &stop) {
   const double EntryTime = GetTime();

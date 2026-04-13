@@ -1,6 +1,7 @@
 #include <limits>
 
 #include "Exclude.h"
+#include "Improvement.h"
 #include "LKH.h"
 #include "Move.h"
 #include "Tree.h"

@@ -25,6 +25,8 @@
  * The CreateCandidateSet function itself is called from LKHmain.
  */
 
+GainType Ascent(POpMUSICCandicateSetCreator& popmusic);
+
 double CreateCandidateSet(POpMUSICCandicateSetCreator &popmusic) {
   double EntryTime = GetTime();
 

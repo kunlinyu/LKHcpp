@@ -1,5 +1,6 @@
 #include <plog/Log.h>
 
+#include <atomic>
 #include <cassert>
 #include <cmath>
 #include <functional>
@@ -8,6 +9,7 @@
 #include "HashTable.h"
 #include "LKH.h"
 #include "Normalize.h"
+#include "StatusReport.h"
 #include "Tour.h"
 #include "Tree.h"
 #include "data/Candidate.h"
@@ -22,6 +24,8 @@
  * The function returns the cost of the resulting tour.
  */
 void StoreTour(const std::function<void(Node *)> &enqueue);
+GainType Gain23();
+
 GainType LinKernighan(const std::atomic<bool> &stop) {
   GainType Gain;
   int log_counter = 0;

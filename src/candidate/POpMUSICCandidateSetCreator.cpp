@@ -310,6 +310,8 @@ void POpMUSICThreeOpt::doubleBridgeKick(void) {
  *     Technical Report, Computer Science, Roskilde University, 2018.
  */
 
+void ChooseInitialTour(Node* FirstNode);
+
 POpMUSICCandicateSetCreator::POpMUSICCandicateSetCreator()
     : three_opt(trials_, max_neighbors_) {}
 
