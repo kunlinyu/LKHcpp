@@ -14,7 +14,7 @@ Problem NodeCoordEncoder::Encode(const TSPLIB& tsplib) {
   int (*Distance)(const Coordinate* Na, const Coordinate* Nb) = nullptr;
   switch (tsplib.edge_weight_type) {
     case EXPLICIT:
-      PLOGE << "explicit weight type should not contains NodeCoordSection";
+      LOGE << "explicit weight type should not contains NodeCoordSection";
       throw std::invalid_argument(
           "explicit weight type should not contains NodeCoordSection");
       // clang-format off
@@ -35,7 +35,7 @@ Problem NodeCoordEncoder::Encode(const TSPLIB& tsplib) {
       case XRAY2: Distance = Distance_XRAY2; break;
       // clang-format on
     default:
-      PLOGE << "Unsupported edge weight type: " << tsplib.edge_weight_type;
+      LOGE << "Unsupported edge weight type: " << tsplib.edge_weight_type;
       throw std::invalid_argument("Unsupported edge weight type: " +
                                   std::to_string(tsplib.edge_weight_type));
   }

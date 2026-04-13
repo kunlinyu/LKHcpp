@@ -22,7 +22,7 @@ class VariantFactory {
     else if (not tsplib.node_coord_section.empty())
       result = std::unique_ptr<VariantBase>(new NodeCoordEncoder());
     else if (not tsplib.edge_weight_section.empty()) {
-      PLOGE << "unsupported edge weight section";
+      LOGE << "unsupported edge weight section";
       throw std::invalid_argument("unsupported edge weight section");
     } else
       throw std::invalid_argument("unknown variant");

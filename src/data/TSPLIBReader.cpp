@@ -93,13 +93,13 @@ TSPLIB TSPLIBReader::Read(std::istream& is) {
 
       if (field_funcs.find(key) != field_funcs.end())
         if (not field_funcs.at(key)(value, pb)) {
-          PLOGE << "read field \"" << key << "\" error";
+          LOGE << "read field \"" << key << "\" error";
           throw std::invalid_argument("parse pb file error in line: " + line);
         }
 
       // case 3: unknown section
     } else if (trim_line.find("SECTION") != std::string::npos) {
-      PLOGE << "unknown section: " << trim_line << std::endl;
+      LOGE << "unknown section: " << trim_line << std::endl;
       current_section = "";
 
       // case 4: data of section
@@ -276,10 +276,10 @@ TSPLIBReader::SectionFuncs() {
            if (components.size() > 2)
              edge_data.weight = std::stoll(components[2]);
          } else if (pb.edge_data_format == ADJ_LIST) {
-           PLOGE << "unsported ADJ_LIST";
+           LOGE << "unsported ADJ_LIST";
            return false;
          } else {
-           PLOGE << "unknown EDGE_DATA_FORMAT";
+           LOGE << "unknown EDGE_DATA_FORMAT";
            return false;
          }
 

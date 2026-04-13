@@ -15,7 +15,7 @@ Problem EdgeDataEncoder::Encode(const TSPLIB& tsplib) {
     id_set.insert(edge_data.to);
   }
   if (id_set.size() != tsplib.dimension) {
-    PLOGE << "count of nodes in edge data section does not match dimension";
+    LOGE << "count of nodes in edge data section does not match dimension";
     throw std::invalid_argument(
         "count of nodes in edge data section does not match dimension");
   }
