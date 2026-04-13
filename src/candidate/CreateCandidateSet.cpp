@@ -69,10 +69,10 @@ double CreateCandidateSet(POpMUSICCandicateSetCreator &popmusic) {
     do {
       if (Na->candidates.empty()) {
         if (param.max_candidates == 0)
-          PLOGF << "MAX_CANDIDATES = 0: Node " << Na->Id
+          LOGE << "MAX_CANDIDATES = 0: Node " << Na->Id
                 << " has no candidates";
         else
-          PLOGF << "Node " << Na->Id << " has no candidates";
+          LOGE << "Node " << Na->Id << " has no candidates";
       }
     } while ((Na = Na->SucNode()) != context.FirstNode);
   }

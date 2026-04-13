@@ -45,6 +45,7 @@ Make4OptMove(Node * t1, Node * t2, Node * t3, Node * t4,
         Swap3(t3, t4, t5, t3, t6, t7, t8, t3, t2);
         return;
     default:
-        PLOGF << "Make4OptMove: Internal error";
+        PLOGE << "Make4OptMove: Internal error";
+        throw std::runtime_error("Make4OptMove: Internal error");
     }
 }

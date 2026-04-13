@@ -61,7 +61,10 @@ void GenerateCandidates(size_t MaxCandidates, GainType MaxAlpha, int Symmetric) 
 
   if (MaxCandidates == 0) {
     do {
-      PLOGF_IF(From->candidates.empty()) << "MAX_CANDIDATES = 0: No candidates";
+      if (From->candidates.empty()) {
+        LOGE << "MAX_CANDIDATES = 0: No candidates";
+        throw std::runtime_error("No candidates");
+      }
     } while ((From = From->SucNode()) != context.FirstNode);
     return;
   }

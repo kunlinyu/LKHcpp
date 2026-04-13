@@ -23,6 +23,7 @@ Make3OptMove(Node * t1, Node * t2, Node * t3, Node * t4,
         Swap2(t3, t4, t5, t1, t2, t3);
         return;
     default:
-        PLOGF << "Make3OptMove: Internal error";
+        LOGE << "Make3OptMove: Internal error";
+        throw std::runtime_error("Make3OptMove: Internal error");
     }
 }

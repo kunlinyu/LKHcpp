@@ -331,7 +331,10 @@ void POpMUSICCandicateSetCreator::CreateCandidateSet(size_t K) {
     if (param.max_candidates == 0) {
         N = context.FirstNode;
         do {
-          PLOGF_IF(N->candidates.empty()) << "MAX_CANDIDATES = 0: No candidates";
+          if (N->candidates.empty()) {
+            LOGE << "MAX_CANDIDATES = 0: No candidates";
+            throw std::runtime_error("No candidates");
+          }
         } while ((N = N->SucNode()) != context.FirstNode);
         PLOGD << "done";
         return;

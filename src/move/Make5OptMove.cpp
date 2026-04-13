@@ -252,6 +252,7 @@ Make5OptMove(Node * t1, Node * t2, Node * t3, Node * t4,
         Swap4(t5, t6, t7, t3, t4, t5, t9, t10, t1, t3, t8, t9);
         return;
     default:
-        PLOGF << "Make5OptMove: Internal error";
+        PLOGE << "Make5OptMove: Internal error";
+        throw std::runtime_error("Make5OptMove: Internal error");
     }
 }
