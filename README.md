@@ -22,7 +22,8 @@ LKH3: http://webhotel4.ruc.dk/~keld/research/LKH-3/
   mkdir build
   cd build
   cmake ..
-  cmake --build .
+  # or "cmake .. -DBUILD_SHARED_LIBS=ON"
+  make -j16
   ```
 - After building, run the solver with the command-line options.
 
