@@ -98,7 +98,7 @@ int main() {
 | 2-opt to 5-opt local search moves   | &check;  | &check;           |
 | Minimum 1-tree construction         | &check;  | &check;           |
 | Subgradient optimization            | &check;  | &check;           |
-| PopMUSIC-based optimization         | &check;  | &check;           |
+| PopMUSIC candidate set generation   | &check;  | &check;           |
 | Multi-threaded parallel solving     | &#10008; | &check;           |
 | Reentrant solving API               | &#10008; | &check;           |
 | Build as independent static library | &#10008; | &check;           |
