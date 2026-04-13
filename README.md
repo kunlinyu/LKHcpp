@@ -22,7 +22,9 @@ LKH3: http://webhotel4.ruc.dk/~keld/research/LKH-3/
   mkdir build
   cd build
   cmake ..
-  # or "cmake .. -DBUILD_SHARED_LIBS=ON"
+  # or "cmake .. -DBUILD_SHARED_LIBS=ON" for shared library
+  # or "cmake .. -DCMAKE_BUILD_TYPE=Release" for release build
+  # or "cmake .. -DCMAKE_TOOLCHAIN_FILE=../arm64-toolchain.cmake" for cross-compilation
   make -j16
   ```
 - After building, run the solver with the command-line options.
