@@ -18,16 +18,16 @@ LKH_Handle LKH_Create() {
   }
 }
 
-void LKH_Destroy(LKH_Handle h) {
-  if (h) delete static_cast<LKHcpp*>(h);
+void LKH_Destroy(LKH_Handle hdl) {
+  if (hdl) delete static_cast<LKHcpp*>(hdl);
 }
 
-const char* LKH_Solve(LKH_Handle hdl, const char* param, const char* tsp,
-                      size_t* out_len) {
+const char* LKH_Solve(LKH_Handle hdl, const char* param_json,
+                      const char* tsplib_text, size_t* out_len) {
   if (hdl) {
     try {
-      auto* obj = (LKHcpp*)hdl;
-      return obj->CSolve(param, tsp, out_len);
+      auto* obj = static_cast<LKHcpp*>(hdl);
+      return obj->CSolve(param_json, tsplib_text, out_len);
     } catch (const std::exception& e) {
       LOGE << "Solve failed: " << e.what();
     } catch (...) {

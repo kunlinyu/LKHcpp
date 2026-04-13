@@ -1,5 +1,5 @@
-#ifndef _LKH_H_
-#define _LKH_H_
+#ifndef LKH_H_
+#define LKH_H_
 
 #include <stddef.h>
 
@@ -11,12 +11,12 @@ typedef void* LKH_Handle;
 
 LKH_Handle LKH_Create();
 
-void LKH_Destroy(LKH_Handle h);
+void LKH_Destroy(LKH_Handle hdl);
 
-const char* LKH_Solve(LKH_Handle h, const char* param, const char* tsp,
-                      size_t* out_len);
+const char* LKH_Solve(LKH_Handle hdl, const char* param_json,
+                      const char* tsplib_text, size_t* out_len);
 
-void LKH_Stop(LKH_Handle h);
+void LKH_Stop(LKH_Handle hdl);
 
 void LKH_FreeResult(const char* data);
 
@@ -24,4 +24,4 @@ void LKH_FreeResult(const char* data);
 }
 #endif
 
-#endif /* _LKH_H_ */
+#endif /* LKH_H_ */
