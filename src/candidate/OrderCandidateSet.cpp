@@ -89,7 +89,7 @@ void OrderCandidateSet(size_t MaxCandidates, GainType MaxAlpha, int Symmetric) {
       else {
         WeightType Beta = BetaValue(ctx, From, To);
         NFrom->Alpha =
-            Beta != INT_MIN ? std::max((int64_t)(NFrom->Cost) - Beta, 0LL) : INT_MAX;
+            Beta != INT_MIN ? std::max((int64_t)(NFrom->Cost) - Beta, (int64_t)0) : INT_MAX;
       }
     }
     ctx[From].computed = true;

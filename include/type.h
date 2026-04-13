@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <cstddef>
 
 typedef size_t NodeIdType;
 typedef std::int64_t GainType;
