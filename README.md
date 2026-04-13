@@ -60,6 +60,7 @@ LKHcpp [OPTIONS]
 - `-c, --color` Print colorfully log.
 
 ## Code example
+C++ interface
 ```cpp
 #include "LKHcpp.h"
 #include "data/ParamReader.h"
@@ -89,7 +90,22 @@ int main() {
   return 0;
 }
 ```
+pure C interface
+```c
+#include "LKH.h"
 
+void func(const char* param_json, const char* tsplib_text) {
+  LKH_Enable_LOG();
+  LKH_Handle hdl = LKH_Create();
+
+  size_t tour_len = 0;
+  const char* tour_data = LKH_Solve(hdl, param_json, tsplib_text, &tour_len);
+  fwrite(tour_data, 1, tour_len, stdout);
+
+  LKH_FreeResult(tour_data);
+  LKH_Destroy(hdl);
+}
+```
 ## Feature comparison: LKH3 vs LKHcpp
 
 | Feature                             | LKH3     | LKHcpp            |
