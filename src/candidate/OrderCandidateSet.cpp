@@ -41,7 +41,7 @@ void OrderCandidateSet(size_t MaxCandidates, GainType MaxAlpha, int Symmetric) {
   Candidate *NFrom;
   Candidate *NN;
 
-  PLOGD << "Ordering candidates ...";
+  LOGD << "Ordering candidates ...";
   if (MaxAlpha > INT_MAX) MaxAlpha = INT_MAX;
   // Add edges from the 1-tree to the candidate set
   if (MaxCandidates > 0) {
@@ -99,7 +99,7 @@ void OrderCandidateSet(size_t MaxCandidates, GainType MaxAlpha, int Symmetric) {
   ResetCandidateSet();
   if (MaxCandidates > 0) TrimCandidateSet(MaxCandidates);
   if (Symmetric) SymmetrizeCandidateSet();
-  PLOGD << "done";
+  LOGD << "done";
 }
 
 /*

@@ -91,12 +91,12 @@ int main(int argc, char* argv[]) {
   FatalExitAppender exit_appender(i_appender);
   plog::init(severity_level, &exit_appender);
 
-  PLOGD << "Command line arguments parsed.";
+  LOGD << "Command line arguments parsed.";
 
   // ******** Read parameters ********
   std::ifstream fparam(param_filename);
   if (!fparam.is_open()) {
-    PLOGE << "param file " << param_filename << " not found ";
+    LOGE << "param file " << param_filename << " not found ";
     return EXIT_FAILURE;
   }
   Param pr = ParamReader::ReadStream(fparam);
@@ -107,7 +107,7 @@ int main(int argc, char* argv[]) {
   // ******** Read TSPLIB ********
   std::ifstream fproblem(pr.tsplib_filename);
   if (!fproblem.is_open()) {
-    PLOGE << "TSPLIB file " << pr.tsplib_filename << " not found ";
+    LOGE << "TSPLIB file " << pr.tsplib_filename << " not found ";
     return EXIT_FAILURE;
   }
   const TSPLIB tsplib = TSPLIBReader::Read(fproblem);
@@ -140,13 +140,13 @@ int main(int argc, char* argv[]) {
 
   // ******** write to tour file ********
   std::string file_path_cost = pr.TourFilenameWithCost(tour_file.tour.cost);
-  PLOGI << "Writing: " << file_path_cost;
+  LOGI << "Writing: " << file_path_cost;
   std::ofstream ofs(file_path_cost, std::ios::binary);
   if (ofs.is_open()) {
     tour_file.write(ofs);
     ofs.close();
   } else {
-    PLOGE << "Cannot open " << file_path_cost;
+    LOGE << "Cannot open " << file_path_cost;
   }
 
   return EXIT_SUCCESS;

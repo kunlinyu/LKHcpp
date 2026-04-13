@@ -95,7 +95,7 @@ GainType FindTour(GainType OrdinalTourCost, const std::atomic<bool> &stop) {
       context.hash_table.clear();
       context.hash_table.insert(Cost);
     } else {
-      PLOGD << "  " << context.Trial << ": "
+      LOGD << "  " << context.Trial << ": "
             << StatusReport(Cost, EntryTime, " ");
     }
   }

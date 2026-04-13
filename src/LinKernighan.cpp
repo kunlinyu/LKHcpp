@@ -97,7 +97,7 @@ GainType LinKernighan(const std::atomic<bool> &stop) {
   } while ((t1 = t1->SucNode()) != context.FirstNode);
   if (S->Size < context.SegmentSize) SS->Size++;
   PLOGV << StatusReport(Cost, EntryTime, "");
-  PLOGD_IF(Cost < context.BetterCost) << StatusReport(Cost, EntryTime, "");
+  LOGD_IF(Cost < context.BetterCost) << StatusReport(Cost, EntryTime, "");
 
   /* Loop as long as improvements are found */
   do {
@@ -113,7 +113,7 @@ GainType LinKernighan(const std::atomic<bool> &stop) {
       SUCt1 = SUC(t1);
       if (++log_counter % (int)pow(10, (int)log10(context.dimension - 1)) ==
           0) {
-        PLOGD << "#" << log_counter << ": Time = " << GetTime() - EntryTime
+        LOGD << "#" << log_counter << ": Time = " << GetTime() - EntryTime
               << " sec.";
         PLOGI_IF(context.Trial == 1)
             << "#" << log_counter << ": Time = " << GetTime() - EntryTime
@@ -135,7 +135,7 @@ GainType LinKernighan(const std::atomic<bool> &stop) {
           Cost -= Gain;
           StoreTour([&active_queue](Node *n) { active_queue.push(n); });
           PLOGV << StatusReport(Cost, EntryTime, "");
-          PLOGD_IF(Cost < context.BetterCost)
+          LOGD_IF(Cost < context.BetterCost)
               << StatusReport(Cost, EntryTime, "");
           if (context.hash_table.search(Cost)) goto End_LinKernighan;
           /* Make t1 "active" again */
@@ -156,7 +156,7 @@ GainType LinKernighan(const std::atomic<bool> &stop) {
       Cost -= Gain;
       StoreTour([&active_queue](Node *n) { active_queue.push(n); });
       PLOGV << StatusReport(Cost, EntryTime, " + ");
-      PLOGD_IF(Cost < context.BetterCost)
+      LOGD_IF(Cost < context.BetterCost)
           << StatusReport(Cost, EntryTime, " + ");
       if (context.hash_table.search(Cost)) goto End_LinKernighan;
     }

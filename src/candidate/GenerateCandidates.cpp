@@ -38,7 +38,7 @@
  */
 
 void GenerateCandidates(size_t MaxCandidates, GainType MaxAlpha, int Symmetric) {
-  PLOGD << "Generating candidates ... ";
+  LOGD << "Generating candidates ... ";
   if (MaxAlpha < 0 || MaxAlpha > INT_MAX) MaxAlpha = INT_MAX;
   // Initialize CandidateSet for each node
   for (auto &node : context.node_set) node.candidates.clear();
@@ -108,5 +108,5 @@ void GenerateCandidates(size_t MaxCandidates, GainType MaxAlpha, int Symmetric) 
   } while ((From = From->SucNode()) != context.FirstNode);
 
   if (Symmetric) SymmetrizeCandidateSet();
-  PLOGD << "done";
+  LOGD << "done";
 }

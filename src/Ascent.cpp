@@ -76,8 +76,8 @@ Start:
       if (!context.Norm || W == context.Optimum) return W;
     }
   }
-  PLOGD << CandidateReport(context.FirstNode);
-  PLOGD << "Subgradient optimization ...";
+  LOGD << CandidateReport(context.FirstNode);
+  LOGD << "Subgradient optimization ...";
 
   // Set last (d - 2) of every node to V (the node's degree in the 1-tree)
   std::map<Node*, int> last_d2 = degree_2;
@@ -90,7 +90,7 @@ Start:
   for (Period = param.initial_period, T = param.initial_step_size;
        Period > 0 && T > 0 && context.Norm != 0; Period /= 2, T /= 2) {
     // Period and step size are halved at each iteration
-    PLOGD << "  T = " << T << ", Period = " << Period
+    LOGD << "  T = " << T << ", Period = " << Period
           << ", BestW = " << (double)BestW << ", BestNorm = " << BestNorm;
     for (P = 1; T && P <= Period && context.Norm != 0; P++) {
       // Adjust the Pi-values
@@ -119,7 +119,7 @@ Start:
           if (W < W0) {
             // Double the number of candidate edges and start all
             // over again
-            PLOGD << "Warning: AscentCandidates doubled";
+            LOGD << "Warning: AscentCandidates doubled";
             if ((param.ascent_candidates *= 2) > context.dimension)
               param.ascent_candidates = context.dimension;
             goto Start;
@@ -133,7 +133,7 @@ Start:
         do {
           best_pi[t] = t->Pi;
         } while (Node::MoveSuc(t) != context.FirstNode);
-        PLOGD << "* T = " << T << ", Period = " << Period
+        LOGD << "* T = " << T << ", Period = " << Period
               << ", BestW = " << (double)BestW << ", BestNorm = " << BestNorm;
         // If in the initial phase, the step size is doubled
         if (InitialPhase && T * sqrt((double)context.Norm) > 0) T *= 2;
@@ -143,7 +143,7 @@ Start:
             (Period *= 2) > param.initial_period)
           Period = param.initial_period;
       } else {
-        PLOGD << "  T = " << T << ", Period = " << Period << ", P = " << P
+        LOGD << "  T = " << T << ", Period = " << Period << ", P = " << P
               << ", W = " << (double)W << ", Norm = " << context.Norm;
         if (InitialPhase && P > Period / 2) {
           // Conclude the initial phase
@@ -173,6 +173,6 @@ Start:
       for (const auto& c : t->candidates) c->Cost += t->Pi + c->To->Pi;
     } while (Node::MoveSuc(t) != context.FirstNode);
   }
-  PLOGD << "Ascent: BestW = " << (double)BestW << ", Norm = " << context.Norm;
+  LOGD << "Ascent: BestW = " << (double)BestW << ", Norm = " << context.Norm;
   return W;
 }

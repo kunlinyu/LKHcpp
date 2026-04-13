@@ -31,7 +31,7 @@ double CreateCandidateSet(POpMUSICCandicateSetCreator &popmusic) {
   double EntryTime = GetTime();
 
   context.Norm = std::numeric_limits<int>::max();
-  PLOGD << "Creating candidates ...";
+  LOGD << "Creating candidates ...";
 
   Node *Na = context.FirstNode;
   do Na->Pi = 0;

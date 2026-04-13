@@ -327,7 +327,7 @@ void POpMUSICCandicateSetCreator::CreateCandidateSet(size_t K) {
     InitialTourAlgorithms InitialTourAlgorithmSaved = param.initial_tour_algorithm;
 
     entryTime = GetTime();
-    PLOGD << "Creating POPMUSIC candidate set ...";
+    LOGD << "Creating POPMUSIC candidate set ...";
     if (param.max_candidates == 0) {
         N = context.FirstNode;
         do {
@@ -336,7 +336,7 @@ void POpMUSICCandicateSetCreator::CreateCandidateSet(size_t K) {
             throw std::runtime_error("No candidates");
           }
         } while ((N = N->SucNode()) != context.FirstNode);
-        PLOGD << "done";
+        LOGD << "done";
         return;
     }
 
@@ -374,7 +374,7 @@ void POpMUSICCandicateSetCreator::CreateCandidateSet(size_t K) {
              << 100.0 * (cost - context.Optimum) / context.Optimum << "%";
         ss << ", Time: " << std::fixed << std::setprecision(2)
            << GetTime() - startTime << " sec.";
-        PLOGD << ss.str();
+        LOGD << ss.str();
         startTime = GetTime();
         fast_POPMUSIC(n, solution, sample_size_ * sample_size_);
         solution[n] = solution[0];
@@ -388,7 +388,7 @@ void POpMUSICCandicateSetCreator::CreateCandidateSet(size_t K) {
              << 100.0 * (cost - context.Optimum) / context.Optimum << "%";
         ss << ", Time: " << std::fixed << std::setprecision(2)
            << GetTime() - startTime << " sec.";
-        PLOGD << ss.str();
+        LOGD << ss.str();
         costSum += cost;
         if (cost > costMax)
             costMax = cost;
@@ -417,7 +417,7 @@ void POpMUSICCandicateSetCreator::CreateCandidateSet(size_t K) {
       ss << ", Gap.max = "
          << 100.0 * (costMax - context.Optimum) / context.Optimum << "%";
     }
-    PLOGD << ss.str();
+    LOGD << ss.str();
     free(solution);
     free(node);
     free(node_path);
@@ -426,9 +426,9 @@ void POpMUSICCandicateSetCreator::CreateCandidateSet(size_t K) {
         TrimCandidateSet(K);
     if (param.candidate_set_symmetric)
         SymmetrizeCandidateSet();
-    PLOGD << CandidateReport(context.FirstNode);
-    PLOGD << "POPMUSIC Time = " << std::fixed << std::setprecision(2) << GetTime() - entryTime << " sec.";
-    PLOGD << "done";
+    LOGD << CandidateReport(context.FirstNode);
+    LOGD << "POPMUSIC Time = " << std::fixed << std::setprecision(2) << GetTime() - entryTime << " sec.";
+    LOGD << "done";
 }
 
 /************************ Compute the length of a path ************************/
