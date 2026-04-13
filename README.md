@@ -99,13 +99,13 @@ int main() {
 | Minimum 1-tree construction         | &check;  | &check;           |
 | Subgradient optimization            | &check;  | &check;           |
 | PopMUSIC candidate set generation   | &check;  | &check;           |
+| C-style library interface           | &check;  | &check;           |
 | Multi-threaded parallel solving     | &#10008; | &check;           |
 | Reentrant solving API               | &#10008; | &check;           |
 | Build as independent static library | &#10008; | &check;           |
 | run time tree type selection        | &#10008; | &check;           |
 | TSP Variant encoder and decoder     | &#10008; | &check;           |
 | constrained problem variants        | 49       | 1(STTSP)          |
-| C-style library interface           | &check;  | &#10008;          |
 | Subproblem decomposition            | &check;  | &#10008;          |
 | Genetic algorithm                   | &check;  | &#10008;          |
 | k-swap kick move                    | &check;  | &#10008;          |
