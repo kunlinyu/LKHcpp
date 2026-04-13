@@ -18,7 +18,7 @@ LKH3: http://webhotel4.ruc.dk/~keld/research/LKH-3/
 ## Building
 - Requires a C++11-compatible compiler and CMake.
 - Typical build:
-  ```
+  ```bash
   mkdir build
   cd build
   cmake ..
