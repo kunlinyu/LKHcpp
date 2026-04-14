@@ -1,4 +1,5 @@
 subdirectory, command, level
+TSP, ../LKHcpp --param PARAM/tiny4.json, 1
 TSP, ../LKHcpp --param PARAM/gr96_12.json, 0
 TSP, ../LKHcpp --param PARAM/gr96_22.json, 0
 TSP, ../LKHcpp --param PARAM/gr96_32.json, 0

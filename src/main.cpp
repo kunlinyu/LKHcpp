@@ -99,7 +99,14 @@ int main(int argc, char* argv[]) {
     LOGE << "param file " << param_filename << " not found ";
     return EXIT_FAILURE;
   }
-  Param pr = ParamReader::ReadStream(fparam);
+  Param pr;
+  try {
+    pr = ParamReader::ReadStream(fparam);
+  } catch (const std::exception& e) {
+    LOGE << "Error reading param file: " << e.what();
+    return EXIT_FAILURE;
+  }
+
   // patch by command line arguments
   pr.Patch(param_cli);
   if (not problem_filename.empty()) pr.tsplib_filename = problem_filename;
@@ -110,7 +117,13 @@ int main(int argc, char* argv[]) {
     LOGE << "TSPLIB file " << pr.tsplib_filename << " not found ";
     return EXIT_FAILURE;
   }
-  const TSPLIB tsplib = TSPLIBReader::Read(fproblem);
+  TSPLIB tsplib;
+  try {
+    tsplib = TSPLIBReader::Read(fproblem);
+  } catch (const std::exception& e) {
+    LOGE << "Error reading TSPLIB file: " << e.what();
+    return EXIT_FAILURE;
+  }
 
   // ******** solve the problem ********
   LKHcpp lkh;
@@ -118,7 +131,13 @@ int main(int argc, char* argv[]) {
   std::atomic<bool> solve_done{false};
 
   std::thread solver_thread([&]() {
-    tour_file = lkh.Solve(pr, tsplib);
+    try {
+      tour_file = lkh.Solve(pr, tsplib);
+    } catch (const std::exception& e) {
+      LOGE << "Exception in solver thread: " << e.what();
+    } catch (...) {
+      LOGE << "Unknown exception in solver thread.";
+    }
     solve_done.store(true, std::memory_order_release);
   });
 

@@ -1,10 +1,10 @@
+#include "data/TSPLIBReader.h"
+
 #include <plog/Log.h>
 
 #include <iostream>
 #include <nlohmann/json.hpp>
 
-#include "data/Problem.h"
-#include "data/TSPLIBReader.h"
 #include "type.h"
 #include "utils/EnumConversion.h"
 
@@ -123,7 +123,7 @@ std::string TSPLIBReader::trim(const std::string& str) {
 }
 
 std::vector<std::string> TSPLIBReader::split(const std::string& str,
-                                              const std::string& delimiters) {
+                                             const std::string& delimiters) {
   std::vector<std::string> components;
   size_t start = 0;
   size_t end = 0;
@@ -364,5 +364,11 @@ TSPLIBReader::SectionFuncs() {
 void TSPLIBReader::Check(TSPLIB& pb) {
   if (pb.type == UNKNOW_PROBLEM) throw std::invalid_argument("TYPE is missing");
   if (pb.dimension < 3)
-    throw std::invalid_argument("DIMENSION < 3 or not specified");
+    throw std::invalid_argument("DIMENSION should be at least 3");
+  if (not pb.node_coord_section.empty()) {
+    for (NodeIdType i = 1; i <= pb.dimension; ++i)
+      if (pb.node_coord_section.find(i) == pb.node_coord_section.end())
+        throw std::invalid_argument("NODE_COORD_SECTION is missing node " +
+                                    std::to_string(i));
+  }
 }

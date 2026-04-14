@@ -1,0 +1,8 @@
+{
+  "tsplib_filename": "INSTANCES/tiny4.tsp",
+  "tour_filename": "TOURS/tiny4.$.tour",
+  "candidate_set_type": "ALPHA",
+  "tree_type": 3,
+  "move_type": 5,
+  "seed": 42
+}

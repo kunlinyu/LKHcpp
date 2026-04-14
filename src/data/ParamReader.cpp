@@ -9,8 +9,7 @@ Param ParamReader::Read(const std::function<nlohmann::json()>& parse) {
   try {
     nlohmann::json j = parse();
     Param p = j;
-    LOGI << "Json parameter read:";
-    LOGI << "\n" << j.dump(2);
+    LOGI << "Json parameter read:\n" << j.dump(2);
     return p;
   } catch (const nlohmann::json::parse_error& e) {
     LOGE << "parse parameter error: " << e.what();
