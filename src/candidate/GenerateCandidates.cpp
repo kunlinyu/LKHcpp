@@ -37,7 +37,7 @@
  *      Report, RUC, 1998.
  */
 
-void GenerateCandidates(size_t MaxCandidates, GainType MaxAlpha, int Symmetric) {
+void GenerateCandidates(size_t MaxCandidates, GainType MaxAlpha, bool Symmetric) {
   LOGD << "Generating candidates ... ";
   if (MaxAlpha < 0 || MaxAlpha > INT_MAX) MaxAlpha = INT_MAX;
   // Initialize CandidateSet for each node

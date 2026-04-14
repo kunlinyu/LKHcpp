@@ -62,6 +62,59 @@ LKHcpp [OPTIONS]
 
 - `-c, --color` Print colorfully log.
 
+## Param struct fields
+This project exposes a `Param` struct (see `include/data/Param.h`) that groups runtime configuration used by the solver. Below are the main fields and their meanings - these can be set via the parameter file or command-line options (where available).
+
+- `tsplib_filename` - Path to the input TSPLIB problem file (instance).
+- `tour_filename` - Path to the (optional) initial or output tour file.
+
+Algorithm-related:
+- `candidate_set_type` - Candidate set construction method (ALPHA or POPMUSIC).
+- `initial_tour_algorithm` - Algorithm used to create an initial tour (BORUVKA, GREEDY, WALK).
+- `tree_type` - Tour representation: `3` = three-level tree, `2` = two-level tree, otherwise linked list.
+- `move_type` - Sequential move type for local search (K >= 2 tries k-opt up to K).
+- `subsequent_move_type` - Move type used for moves following the first move in a sequence.
+- `nonsequential_move_type` - Nonsequential move type (L >= 4 tries l-opt up to L).
+- `gain23_used` - Whether Gain23 optimization is used.
+- `gain_criterion_used` - Whether the L&K gain criterion is used.
+
+Flow control and limits:
+- `runs` - Total number of runs.
+- `max_trials` - Maximum number of trials in each run.
+- `stop_at_optimum` - Stop a run when the tour length equals the known optimum.
+- `time_limit` - Time limit in seconds for each run.
+- `total_time_limit` - Total time limit in seconds (across runs).
+- `known_optimum` - Known optimum tour length (if available).
+- `threads` - Number of parallel jobs/threads to run.
+
+Candidate set tuning:
+- `ascent_candidates` - Number of candidate edges associated with each node during ascent.
+- `max_candidates` - Maximum number of candidate edges per node.
+- `candidate_set_symmetric` - Whether candidate sets are symmetric.
+
+PopMUSIC options:
+- `popmusic_initial_tour` - Use the first POPMUSIC tour as initial tour for LK.
+- `popmusic_max_neighbors` - Max nearest neighbors used in iterated 3-opt.
+- `popmusic_sample_size` - Sample size for PopMUSIC.
+- `popmusic_solutions` - Number of solutions to generate.
+- `popmusic_trials` - Maximum trials for iterated 3-opt.
+
+Ascent tuning:
+- `excess` - Maximum alpha-value for candidate edges (Excess x lower bound magnitude).
+- `initial_period` - Length of the first period in ascent.
+- `initial_step_size` - Initial ascent step size.
+
+Local search pruning:
+- `restricted_search` - Restrict the choice of the first edge to break.
+- `max_breadth` - Max number of candidate edges considered per search level.
+- `max_swaps` - Max number of swaps during move search.
+
+Other:
+- `seed` - Initial seed for random number generation.
+- `salesmen` - Number of salesmen (for multi-salesman/TSP variants) - NOTE: currently not supported; setting this has no effect.
+
+(See `include/data/Param.h` for default values and more context.)
+
 ## Code example
 C++ interface
 ```cpp
@@ -108,6 +161,7 @@ void func(const char* param_json, const char* tsplib_text) {
   LKH_Destroy(hdl);
 }
 ```
+
 ## Feature comparison: LKH3 vs LKHcpp
 
 | Feature                             | LKH3     | LKHcpp            |
