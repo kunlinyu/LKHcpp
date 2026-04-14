@@ -20,7 +20,7 @@ const char* LKH_Solve(LKH_Handle hdl, const char* param_json,
 
 void LKH_Stop(LKH_Handle hdl);
 
-void LKH_FreeResult(const char* data);
+void LKH_FreeTour(const char* data);
 
 #ifdef __cplusplus
 }

@@ -48,7 +48,7 @@ void LKH_Stop(LKH_Handle h) {
   if (h) static_cast<LKHcpp*>(h)->stop();
 }
 
-void LKH_FreeResult(const char* data) {
+void LKH_FreeTour(const char* data) {
   if (data) free(const_cast<char*>(data));
 }
 

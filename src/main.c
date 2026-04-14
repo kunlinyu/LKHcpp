@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
     fflush(stdout);
   }
 
-  LKH_FreeResult(tour_data);
+  LKH_FreeTour(tour_data);
   LKH_Destroy(hdl);
   return ret;
 }
