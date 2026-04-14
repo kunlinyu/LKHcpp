@@ -83,11 +83,10 @@ int main() {
   TourFile result = lkh.Solve(param, tsplib);
 
   // write result
-  std::string out = param.TourFilenameWithCost(result.tour.cost);
-  std::ofstream ofs(out, std::ios::binary);
-  if (ofs.is_open()) {
-    result.write(ofs);
-    ofs.close();
+  std::ofstream ftour("path/to/tour.txt, std::ios::binary);
+  if (ftour.is_open()) {
+    result.write(ftour);
+    ftour.close();
   }
 
   return 0;
