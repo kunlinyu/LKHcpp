@@ -136,7 +136,7 @@ int main() {
   TourFile result = lkh.Solve(param, tsplib);
 
   // write result
-  std::ofstream ftour("path/to/tour.txt, std::ios::binary);
+  std::ofstream ftour("path/to/tour.txt", std::ios::binary);
   if (ftour.is_open()) {
     result.write(ftour);
     ftour.close();
